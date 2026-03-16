@@ -1,0 +1,57 @@
+accounts = []
+transactions = []
+categories = []
+budgets = []
+ 
+def add_account(id, account_name, total_money):
+    for account in accounts:
+        if account[1] == account_name:
+            return
+    accounts.append([id, account_name, total_money])
+ 
+def add_category(id, category_name):
+    for category in categories:
+        if category[1] == category_name:
+            return
+    categories.append([id, category_name])
+   
+def add_budget(id, name_category, limit_amount):
+    for category in categories:
+        if category[1] == name_category:
+            return
+    budgets.append([id, name_category, limit_amount])
+ 
+def add_transaction_income(id, date, time, amount, account_name, description):    
+    transactions.append([id, date, time, amount, account_name, description])
+   
+    for account in accounts:
+        if account[1] == account_name:
+            account[2] += amount
+            return
+ 
+def add_transaction_expense(id, date, time, amount, account_name, description):        
+    transactions.append([id, date, time, -amount, account_name, description])
+   
+    for account in accounts:
+        if account[1] == account_name:
+            account[2] -= amount
+            return
+ 
+def print_matrix(titles, matrix):
+    for title in titles:
+        print(title, end="\t")
+    print()
+   
+    raws = len(matrix)
+    cols = len(matrix[0])
+    for raw in range(raws):
+        for col in range(cols):
+            print(matrix[raw][col], end="\t")
+        print()
+ 
+ 
+add_account(1, "Mercado Pago", 1000000)
+add_account(2, "Galicia", 4395000)
+add_account(3, "Efectivo", 500000)
+ 
+print_matrix(["ID", "Nombre", "Total"], accounts)
