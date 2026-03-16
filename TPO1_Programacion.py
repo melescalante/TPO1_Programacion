@@ -18,8 +18,8 @@ def add_category(id, category_name):
 def add_budget(id, name_category, limit_amount):
     for category in categories:
         if category[1] == name_category:
+            budgets.append([id, name_category, limit_amount])
             return
-    budgets.append([id, name_category, limit_amount])
  
 def add_transaction_income(id, date, time, amount, account_name, description):    
     transactions.append([id, date, time, amount, account_name, description])
