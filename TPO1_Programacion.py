@@ -1,7 +1,7 @@
-accounts = []
+accounts = [[1, "Mercado Pago", 1000000], [2, "Galicia", 4395000], [3, "Efectivo", 500000]]
 transactions = []
-categories = []
-budgets = []
+categories = [[1,"Sueldo"], [2, "Alimento"], [3, "Gastos mensuales"],[4,"Educación"]]
+budgets = [[1,3,20000],[2,2,150000],[3,1,120000],[4,4,300000]]
  
 def add_account(id, account_name, total_money):
     for account in accounts:
@@ -48,11 +48,7 @@ def print_matrix(titles, matrix):
         for col in range(cols):
             print(matrix[raw][col], end="\t")
         print()
- 
- 
-add_account(1, "Mercado Pago", 1000000)
-add_account(2, "Galicia", 4395000)
-add_account(3, "Efectivo", 500000)
+
  
 print_matrix(["ID", "Nombre", "Total"], accounts)
 
