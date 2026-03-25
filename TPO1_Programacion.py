@@ -32,21 +32,28 @@ def add_budget(id, name_category, limit_amount):
             budgets.append([id, name_category, limit_amount])
             return
  
-def add_transaction_income(id, date, time, amount, account_name, description):    
-    transactions.append([id, date, time, amount, account_name, description])
-   
-    for account in accounts:
-        if account[1] == account_name:
-            account[2] += amount
-            return
- 
-def add_transaction_expense(id, date, time, amount, account_name, description):        
-    transactions.append([id, date, time, -amount, account_name, description])
-   
-    for account in accounts:
-        if account[1] == account_name:
-            account[2] -= amount
-            return
+def add_transaction(id, name_account, name_category, date, time, amount, description, month, transaction_type):    
+    id_account = obtain_id_by_name(accounts, name_account)
+    id_category = obtain_id_by_name(categories, name_category)
+    
+    # Should throw exceptions
+    if (id_account == 0):
+        print("The id count was not found ", name_account)
+        return
+    if (id_category == 0):
+        print("The id category was not found ", name_category)
+        return
+    
+    multiplier = 1
+    if transaction_type == "expense":
+        multiplier = -1
+    final_amount = amount * multiplier
+    
+    transactions.append([id, id_account, id_category, date, time, final_amount, description, month])
+    
+    # Modificar saldo del id de la cuenta
+    account = accounts[id_account]
+    account[2] += final_amount
  
 def print_matrix(titles, matrix):
     for title in titles:
@@ -59,7 +66,12 @@ def print_matrix(titles, matrix):
         for col in range(cols):
             print(matrix[raw][col], end="\t")
         print()
-
+        
+def obtain_id_by_name(matrix, name):
+    for raw in matrix:
+        if raw[1] == name:
+            return raw[0]
+        
+    return -1
  
 print_matrix(["ID", "Nombre", "Total"], accounts)
-
