@@ -22,7 +22,15 @@ def add_category(category_name):
         if category[1] == category_name:
             return
     categories.append([id, category_name])
-   
+def delete_category(name):
+    index=0
+    id_category=obtain_id_by_name(categories,name)
+    for category in categories:
+        if category[0]==id_category:
+            index=categories.index(category)
+            delete=categories.pop(index)
+            print(delete, "Eliminado")
+    print()
 def add_budget(name_category, limit_amount):
     id=create_id(budgets)
     id_category=obtain_id_by_name(categories, name_category)
@@ -42,7 +50,6 @@ def delete_budget(name):
             index=budgets.index(budget)
             delete=budgets.pop(index)
             print(delete)
-    print(budgets)
     print()
 
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
@@ -69,13 +76,7 @@ def add_transaction(name_account, name_category, date, time, amount, description
     # Modificar saldo del id de la cuenta
     account = accounts[id_account]
     account[2] += final_amount
-# Ejemplo con excepcion
-# add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
-# Ejemplo correcto
-add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
-add_account("BBVA", 1200000)
-add_category("Ropa")
-add_budget("Ropa", 12000)
+
 def print_matrix(titles, matrix):
     for title in titles:
         print(title, end="  \t")
@@ -93,3 +94,11 @@ def print_matrix(titles, matrix):
 # print_matrix(["id_presupuesto", "id_categoria", "Monto Limite"], budgets)
 # print_matrix(["id_movimiento", "id_cuenta", "id_categoria","Fecha","Hora","Importe","Descripcion", "Mes"], transactions)
 delete_budget("Ropa")
+# Ejemplo con excepcion
+# add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
+# Ejemplo correcto
+add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
+add_account("BBVA", 1200000)
+add_category("Ropa")
+add_budget("Ropa", 12000)
+delete_category("Sueldo")
