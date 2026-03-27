@@ -25,9 +25,13 @@ def add_category(category_name):
    
 def add_budget(name_category, limit_amount):
     id=create_id(budgets)
+    id_category=obtain_id_by_name(categories, name_category)
+    if (id_category == -1):
+        print("The category does not exist. Please create it.")
+        return("The id category was not found ", name_category)
     for category in categories:
         if category[1] == name_category:
-            budgets.append([id, name_category, limit_amount])
+            budgets.append([id, id_category, limit_amount])
             return
  
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
@@ -58,10 +62,9 @@ def add_transaction(name_account, name_category, date, time, amount, description
 # add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 # Ejemplo correcto
 add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
-
-add_budget("Ropa", 12000)
 add_account("BBVA", 1200000)
 add_category("Ropa")
+add_budget("Ropa", 12000)
 def print_matrix(titles, matrix):
     for title in titles:
         print(title, end="  \t")
