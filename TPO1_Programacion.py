@@ -33,7 +33,18 @@ def add_budget(name_category, limit_amount):
         if category[1] == name_category:
             budgets.append([id, id_category, limit_amount])
             return
- 
+def delete_budget(name):
+    id_category= obtain_id_by_name(categories,name)
+    index=0
+    delete=[]
+    for budget in budgets:
+        if budget[1]==id_category:
+            index=budgets.index(budget)
+            delete=budgets.pop(index)
+            print(delete)
+    print(budgets)
+    print()
+
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
     id_account = obtain_id_by_name(accounts, name_account)
@@ -77,7 +88,8 @@ def print_matrix(titles, matrix):
             print(matrix[raw][col], end="  \t")
         print()
 
-print_matrix(["id_cuenta", "Nombre", "Total"], accounts)
-print_matrix(["id_categoria", "Nombre"], categories)
-print_matrix(["id_presupuesto", "id_categoria", "Monto Limite"], budgets)
-print_matrix(["id_movimiento", "id_cuenta", "id_categoria","Fecha","Hora","Importe","Descripcion", "Mes"], transactions)
+# print_matrix(["id_cuenta", "Nombre", "Total"], accounts)
+# print_matrix(["id_categoria", "Nombre"], categories)
+# print_matrix(["id_presupuesto", "id_categoria", "Monto Limite"], budgets)
+# print_matrix(["id_movimiento", "id_cuenta", "id_categoria","Fecha","Hora","Importe","Descripcion", "Mes"], transactions)
+delete_budget("Ropa")
