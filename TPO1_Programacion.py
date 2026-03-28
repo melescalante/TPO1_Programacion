@@ -81,13 +81,13 @@ def add_transaction(name_account, name_category, date, time, amount, description
     id_category = obtain_id_by_name(categories, name_category)
     # Should throw exceptions
     # if transaction_type==None:transaction_type="income" 
-    if (id_account == -1):
-        print("The account does not exist. Please create it.")
-        return("The id count was not found ", name_account)
+    if (id_account == -1):        
+        print(f"\033[31mLa cuenta con ID '{id_account}' no existe. Por favor, cree una.\033[0m")
+        return
         
     if (id_category == -1):
-        print("The category does not exist. Please create it.")
-        return("The id category was not found ", name_category)
+        print(f"\033[31mLa categoría '{name_category}' no existe. Por favor, cree una.\033[0m")
+        return
     
     multiplier = 1
     if transaction_type == "expense":
