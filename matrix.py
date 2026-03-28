@@ -1,6 +1,6 @@
 accounts = [
     [1, "Mercado Pago", 1000000], 
-    [2, "Galicia", 4395000],
+    [2, "Galicia", 5000000],
     [3, "Efectivo", 500000]]
 transactions = [
     [1, 2, 1, "2-3-2026", "20:20", 5000000, "Sueldo", "Marzo"], 

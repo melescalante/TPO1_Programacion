@@ -1,4 +1,7 @@
 from matrix import accounts, transactions, categories, budgets
+
+MAX_SPACES = 110
+
 def obtain_id_by_name(matrix, name):
     for raw in matrix:
         if raw[1] == name:
@@ -15,6 +18,7 @@ def add_account(account_name, total_money):
         if account[1] == account_name:
             return
     accounts.append([id, account_name, total_money])
+
 def delete_account(account):
     index=0
     id_account=obtain_id_by_name(accounts,account)
@@ -24,12 +28,21 @@ def delete_account(account):
             delete=accounts.pop(index)
             print("Eliminado")
     print()
+    
+def return_money_to_account(accounts, id_account, total_money):
+    for account in accounts:
+        if account[0] == id_account:
+            total_money *= -1 # Invierte el monto para devolver al resultado anterior a la cuenta.
+            account[2] += total_money
+            return
+
 def add_category(category_name):
     id=create_id(categories)
     for category in categories:
         if category[1] == category_name:
             return
     categories.append([id, category_name])
+
 def delete_category(name):
     index=0
     id_category=obtain_id_by_name(categories,name)
@@ -37,8 +50,9 @@ def delete_category(name):
         if category[0]==id_category:
             index=categories.index(category)
             delete=categories.pop(index)
-            print("\033[32mOperación realizada con éxito\033[0m")
+            print("\033[32mOperación realizada con éxito.\033[0m")
     print()
+
 def add_budget(name_category, limit_amount):
     id=create_id(budgets)
     id_category=obtain_id_by_name(categories, name_category)
@@ -49,6 +63,7 @@ def add_budget(name_category, limit_amount):
         if category[1] == name_category:
             budgets.append([id, id_category, limit_amount])
             return
+
 def delete_budget(name):
     id_category= obtain_id_by_name(categories,name)
     index=0
@@ -59,17 +74,6 @@ def delete_budget(name):
             delete=budgets.pop(index)
             print("\033[32mOperación realizada con éxito\033[0m")
     print()
-def print_matrix(titles, matrix):
-    for title in titles:
-        print(title, end="  \t")
-    print()
-   
-    raws = len(matrix)
-    cols = len(matrix[0])
-    for raw in range(raws):
-        for col in range(cols):
-            print(matrix[raw][col], end="  \t")
-        print()
 
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
@@ -95,24 +99,30 @@ def add_transaction(name_account, name_category, date, time, amount, description
     # Modificar saldo del id de la cuenta
     account = accounts[id_account]
     account[2] += final_amount
+
 def delete_transaction():
     print_transactions(transactions)
     id=int(input("Que transaccion deseas eliminar? Indique el numero: "))
-    index=0
-    delete=[]
+    
     for transaction in transactions:
         if transaction[0]==id:
             index=transactions.index(transaction)
             delete=transactions.pop(index)
-            print("\033[32mOperación realizada con éxito\033[0m")
-    print_transactions(transactions)
-    print()
+            id_account = delete[1]
+            total_money = delete[5]
+            return_money_to_account(accounts, id_account, total_money)
+            print_transactions(transactions)
+            print("\033[32mOperación realizada con éxito.\033[0m")
+            return
+        
+    print("\033[31mOperación realizada sin éxito, el número de ID no existe.\033[0m")
+
 def print_transactions(matrix_transactions):
     RESET = "\033[0m"
     BOLD  = "\033[1m"
-    print("="*110)
+    print("="*MAX_SPACES)
     print(f'{"Transacciones":^110}')
-    print("="*110)
+    print("="*MAX_SPACES)
     print(f"{BOLD}{'Numero':<8}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<20}{'Mes':<15}{RESET}")
     for i in range(len(matrix_transactions)):
         id=matrix_transactions[i][0]
@@ -125,12 +135,11 @@ def print_transactions(matrix_transactions):
         mes =  matrix_transactions[i][7]
         print(f"{BOLD}{id:<8}{RESET}{cuenta:<15}{categoria:<15}{fecha:<15}{hora:<10}{monto:<15}{desc:<20}{mes:<15}")
     print()
-# print_matrix(["id_cuenta", "Nombre", "Total"], accounts)
-# print_matrix(["id_categoria", "Nombre"], categories)
-# print_matrix(["id_presupuesto", "id_categoria", "Monto Limite"], budgets)
+
 delete_budget("Ropa")
 # Ejemplo con excepcion
-# add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
+add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
+delete_transaction()
 # Ejemplo correcto
 add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
