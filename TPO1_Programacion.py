@@ -2,6 +2,7 @@ from matrix import accounts, transactions, categories, budgets
 
 MAX_SPACES_TRANSACTIONS = 110
 MAX_SPACES_BUDGETS =60
+MAX_SPACES_CATEGORIES =50
 # ANSI STYLES
 RESET = "\033[0m"
 BOLD  = "\033[1m"
@@ -109,6 +110,14 @@ def get_category_by_id(matrix_categories, id_category):
     return
         
 def get_categories(matrix_categories):
+    print("="*MAX_SPACES_CATEGORIES)
+    print(f'{"Categorias":^50}')
+    print("="*MAX_SPACES_CATEGORIES)
+    print(f"{BOLD}{'Numero':<20}{'Categoria':<30}{RESET}")
+    for i in range(len(matrix_categories)):
+        id=matrix_categories[i][0]
+        amount = matrix_categories[i][1]
+        print(f"{BOLD}{id:<20}{RESET}{amount:<30}")
     return
 
 def add_category(category_name):
@@ -327,4 +336,4 @@ add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
 add_category("Ropa")
-get_budgets(budgets)
+get_categories(categories)
