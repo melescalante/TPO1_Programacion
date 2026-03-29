@@ -65,8 +65,8 @@ def change_name_account(account):
         change_name = input("Desea cambiar el nombre de la cuenta? Escriba si/no")
         name_account = input("Ingrese un nuevo nombre de cuenta: ")
 
-        while len(name_account) == 0:
-            print("\033[33mEl valor que ingreso no es número.\033[0m")
+        while len(name_account) == 0 or name_account.isalpha():
+            print("\033[33mEl nombre que ingreso no tiene valor o no es una palabra.\033[0m")
             name_account = input("Ingrese un nuevo nombre de cuenta: ")
     account[1] = name_account
 
@@ -97,6 +97,12 @@ def return_money_to_account(accounts, id_account, total_money):
             total_money *= -1 # Invierte el monto para devolver al resultado anterior a la cuenta.
             account[2] += total_money
             return
+        
+def get_category_by_id(matrix_categories, id_category):
+    return
+        
+def get_categories(matrix_categories):
+    return
 
 def add_category(category_name):
     id=create_id(categories)
@@ -114,6 +120,33 @@ def delete_category(name):
             delete=categories.pop(index)
             print("\033[32mOperación realizada con éxito.\033[0m")
     print()
+
+def update_category(matrix_categories):
+    id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
+    if id_category == 0:
+        print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
+        return
+
+    category = get_category_by_id(matrix_categories, id_category)
+    while category is None:
+        print("\033[31mLa cuenta no existe.\033[0m")
+
+        id_category = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
+        if id_category == 0:
+            print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
+            return
+                
+        category = get_category_by_id(matrix_categories, id_category)
+    
+    change_category(category)
+    
+def change_category(category):
+    name_category = input("Ingrese un nuevo nombre de categoría: ")
+    while len(name_category) == 0 or name_category.isalpha():
+        print("\033[33mEl valor que ingreso no tiene valor o no es una palabra.\033[0m")
+        name_category = input("Ingrese un nuevo nombre de categoría: ")
+    category[1] = name_category
+
 
 def add_budget(name_category, limit_amount):
     id=create_id(budgets)
