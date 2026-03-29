@@ -6,8 +6,8 @@ MAX_SPACES_CATEGORIES =50
 # ANSI STYLES
 RESET = "\033[0m"
 BOLD  = "\033[1m"
-UNDERLINE_INCOME = "\033[1;37;44m]"
-UNDERLINE_EXPENSE = "\033[1;37;41m]"
+UNDERLINE_INCOME = "\033[1;37;44m"
+UNDERLINE_EXPENSE = "\033[1;37;41m"
 def obtain_id_by_name(matrix, name):
     for raw in matrix:
         if raw[1] == name:
@@ -39,11 +39,12 @@ def get_accounts(matrix_account):
     for i in range(len(matrix_account)):
         id=matrix_account[i][0]
         name = matrix_account[i][1]
-        amount = "+"+str(matrix_account[i][2])
+        amount = "$"+str(matrix_account[i][2])
         print(f"{BOLD}{id:<20}{RESET}{name:<30}{amount:<30}")
     return
 
 def update_account(matrix_accounts):
+    get_accounts(matrix_accounts)
     id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
     if id_account == 0:
         print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
@@ -115,9 +116,6 @@ def update_money_account(accounts, id_account, total_money):
             account[2] += total_money
             return
         
-def get_category_by_id(matrix_categories, id_category):
-    return
-        
 def get_categories(matrix_categories):
     print("="*MAX_SPACES_CATEGORIES)
     print(f'{"Categorias":^50}')
@@ -153,12 +151,13 @@ def delete_category():
     print()
 
 def update_category(matrix_categories):
+    get_categories(matrix_categories)
     id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
     if id_category == 0:
         print("\033[32mNo se actualizo ninguna categoría.\033[0m")
         return
 
-    category = get_category_by_id(matrix_categories, id_category)
+    category = get_by_id(matrix_categories, id_category)
     while category is None:
         print("\033[31mLa categoría no existe.\033[0m")
 
@@ -167,13 +166,13 @@ def update_category(matrix_categories):
             print("\033[32mNo se actualizo ninguna categoría.\033[0m")
             return
                 
-        category = get_category_by_id(matrix_categories, id_category)
+        category = get_by_id(matrix_categories, id_category)
     
     change_category(category)
-    
+
 def change_category(category):
     name_category = input("Ingrese un nuevo nombre de categoría: ")
-    while len(name_category) == 0 or name_category.isalpha():
+    while len(name_category) == 0 or not name_category.isalpha():
         print("\033[33mEl valor que ingreso no tiene valor o no es una palabra.\033[0m")
         name_category = input("Ingrese un nuevo nombre de categoría: ")
     category[1] = name_category
@@ -270,7 +269,7 @@ def change_category_for_budget(budget, matrix_categories):
         print("\033[32mNo se actualizó la categoría.\033[0m")
         return
     
-    category = get_category_by_id(matrix_categories, id_category)
+    category = get_by_id(matrix_categories, id_category)
     while category is None:
         print("\033[31mLa categoría no existe.\033[0m")
 
@@ -279,7 +278,7 @@ def change_category_for_budget(budget, matrix_categories):
             print("\033[32mNo se actualizo la categoría.\033[0m")
             return
                 
-        category = get_category_by_id(matrix_categories, id_category)
+        category = get_by_id(matrix_categories, id_category)
 
     budget[1] = id_category
     print("\033[32mCategoría actualizada.\033[0m")
@@ -292,9 +291,6 @@ def change_budget_amount(budget):
         
     budget[2] = int(budget_amount)
     print("\033[32mMonto actualizado.\033[0m")
-
-def get_transaction_by_id(matrix, target_id):
-    return
 
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
@@ -347,19 +343,19 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
         print("\033[32mNo se actualizó ninguna transacción.\033[0m")
         return
 
-    transaction = get_transaction_by_id(matrix_transactions, id_transaction)
+    transaction = get_by_id(matrix_transactions, id_transaction)
     while transaction is None:
         print("\033[31mLa transacción no existe.\033[0m")
         id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
         if id_transaction == 0:
             print("\033[32mNo se actualizó ninguna transacción.\033[0m")
             return
-        transaction = get_transaction_by_id(matrix_transactions, id_transaction)
+        transaction = get_by_id(matrix_transactions, id_transaction)
 
     while True:
         print("\033[1;34m¿Qué campo de la transacción deseas actualizar?\033[0m")
-        print("1. ID Cuenta")
-        print("2. ID Categoría")
+        print("1. Cuenta")
+        print("2. Categoría")
         print("3. Fecha")
         print("4. Hora")
         print("5. Importe")
@@ -479,7 +475,7 @@ def print_transactions(matrix_transactions):
         underline = UNDERLINE_INCOME
         if amount < 0:
             underline = UNDERLINE_EXPENSE
-        print(f"{underline}{id:<8}{account:<15}{category:<15}{date:<15}{hour:<10}{amount_str:<15}{description:<20}{month:<15}{RESET}")
+        print(f"{underline}{id:<8}{account:<15}{category:<15}{date:<15}{hour:<10}{amount_str:<15}{description:<20}{month:<11}{RESET}")
     print()
 
 # Ejemplo con excepcion
@@ -488,16 +484,19 @@ add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
 add_category("Ropa")
-print_transactions(transactions)
-get_accounts(accounts)
+
 update_account(accounts)
 get_accounts(accounts)
-update_budget(budgets, categories)
-get_budgets(budgets)
+
 update_category(categories)
 get_categories(categories)
+
+update_budget(budgets, categories)
+get_budgets(budgets)
+
 update_transaction(transactions, accounts, categories)
 print_transactions(transactions)
+
 # delete_account()
 # delete_budget()
 # delete_category()
