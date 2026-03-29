@@ -23,9 +23,9 @@ def add_account(account_name, total_money):
             return
     accounts.append([id, account_name, total_money])
 
-def get_account_by_id(matrix_account, id_account):
-    for raw in matrix_account:
-        if raw[0] == id_account:
+def get_by_id(matrix, id):
+    for raw in matrix:
+        if raw[0] == id:
             return raw
     return None
 
@@ -51,7 +51,7 @@ def update_account(matrix_accounts):
         print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
         return
 
-    account = get_account_by_id(matrix_accounts, id_account)
+    account = get_by_id(matrix_accounts, id_account)
     while account is None:
         print("\033[31mLa cuenta no existe.\033[0m")
 
@@ -64,7 +64,7 @@ def update_account(matrix_accounts):
             print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
             return
                 
-        account = get_account_by_id(matrix_accounts, id_account)
+        account = get_by_id(matrix_accounts, id_account)
 
     while True:
         print("\033[1;34m¿Qué campo de la cuenta deseas actualizar?\033[0m")
@@ -185,7 +185,7 @@ def get_budgets(matrix_budgets):
     print(f"{BOLD}{'Numero':<10}{'Categoria':<25}{'Monto':<25}{RESET}")
     for i in range(len(matrix_budgets)):
         id=matrix_budgets[i][0]
-        category =get_account_by_id(categories,matrix_budgets[i][1])
+        category =get_by_id(categories,matrix_budgets[i][1])
         amount = "$"+str(matrix_budgets[i][2])
         print(f"{BOLD}{id:<10}{RESET}{category[1]:<25}{amount:<25}")
     return
@@ -391,7 +391,7 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
 def change_account_transaction(transaction, matrix_accounts):
     while True:
         new_account_id = input("Ingrese la nueva cuenta: ")
-        account = get_account_by_id(matrix_accounts, new_account_id)
+        account = get_by_id(matrix_accounts, new_account_id)
 
         if account is None:
             print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
