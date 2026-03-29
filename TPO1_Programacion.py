@@ -213,7 +213,7 @@ def update_budget(matrix_budgets, matrix_categories):
         budget = get_budget_by_id(matrix_budgets, id_budget)
     
     change_category_for_budget(budget, matrix_categories)
-    change_budget_ammount(budget)
+    change_budget_amount(budget)
 
 def change_category_for_budget(budget, matrix_categories):
     change_category = input("Desea cambiar la categoría seleccionada? Escriba 'si' o 'no', sin las comillas")
@@ -243,8 +243,20 @@ def change_category_for_budget(budget, matrix_categories):
 
     budget[1] = id_category
 
-def change_budget_ammount(budget):
-    return
+def change_budget_amount(budget):
+    change_budget = input("Desea cambiar el monto de la cuenta? Escriba 'si' o 'no', sin las comillas")
+    while change_budget != "si" or change_budget != "no":
+        print("\033[33mEl valor que ingreso no existe.\033[0m")
+        change_budget = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
+
+    if change_budget == "no":
+        return
+    
+    budget_amount = input("Ingrese un nuevo monto de dinero: ")
+    while not budget_amount.isnumeric():
+        print("\033[33mEl valor que ingreso no es número.\033[0m")
+        budget_amount = input("Ingrese un nuevo monto de dinero: ")
+    budget[2] = budget_amount
 
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
