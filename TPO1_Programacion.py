@@ -1,7 +1,10 @@
 from matrix import accounts, transactions, categories, budgets
 
-MAX_SPACES = 110
-
+MAX_SPACES_TRANSACTIONS = 110
+MAX_SPACES_BUDGETS =60
+# ANSI STYLES
+RESET = "\033[0m"
+BOLD  = "\033[1m"
 def obtain_id_by_name(matrix, name):
     for raw in matrix:
         if raw[1] == name:
@@ -157,7 +160,16 @@ def get_budget_by_id(matrix_budgets, id_budget):
             return raw
     return None
 
-def get_budgets(budgets):
+def get_budgets(matrix_budgets):
+    print("="*MAX_SPACES_BUDGETS)
+    print(f'{"Presupuestos":^60}')
+    print("="*MAX_SPACES_BUDGETS)
+    print(f"{BOLD}{'Numero':<10}{'Categoria':<25}{'Monto':<25}{RESET}")
+    for i in range(len(matrix_budgets)):
+        id=matrix_budgets[i][0]
+        category =get_account_by_id(categories,matrix_budgets[i][1])
+        amount = "$"+str(matrix_budgets[i][2])
+        print(f"{BOLD}{id:<10}{RESET}{category[1]:<25}{amount:<25}")
     return
 
 def add_budget(name_category, limit_amount):
@@ -279,9 +291,9 @@ def delete_transaction():
 def print_transactions(matrix_transactions):
     RESET = "\033[0m"
     BOLD  = "\033[1m"
-    print("="*MAX_SPACES)
+    print("="*MAX_SPACES_TRANSACTIONS)
     print(f'{"Transacciones":^110}')
-    print("="*MAX_SPACES)
+    print("="*MAX_SPACES_TRANSACTIONS)
     print(f"{BOLD}{'Numero':<8}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<20}{'Mes':<15}{RESET}")
     for i in range(len(matrix_transactions)):
         id=matrix_transactions[i][0]
@@ -298,8 +310,9 @@ def print_transactions(matrix_transactions):
 delete_budget("Ropa")
 # Ejemplo con excepcion
 add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
-delete_transaction()
+# delete_transaction()
 # Ejemplo correcto
 add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
 add_category("Ropa")
+get_budgets(budgets)
