@@ -30,6 +30,15 @@ def get_account_by_id(matrix_account, id_account):
     return None
 
 def get_accounts(matrix_account):
+    print("="*MAX_SPACES_BUDGETS)
+    print(f'{"Cuentas":^60}')
+    print("="*MAX_SPACES_BUDGETS)
+    print(f"{BOLD}{'Numero':<20}{'Nombre Cuenta':<30}{'Dinero':<30}{RESET}")
+    for i in range(len(matrix_account)):
+        id=matrix_account[i][0]
+        name = matrix_account[i][1]
+        amount = "+"+str(matrix_account[i][2])
+        print(f"{BOLD}{id:<20}{RESET}{name:<30}{amount:<30}")
     return
 
 def update_account(matrix_account):
@@ -336,4 +345,4 @@ add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
 add_category("Ropa")
-get_categories(categories)
+get_accounts(accounts)
