@@ -41,42 +41,50 @@ def get_accounts(matrix_account):
         print(f"{BOLD}{id:<20}{RESET}{name:<30}{amount:<30}")
     return
 
-def update_account(matrix_account):
-    get_accounts(matrix_account)
-    id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
+def update_account(matrix_accounts):
+    id_account = input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: ")
+    while not id_account.isnumeric():
+        print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
+        id_account = input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: ")
+
     if id_account == 0:
         print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
         return
 
-    account = get_account_by_id(matrix_account, id_account)
+    account = get_account_by_id(matrix_accounts, id_account)
     while account is None:
         print("\033[31mLa cuenta no existe.\033[0m")
 
-        id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
+        id_account = input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: ")
+        while not id_account.isnumeric():
+            print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
+            id_account = input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: ")
+            
         if id_account == 0:
             print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
             return
                 
-        account = get_account_by_id(matrix_account, id_account)
+        account = get_account_by_id(matrix_accounts, id_account)
 
-    for account in matrix_account:
-        if account[0] == id_account:
+    while True:
+        print("\033[1;34m¿Qué campo de la cuenta deseas actualizar?\033[0m")
+        print("1. Nombre")
+        print("2. Monto")
+        print("0. Guardar y salir")
+        
+        opcion = input("Selecciona una opción: ")
+        
+        if opcion == "1":
             change_name_account(account)
+        elif opcion == "2":
             change_money_account(account)
+        elif opcion == "0":
             print("\033[32mLa cuenta se actualizó con éxito.\033[0m")
             return
-    
-    print("\033[31mEl id que seleccionó no existe.\033[0m")
+        else:
+            print("\033[31mOpción no válida. Intente nuevamente.\033[0m")
 
 def change_name_account(account):
-    change_name = input("Desea cambiar el nombre de la cuenta? Escriba 'si' o 'no', sin las comillas")
-    while change_name != "si" or change_name != "no":
-        print("\033[33mEl valor que ingreso no existe.\033[0m")
-        change_name = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
-    
-    if (change_name == "no"):
-        return
-    
     name_account = input("Ingrese un nuevo nombre de cuenta: ")
     while len(name_account) == 0 or name_account.isalpha():
         print("\033[33mEl nombre que ingreso no tiene valor o no es una palabra.\033[0m")
@@ -84,16 +92,8 @@ def change_name_account(account):
     account[1] = name_account
 
 def change_money_account(account):            
-    change_money = input("Desea cambiar el monto de la cuenta? Escriba 'si' o 'no', sin las comillas")
-    while change_money != "si" or change_money != "no":
-        print("\033[33mEl valor que ingreso no existe.\033[0m")
-        change_money = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
-
-    if change_money == "no":
-        return
-    
     total_money = input("Ingrese un nuevo monto de dinero: ")
-    while not total_money.isnumeric():
+    while not (total_money.isnumeric()):
         print("\033[33mEl valor que ingreso no es número.\033[0m")
         total_money = input("Ingrese un nuevo monto de dinero: ")
     account[2] = total_money
@@ -108,7 +108,7 @@ def delete_account(account):
             print("Eliminado")
     print()
     
-def return_money_to_account(accounts, id_account, total_money):
+def update_money_account(accounts, id_account, total_money):
     for account in accounts:
         if account[0] == id_account:
             total_money *= -1 # Invierte el monto para devolver al resultado anterior a la cuenta.
@@ -214,74 +214,94 @@ def delete_budget(name):
 
 def update_budget(matrix_budgets, matrix_categories):
     get_budgets(matrix_budgets)
-    id_budget = int(input("¿Que presupuesto desea actualizar? Indique el numero o escriba 0 para salir: "))
+    id_budget = input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: ")
+    while not id_budget.isnumeric():
+        print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
+        id_budget = input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: ")
+    
     if id_budget == 0:
-        print("\033[32mNo se actualizo ningún presupuesto.\033[0m")
+        print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
         return
-
+    
     budget = get_budget_by_id(matrix_budgets, id_budget)
     while budget is None:
-        print("\033[31mLa presupuesto no existe.\033[0m")
-
-        id_budget = int(input("¿Que presupuesto desea actualizar? Indique el numero o escriba 0 para salir: "))
+        print("\033[31mEl presupuesto no existe.\033[0m")
+        
+        id_budget = input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: ")
+        while not id_budget.isnumeric():
+            print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
+            id_budget = input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: ")
+            
         if id_budget == 0:
-            print("\033[32mNo se actualizo ningún presupuesto.\033[0m")
+            print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
             return
                 
         budget = get_budget_by_id(matrix_budgets, id_budget)
     
-    change_category_for_budget(budget, matrix_categories)
-    change_budget_amount(budget)
+    while True:
+        print("\033[1;34m¿Qué campo del presupuesto deseas actualizar?\033[0m")
+        print("1. Categoría")
+        print("2. Monto")
+        print("0. Guardar y salir")
+        
+        opcion = input("Seleccione una opción: ")
+        
+        if opcion == "1":
+            change_category_for_budget(budget, matrix_categories)
+        elif opcion == "2":
+            change_budget_amount(budget)
+        elif opcion == "0":
+            print("\033[32mEl presupuesto se actualizó con éxito.\033[0m")
+            return
+        else:
+            print("\033[31mOpción no válida. Intente nuevamente.\033[0m")
 
 def change_category_for_budget(budget, matrix_categories):
-    change_category = input("Desea cambiar la categoría seleccionada? Escriba 'si' o 'no', sin las comillas")
-    while change_category != "si" or change_category != "no":
-        print("\033[33mEl valor que ingreso no existe.\033[0m")
-        change_category = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
-    
-    if (change_category == "no"):
-        return
-    
     get_categories(matrix_categories)
-    id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
+    id_category = input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: ")
+    while not id_category.isnumeric():
+        print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
+        id_category = input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: ")
+
     if id_category == 0:
-        print("\033[32mNo se actualizo ningún presupuesto.\033[0m")
+        print("\033[32mNo se actualizó la categoría.\033[0m")
         return
     
     category = get_category_by_id(matrix_categories, id_category)
     while category is None:
         print("\033[31mLa categoría no existe.\033[0m")
-
-        id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
+        
+        id_category = input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: ")
+        while not id_category.isnumeric():
+            print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
+            id_category = input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: ")
+            
         if id_category == 0:
-            print("\033[32mNo se actualizo ninguna categoría.\033[0m")
+            print("\033[32mNo se actualizó la categoría.\033[0m")
             return
                 
         category = get_category_by_id(matrix_categories, id_category)
 
     budget[1] = id_category
+    print("\033[32mCategoría actualizada.\033[0m")
 
 def change_budget_amount(budget):
-    change_budget = input("Desea cambiar el monto de la cuenta? Escriba 'si' o 'no', sin las comillas")
-    while change_budget != "si" or change_budget != "no":
-        print("\033[33mEl valor que ingreso no existe.\033[0m")
-        change_budget = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
+    budget_amount = input("Ingrese el nuevo monto del presupuesto: ")
+    while not (budget_amount.isnumeric()):
+        print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
+        budget_amount = input("Ingrese el nuevo monto del presupuesto: ")
+        
+    budget[2] = int(budget_amount)
+    print("\033[32mMonto actualizado.\033[0m")
 
-    if change_budget == "no":
-        return
-    
-    budget_amount = input("Ingrese un nuevo monto de dinero: ")
-    while not budget_amount.isnumeric():
-        print("\033[33mEl valor que ingreso no es número.\033[0m")
-        budget_amount = input("Ingrese un nuevo monto de dinero: ")
-    budget[2] = budget_amount
+def get_transaction_by_id(matrix, target_id):
+    return
 
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
     id_account = obtain_id_by_name(accounts, name_account)
     id_category = obtain_id_by_name(categories, name_category)
-    # Should throw exceptions
-    # if transaction_type==None:transaction_type="income" 
+
     if (id_account == -1):        
         print(f"\033[31mLa cuenta con ID '{id_account}' no existe. Por favor, cree una.\033[0m")
         return
@@ -311,12 +331,132 @@ def delete_transaction():
             delete=transactions.pop(index)
             id_account = delete[1]
             total_money = delete[5]
-            return_money_to_account(accounts, id_account, total_money)
+            update_money_account(accounts, id_account, total_money)
             print_transactions(transactions)
             print("\033[32mOperación realizada con éxito.\033[0m")
             return
         
     print("\033[31mOperación realizada sin éxito, el número de ID no existe.\033[0m")
+
+def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
+    print_transactions(matrix_transactions)
+    
+    id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
+    if id_transaction == 0:
+        print("\033[32mNo se actualizó ninguna transacción.\033[0m")
+        return
+
+    transaction = get_transaction_by_id(matrix_transactions, id_transaction)
+    while transaction is None:
+        print("\033[31mLa transacción no existe.\033[0m")
+        id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
+        if id_transaction == 0:
+            print("\033[32mNo se actualizó ninguna transacción.\033[0m")
+            return
+        transaction = get_transaction_by_id(matrix_transactions, id_transaction)
+
+    while True:
+        print("\033[1;34m¿Qué campo de la transacción deseas actualizar?\033[0m")
+        print("1. ID Cuenta")
+        print("2. ID Categoría")
+        print("3. Fecha")
+        print("4. Hora")
+        print("5. Importe")
+        print("6. Descripción")
+        print("7. Mes")
+        print("0. Guardar y salir")
+        
+        opcion = input("Seleccione una opción: ")
+        
+        if opcion == "1":
+            change_account_transaction(transaction, matrix_accounts)
+        elif opcion == "2":
+            change_category_transaction(transaction, matrix_categories)
+        elif opcion == "3":
+            change_date_transaction(transaction)
+        elif opcion == "4":
+            change_time_transaction(transaction)
+        elif opcion == "5":
+            change_amount_transaction(transaction)
+        elif opcion == "6":
+            change_description_transaction(transaction)
+        elif opcion == "7":
+            change_month_transaction(transaction)
+        elif opcion == "0":
+            print("\033[32mLa transacción se actualizó con éxito.\033[0m")
+            return
+        else:
+            print("\033[31mOpción no válida. Intente nuevamente.\033[0m")
+
+def change_account_transaction(transaction, matrix_accounts):
+    while True:
+        new_account_id = input("Ingrese la nueva cuenta: ")
+        account = get_account_by_id(matrix_accounts, new_account_id)
+
+        if account is None:
+            print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
+            pass
+
+        old_id_account = transactions[1]
+        money_transaction = transactions[5]
+        update_money_account(accounts, old_id_account, money_transaction)
+        update_money_account(accounts, new_account_id, -money_transaction)
+        transaction[1] = new_account_id
+        print("\033[32mID de cuenta actualizado.\033[0m")
+
+def change_category_transaction(transaction, matrix_categories):
+    while True:
+        get_categories(matrix_categories)
+        new_category_id = input("Ingrese la nueva categoría: ")
+        category = get_category_by_id(matrix_categories, new_category_id)
+        
+        if category is None:
+            print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
+            pass
+        
+        transaction[2] = new_category_id
+        print("\033[32mID de categoría actualizado.\033[0m")
+
+def change_date_transaction(transaction):
+    new_date = input("Ingrese la nueva fecha (formato: DD-MM-YYYY): ")
+    while len(new_date.strip()) == 0:
+        print("\033[33mLa fecha ingresada no tiene valor.\033[0m")
+        new_date = input("Ingrese la nueva fecha (formato: DD-MM-YYYY): ")
+    transaction[3] = new_date
+    print("\033[32mFecha actualizada.\033[0m")
+
+def change_time_transaction(transaction):
+    new_time = input("Ingrese la nueva hora (formato: HH:MM): ")
+    while len(new_time) == 0:
+        print("\033[33mLa hora ingresada no tiene valor.\033[0m")
+        new_time = input("Ingrese la nueva hora (formato: HH:MM): ")
+    transaction[4] = new_time
+    print("\033[32mHora actualizada.\033[0m")
+
+def change_amount_transaction(transaction):
+    while True:
+        new_amount = input("Ingrese el nuevo importe: ")
+        if new_amount.isnumeric():
+            transaction[5] = new_amount
+            print("\033[32mImporte actualizado.\033[0m")
+            return
+        print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
+
+def change_description_transaction(transaction):
+    new_desc = input("Ingrese una nueva descripción: ")
+    while len(new_desc) == 0:
+        print("\033[33mLa descripción ingresada no tiene valor.\033[0m")
+        new_desc = input("Ingrese una nueva descripción: ")
+    transaction[6] = new_desc
+    print("\033[32mDescripción actualizada.\033[0m")
+
+def change_month_transaction(transaction):
+    new_month = input("Ingrese el nuevo mes: ")
+    while len(new_month) == 0 or not new_month.isalpha():
+        print("\033[33mEl mes ingresado no tiene valor o contiene números.\033[0m")
+        new_month = input("Ingrese el nuevo mes: ")
+    transaction[7] = new_month.capitalize()
+    print("\033[32mMes actualizado.\033[0m")
 
 def print_transactions(matrix_transactions):
     RESET = "\033[0m"
@@ -346,3 +486,7 @@ add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
 add_category("Ropa")
 get_accounts(accounts)
+update_account(accounts)
+update_budget(budgets, categories)
+update_category(categories)
+update_transaction(transactions, accounts, categories)
