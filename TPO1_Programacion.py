@@ -98,14 +98,20 @@ def change_money_account(account):
         total_money = input("Ingrese un nuevo monto de dinero: ")
     account[2] = total_money
 
-def delete_account(account):
+def delete_account():
+    get_accounts(accounts)
+    id = int(input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: "))
+    delete=[]
     index=0
-    id_account=obtain_id_by_name(accounts,account)
+    if id == 0:
+        print("\033[32mNo se elimino ninguna cuenta.\033[0m")
+        return
     for acc in accounts:
-        if acc[0]==id_account:
+        if acc[0]==id:
             index=accounts.index(acc)
             delete=accounts.pop(index)
-            print("Eliminado")
+            print("\033[32mOperación realizada con éxito. Cuenta eliminada correctamente.\033[0m")
+            return
     print()
     
 def update_money_account(accounts, id_account, total_money):
@@ -136,14 +142,20 @@ def add_category(category_name):
             return
     categories.append([id, category_name])
 
-def delete_category(name):
+def delete_category():
+    get_categories(categories)
+    id = int(input("Que categoria deseas eliminar? Indique el numero o escriba 0 para salir: "))
+    delete=[]
     index=0
-    id_category=obtain_id_by_name(categories,name)
+    if id == 0:
+        print("\033[32mNo se elimino ninguna categoria.\033[0m")
+        return
     for category in categories:
-        if category[0]==id_category:
+        if category[0]==id:
             index=categories.index(category)
             delete=categories.pop(index)
-            print("\033[32mOperación realizada con éxito.\033[0m")
+            print("\033[32mOperación realizada con éxito. Categoria eliminada correctamente.\033[0m")
+            return
     print()
 
 def update_category(matrix_categories):
@@ -201,15 +213,20 @@ def add_budget(name_category, limit_amount):
             budgets.append([id, id_category, limit_amount])
             return
 
-def delete_budget(name):
-    id_category= obtain_id_by_name(categories,name)
-    index=0
+def delete_budget():
+    get_budgets(budgets)
+    id = int(input("Que presuepuesto deseas eliminar? Indique el numero o escriba 0 para salir: "))
     delete=[]
+    index=0
+    if id == 0:
+        print("\033[32mNo se elimino ningun presupuesto.\033[0m")
+        return
     for budget in budgets:
-        if budget[1]==id_category:
+        if budget[0]==id:
             index=budgets.index(budget)
             delete=budgets.pop(index)
-            print("\033[32mOperación realizada con éxito\033[0m")
+            print("\033[32mOperación realizada con éxito. Presupuesto eliminado correctamente.\033[0m")
+            return
     print()
 
 def update_budget(matrix_budgets, matrix_categories):
@@ -323,8 +340,10 @@ def add_transaction(name_account, name_category, date, time, amount, description
 
 def delete_transaction():
     print_transactions(transactions)
-    id = int(input("Que transaccion deseas eliminar? Indique el numero: "))
-    
+    id = int(input("Que transaccion deseas eliminar? Indique el numero o escriba 0 para salir: "))
+    if id == 0:
+        print("\033[32mNo se elimino ninguna transacción.\033[0m")
+        return
     for transaction in transactions:
         if transaction[0]==id:
             index=transactions.index(transaction)
@@ -333,7 +352,7 @@ def delete_transaction():
             total_money = delete[5]
             update_money_account(accounts, id_account, total_money)
             print_transactions(transactions)
-            print("\033[32mOperación realizada con éxito.\033[0m")
+            print("\033[32mOperación realizada con éxito. Transaccion eliminada correctamente.\033[0m")
             return
         
     print("\033[31mOperación realizada sin éxito, el número de ID no existe.\033[0m")
@@ -477,16 +496,19 @@ def print_transactions(matrix_transactions):
         print(f"{BOLD}{id:<8}{RESET}{cuenta:<15}{categoria:<15}{fecha:<15}{hora:<10}{monto:<15}{desc:<20}{mes:<15}")
     print()
 
-delete_budget("Ropa")
 # Ejemplo con excepcion
 add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
-# delete_transaction()
 # Ejemplo correcto
 add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
 add_category("Ropa")
 get_accounts(accounts)
-update_account(accounts)
-update_budget(budgets, categories)
-update_category(categories)
-update_transaction(transactions, accounts, categories)
+# update_account(accounts)
+# update_budget(budgets, categories)
+# update_category(categories)
+# update_transaction(transactions, accounts, categories)
+# delete_account()
+# delete_budget()
+delete_category()
+# delete_transaction()
+# get_accounts(accounts)
