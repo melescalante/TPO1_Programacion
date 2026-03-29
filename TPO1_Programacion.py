@@ -19,6 +19,68 @@ def add_account(account_name, total_money):
             return
     accounts.append([id, account_name, total_money])
 
+def get_account_by_id(matrix_account, id_account):
+    for raw in matrix_account:
+        if raw[0] == id_account:
+            return raw
+    return None
+
+def get_accounts(matrix_account):
+    return
+
+def update_account(matrix_account):
+    get_accounts(matrix_account)
+    id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
+    if id_account == 0:
+        print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
+        return
+
+    account = get_account_by_id(matrix_account, id_account)
+    while account is None:
+        print("\033[31mLa cuenta no existe.\033[0m")
+
+        id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
+        if id_account == 0:
+            print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
+            return
+                
+        account = get_account_by_id(matrix_account, id_account)
+
+    for account in matrix_account:
+        if account[0] == id_account:
+            change_name_account(account)
+            change_money_account(account)
+            print("\033[32mLa cuenta se actualizó con éxito.\033[0m")
+            return
+    
+    print("\033[31mEl id que seleccionó no existe.\033[0m")
+
+def change_name_account(account):
+    change_name = input("Desea cambiar el nombre de la cuenta? Escriba 'si' o 'no', sin las comillas")
+    while change_name != "si" or change_name != "no":
+        print("\033[33mEl valor que ingreso no existe.\033[0m")
+        change_name = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
+    
+    if (change_name == "si"):
+        change_name = input("Desea cambiar el nombre de la cuenta? Escriba si/no")
+        name_account = input("Ingrese un nuevo nombre de cuenta: ")
+
+        while len(name_account) == 0:
+            print("\033[33mEl valor que ingreso no es número.\033[0m")
+            name_account = input("Ingrese un nuevo nombre de cuenta: ")
+    account[1] = name_account
+
+def change_money_account(account):            
+    total_money = input("Desea cambiar el monto de la cuenta? Escriba 'si' o 'no', sin las comillas")
+    while total_money != "si" or total_money != "no":
+        print("\033[33mEl valor que ingreso no existe.\033[0m")
+        total_money = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
+    
+    while not total_money.isnumeric():
+        print("\033[33mEl valor que ingreso no es número.\033[0m")
+        total_money = input("Ingrese un nuevo monto de dinero: ")
+    account[2] = total_money
+
 def delete_account(account):
     index=0
     id_account=obtain_id_by_name(accounts,account)
@@ -102,7 +164,7 @@ def add_transaction(name_account, name_category, date, time, amount, description
 
 def delete_transaction():
     print_transactions(transactions)
-    id=int(input("Que transaccion deseas eliminar? Indique el numero: "))
+    id = int(input("Que transaccion deseas eliminar? Indique el numero: "))
     
     for transaction in transactions:
         if transaction[0]==id:
