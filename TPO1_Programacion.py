@@ -6,6 +6,8 @@ MAX_SPACES_CATEGORIES =50
 # ANSI STYLES
 RESET = "\033[0m"
 BOLD  = "\033[1m"
+UNDERLINE_INCOME = "\033[1;37;44m]"
+UNDERLINE_EXPENSE = "\033[1;37;41m]"
 def obtain_id_by_name(matrix, name):
     for raw in matrix:
         if raw[1] == name:
@@ -466,14 +468,18 @@ def print_transactions(matrix_transactions):
     print(f"{BOLD}{'Numero':<8}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<20}{'Mes':<15}{RESET}")
     for i in range(len(matrix_transactions)):
         id=matrix_transactions[i][0]
-        cuenta = matrix_transactions[i][1]
-        categoria = matrix_transactions[i][2]
-        fecha =  matrix_transactions[i][3]
-        hora =  matrix_transactions[i][4]
-        monto = "$"+ str(matrix_transactions[i][5])
-        desc =  matrix_transactions[i][6]
-        mes =  matrix_transactions[i][7]
-        print(f"{BOLD}{id:<8}{RESET}{cuenta:<15}{categoria:<15}{fecha:<15}{hora:<10}{monto:<15}{desc:<20}{mes:<15}")
+        account = matrix_transactions[i][1]
+        category = matrix_transactions[i][2]
+        date =  matrix_transactions[i][3]
+        hour =  matrix_transactions[i][4]
+        amount = matrix_transactions[i][5]
+        amount_str = "$"+ str(matrix_transactions[i][5])
+        description =  matrix_transactions[i][6]
+        month =  matrix_transactions[i][7]
+        underline = UNDERLINE_INCOME
+        if amount < 0:
+            underline = UNDERLINE_EXPENSE
+        print(f"{underline}{id:<8}{account:<15}{category:<15}{date:<15}{hour:<10}{amount_str:<15}{description:<20}{month:<15}{RESET}")
     print()
 
 # Ejemplo con excepcion
@@ -482,8 +488,8 @@ add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
 add_category("Ropa")
+print_transactions(transactions)
 get_accounts(accounts)
-
 update_account(accounts)
 get_accounts(accounts)
 update_budget(budgets, categories)
