@@ -42,11 +42,7 @@ def get_accounts(matrix_account):
     return
 
 def update_account(matrix_accounts):
-    id_account = input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: ")
-    while not id_account.isnumeric():
-        print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
-        id_account = input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: ")
-
+    id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
     if id_account == 0:
         print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
         return
@@ -55,11 +51,7 @@ def update_account(matrix_accounts):
     while account is None:
         print("\033[31mLa cuenta no existe.\033[0m")
 
-        id_account = input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: ")
-        while not id_account.isnumeric():
-            print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
-            id_account = input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: ")
-            
+        id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))            
         if id_account == 0:
             print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
             return
@@ -86,17 +78,17 @@ def update_account(matrix_accounts):
 
 def change_name_account(account):
     name_account = input("Ingrese un nuevo nombre de cuenta: ")
-    while len(name_account) == 0 or name_account.isalpha():
+    while len(name_account) == 0 or not name_account.isalpha():
         print("\033[33mEl nombre que ingreso no tiene valor o no es una palabra.\033[0m")
         name_account = input("Ingrese un nuevo nombre de cuenta: ")
     account[1] = name_account
 
 def change_money_account(account):            
     total_money = input("Ingrese un nuevo monto de dinero: ")
-    while not (total_money.isnumeric()):
-        print("\033[33mEl valor que ingreso no es número.\033[0m")
+    while not total_money.isnumeric():
+        print("\033[33mEl valor que ingreso no es número o es menor a 0.\033[0m")
         total_money = input("Ingrese un nuevo monto de dinero: ")
-    account[2] = total_money
+    account[2] = int(total_money)
 
 def delete_account():
     get_accounts(accounts)
@@ -231,11 +223,7 @@ def delete_budget():
 
 def update_budget(matrix_budgets, matrix_categories):
     get_budgets(matrix_budgets)
-    id_budget = input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: ")
-    while not id_budget.isnumeric():
-        print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
-        id_budget = input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: ")
-    
+    id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))    
     if id_budget == 0:
         print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
         return
@@ -244,10 +232,10 @@ def update_budget(matrix_budgets, matrix_categories):
     while budget is None:
         print("\033[31mEl presupuesto no existe.\033[0m")
         
-        id_budget = input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: ")
-        while not id_budget.isnumeric():
+        id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))
+        while id_budget < 0 or id_budget >= matrix_budgets[-1][0]:
             print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
-            id_budget = input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: ")
+            id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))
             
         if id_budget == 0:
             print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
@@ -275,11 +263,7 @@ def update_budget(matrix_budgets, matrix_categories):
 
 def change_category_for_budget(budget, matrix_categories):
     get_categories(matrix_categories)
-    id_category = input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: ")
-    while not id_category.isnumeric():
-        print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
-        id_category = input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: ")
-
+    id_category = int(input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: "))
     if id_category == 0:
         print("\033[32mNo se actualizó la categoría.\033[0m")
         return
@@ -287,14 +271,10 @@ def change_category_for_budget(budget, matrix_categories):
     category = get_category_by_id(matrix_categories, id_category)
     while category is None:
         print("\033[31mLa categoría no existe.\033[0m")
-        
-        id_category = input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: ")
-        while not id_category.isnumeric():
-            print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
-            id_category = input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: ")
-            
+
+        id_category = int(input("¿Por cuál categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
         if id_category == 0:
-            print("\033[32mNo se actualizó la categoría.\033[0m")
+            print("\033[32mNo se actualizo la categoría.\033[0m")
             return
                 
         category = get_category_by_id(matrix_categories, id_category)
@@ -304,7 +284,7 @@ def change_category_for_budget(budget, matrix_categories):
 
 def change_budget_amount(budget):
     budget_amount = input("Ingrese el nuevo monto del presupuesto: ")
-    while not (budget_amount.isnumeric()):
+    while not budget_amount.isnumeric():
         print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
         budget_amount = input("Ingrese el nuevo monto del presupuesto: ")
         
@@ -503,12 +483,17 @@ add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
 add_category("Ropa")
 get_accounts(accounts)
-# update_account(accounts)
-# update_budget(budgets, categories)
-# update_category(categories)
-# update_transaction(transactions, accounts, categories)
+
+update_account(accounts)
+get_accounts(accounts)
+update_budget(budgets, categories)
+get_budgets(budgets)
+update_category(categories)
+get_categories(categories)
+update_transaction(transactions, accounts, categories)
+print_transactions(transactions)
 # delete_account()
 # delete_budget()
-delete_category()
+# delete_category()
 # delete_transaction()
 # get_accounts(accounts)
