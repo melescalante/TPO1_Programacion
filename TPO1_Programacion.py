@@ -61,21 +61,25 @@ def change_name_account(account):
         print("\033[33mEl valor que ingreso no existe.\033[0m")
         change_name = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
     
-    if (change_name == "si"):
-        change_name = input("Desea cambiar el nombre de la cuenta? Escriba si/no")
+    if (change_name == "no"):
+        return
+    
+    name_account = input("Ingrese un nuevo nombre de cuenta: ")
+    while len(name_account) == 0 or name_account.isalpha():
+        print("\033[33mEl nombre que ingreso no tiene valor o no es una palabra.\033[0m")
         name_account = input("Ingrese un nuevo nombre de cuenta: ")
-
-        while len(name_account) == 0 or name_account.isalpha():
-            print("\033[33mEl nombre que ingreso no tiene valor o no es una palabra.\033[0m")
-            name_account = input("Ingrese un nuevo nombre de cuenta: ")
     account[1] = name_account
 
 def change_money_account(account):            
-    total_money = input("Desea cambiar el monto de la cuenta? Escriba 'si' o 'no', sin las comillas")
-    while total_money != "si" or total_money != "no":
+    change_money = input("Desea cambiar el monto de la cuenta? Escriba 'si' o 'no', sin las comillas")
+    while change_money != "si" or change_money != "no":
         print("\033[33mEl valor que ingreso no existe.\033[0m")
-        total_money = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
+        change_money = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
+
+    if change_money == "no":
+        return
     
+    total_money = input("Ingrese un nuevo monto de dinero: ")
     while not total_money.isnumeric():
         print("\033[33mEl valor que ingreso no es número.\033[0m")
         total_money = input("Ingrese un nuevo monto de dinero: ")
@@ -124,16 +128,16 @@ def delete_category(name):
 def update_category(matrix_categories):
     id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
     if id_category == 0:
-        print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
+        print("\033[32mNo se actualizo ninguna categoría.\033[0m")
         return
 
     category = get_category_by_id(matrix_categories, id_category)
     while category is None:
-        print("\033[31mLa cuenta no existe.\033[0m")
+        print("\033[31mLa categoría no existe.\033[0m")
 
-        id_category = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
+        id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
         if id_category == 0:
-            print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
+            print("\033[32mNo se actualizo ninguna categoría.\033[0m")
             return
                 
         category = get_category_by_id(matrix_categories, id_category)
@@ -147,6 +151,14 @@ def change_category(category):
         name_category = input("Ingrese un nuevo nombre de categoría: ")
     category[1] = name_category
 
+def get_budget_by_id(matrix_budgets, id_budget):
+    for raw in matrix_budgets:
+        if raw[0] == id_budget:
+            return raw
+    return None
+
+def get_budgets(budgets):
+    return
 
 def add_budget(name_category, limit_amount):
     id=create_id(budgets)
@@ -169,6 +181,58 @@ def delete_budget(name):
             delete=budgets.pop(index)
             print("\033[32mOperación realizada con éxito\033[0m")
     print()
+
+def update_budget(matrix_budgets, matrix_categories):
+    get_budgets(matrix_budgets)
+    id_budget = int(input("¿Que presupuesto desea actualizar? Indique el numero o escriba 0 para salir: "))
+    if id_budget == 0:
+        print("\033[32mNo se actualizo ningún presupuesto.\033[0m")
+        return
+
+    budget = get_budget_by_id(matrix_budgets, id_budget)
+    while budget is None:
+        print("\033[31mLa presupuesto no existe.\033[0m")
+
+        id_budget = int(input("¿Que presupuesto desea actualizar? Indique el numero o escriba 0 para salir: "))
+        if id_budget == 0:
+            print("\033[32mNo se actualizo ningún presupuesto.\033[0m")
+            return
+                
+        budget = get_budget_by_id(matrix_budgets, id_budget)
+    
+    change_category_for_budget(budget, matrix_categories)
+    change_budget_ammount(budget)
+
+def change_category_for_budget(budget, matrix_categories):
+    change_category = input("Desea cambiar la categoría seleccionada? Escriba 'si' o 'no', sin las comillas")
+    while change_category != "si" or change_category != "no":
+        print("\033[33mEl valor que ingreso no existe.\033[0m")
+        change_category = input("Vuelva a ingresar 'si' o 'no', sin las comillas")
+    
+    if (change_category == "no"):
+        return
+    
+    get_categories(matrix_categories)
+    id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
+    if id_category == 0:
+        print("\033[32mNo se actualizo ningún presupuesto.\033[0m")
+        return
+    
+    category = get_category_by_id(matrix_categories, id_category)
+    while category is None:
+        print("\033[31mLa categoría no existe.\033[0m")
+
+        id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
+        if id_category == 0:
+            print("\033[32mNo se actualizo ninguna categoría.\033[0m")
+            return
+                
+        category = get_category_by_id(matrix_categories, id_category)
+
+    budget[1] = id_category
+
+def change_budget_ammount(budget):
+    return
 
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
