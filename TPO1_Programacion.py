@@ -405,7 +405,7 @@ def change_category_transaction(transaction, matrix_categories):
     while True:
         get_categories(matrix_categories)
         new_category_id = input("Ingrese la nueva categoría: ")
-        category = get_category_by_id(matrix_categories, new_category_id)
+        category = get_by_id(matrix_categories, new_category_id)
         
         if category is None:
             print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
@@ -431,13 +431,10 @@ def change_time_transaction(transaction):
     print("\033[32mHora actualizada.\033[0m")
 
 def change_amount_transaction(transaction):
-    while True:
-        new_amount = input("Ingrese el nuevo importe: ")
-        if new_amount.isnumeric():
-            transaction[5] = new_amount
-            print("\033[32mImporte actualizado.\033[0m")
-            return
-        print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
+    new_amount = int(input("Ingrese el nuevo importe: "))
+    if new_amount:
+        transaction[5] = new_amount
+        print("\033[32mImporte actualizado.\033[0m")
 
 def change_description_transaction(transaction):
     new_desc = input("Ingrese una nueva descripción: ")
@@ -494,8 +491,10 @@ get_categories(categories)
 update_budget(budgets, categories)
 get_budgets(budgets)
 
+get_accounts(accounts)
 update_transaction(transactions, accounts, categories)
 print_transactions(transactions)
+get_accounts(accounts)
 
 # delete_account()
 # delete_budget()
