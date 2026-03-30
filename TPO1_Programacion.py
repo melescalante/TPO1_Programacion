@@ -109,11 +109,12 @@ def delete_account():
             return
     print()
     
-def update_money_account(accounts, id_account, total_money):
-    for account in accounts:
+def revert_money_account(matrix_accounts, id_account, amount):
+    for account in matrix_accounts:
         if account[0] == id_account:
-            total_money *= -1 # Invierte el monto para devolver al resultado anterior a la cuenta.
-            account[2] += total_money
+            amount *= -1 # Invierte el monto para devolver al resultado anterior a la cuenta.
+            account[2] += amount
+            print(amount)
             return
         
 def get_categories(matrix_categories):
@@ -177,12 +178,6 @@ def change_category(category):
         name_category = input("Ingrese un nuevo nombre de categoría: ")
     category[1] = name_category
 
-def get_budget_by_id(matrix_budgets, id_budget):
-    for raw in matrix_budgets:
-        if raw[0] == id_budget:
-            return raw
-    return None
-
 def get_budgets(matrix_budgets):
     print("="*MAX_SPACES_BUDGETS)
     print(f'{"Presupuestos":^60}')
@@ -229,7 +224,7 @@ def update_budget(matrix_budgets, matrix_categories):
         print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
         return
     
-    budget = get_budget_by_id(matrix_budgets, id_budget)
+    budget = get_by_id(matrix_budgets, id_budget)
     while budget is None:
         print("\033[31mEl presupuesto no existe.\033[0m")
         
@@ -242,7 +237,7 @@ def update_budget(matrix_budgets, matrix_categories):
             print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
             return
                 
-        budget = get_budget_by_id(matrix_budgets, id_budget)
+        budget = get_by_id(matrix_budgets, id_budget)
     
     while True:
         print("\033[1;34m¿Qué campo del presupuesto deseas actualizar?\033[0m")
@@ -328,7 +323,7 @@ def delete_transaction():
             delete=transactions.pop(index)
             id_account = delete[1]
             total_money = delete[5]
-            update_money_account(accounts, id_account, total_money)
+            revert_money_account(accounts, id_account, total_money)
             print_transactions(transactions)
             print("\033[32mOperación realizada con éxito. Transaccion eliminada correctamente.\033[0m")
             return
@@ -374,7 +369,7 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
         elif opcion == "4":
             change_time_transaction(transaction)
         elif opcion == "5":
-            change_amount_transaction(transaction)
+            change_amount_transaction(transaction, matrix_accounts)
         elif opcion == "6":
             change_description_transaction(transaction)
         elif opcion == "7":
@@ -396,8 +391,8 @@ def change_account_transaction(transaction, matrix_accounts):
 
         old_id_account = transactions[1]
         money_transaction = transactions[5]
-        update_money_account(accounts, old_id_account, money_transaction)
-        update_money_account(accounts, new_account_id, -money_transaction)
+        revert_money_account(accounts, old_id_account, money_transaction)
+        revert_money_account(accounts, new_account_id, -money_transaction)
         transaction[1] = new_account_id
         print("\033[32mID de cuenta actualizado.\033[0m")
 
@@ -430,9 +425,12 @@ def change_time_transaction(transaction):
     transaction[4] = new_time
     print("\033[32mHora actualizada.\033[0m")
 
-def change_amount_transaction(transaction):
+def change_amount_transaction(transaction, matrix_accounts):
     new_amount = int(input("Ingrese el nuevo importe: "))
     if new_amount:
+        old_amount = transaction[5]
+        revert_money_account(matrix_accounts, transaction[1], old_amount)
+        revert_money_account(matrix_accounts, transaction[1], -new_amount)
         transaction[5] = new_amount
         print("\033[32mImporte actualizado.\033[0m")
 
