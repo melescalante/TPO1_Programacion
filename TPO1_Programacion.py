@@ -1,6 +1,6 @@
 from matrix import accounts, transactions, categories, budgets
 
-MAX_SPACES_TRANSACTIONS = 110
+MAX_SPACES_TRANSACTIONS = 130
 MAX_SPACES_BUDGETS =60
 MAX_SPACES_CATEGORIES =50
 # ANSI STYLES
@@ -454,9 +454,9 @@ def get_transactions(matrix_transactions):
     RESET = "\033[0m"
     BOLD  = "\033[1m"
     print("="*MAX_SPACES_TRANSACTIONS)
-    print(f'{"Transacciones":^110}')
+    print(f'{"Transacciones":^130}')
     print("="*MAX_SPACES_TRANSACTIONS)
-    print(f"{BOLD}{'Numero':<8}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<20}{'Mes':<15}{RESET}")
+    print(f"{BOLD}{'Numero':<10}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{'Mes':<15}{RESET}")
     for i in range(len(matrix_transactions)):
         id=matrix_transactions[i][0]
         account = get_by_id(accounts,matrix_transactions[i][1])
@@ -466,11 +466,12 @@ def get_transactions(matrix_transactions):
         amount = matrix_transactions[i][5]
         amount_str = "$"+ str(matrix_transactions[i][5])
         description =  matrix_transactions[i][6]
+        description_slicing = f"{description[:25]}..." if len(description) > 25 else description
         month =  matrix_transactions[i][7]
         underline = UNDERLINE_INCOME
         if amount < 0:
             underline = UNDERLINE_EXPENSE
-        print(f"{underline}{id:<8}{account[1]:<15}{category[1]:<15}{date:<15}{hour:<10}{amount_str:<15}{description:<20}{month:<11}{RESET}")
+        print(f"{underline}{id:<10}{account[1]:<15}{category[1]:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{month:<15}{RESET}")
     print()
 
 # Ejemplo con excepcion
