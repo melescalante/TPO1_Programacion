@@ -6,7 +6,7 @@ MAX_SPACES_CATEGORIES =50
 # ANSI STYLES
 RESET = "\033[0m"
 BOLD  = "\033[1m"
-UNDERLINE_INCOME = "\033[1;37;44m"
+UNDERLINE_INCOME = "\033[1;37;42m"
 UNDERLINE_EXPENSE = "\033[1;37;41m"
 def obtain_id_by_name(matrix, name):
     for raw in matrix:
@@ -312,7 +312,7 @@ def add_transaction(name_account, name_category, date, time, amount, description
     account[2] += final_amount
 
 def delete_transaction():
-    print_transactions(transactions)
+    get_transactions(transactions)
     id = int(input("Que transaccion deseas eliminar? Indique el numero o escriba 0 para salir: "))
     if id == 0:
         print("\033[32mNo se elimino ninguna transacción.\033[0m")
@@ -324,14 +324,14 @@ def delete_transaction():
             id_account = delete[1]
             total_money = delete[5]
             revert_money_account(accounts, id_account, total_money)
-            print_transactions(transactions)
+            get_transactions(transactions)
             print("\033[32mOperación realizada con éxito. Transaccion eliminada correctamente.\033[0m")
             return
         
     print("\033[31mOperación realizada sin éxito, el número de ID no existe.\033[0m")
 
 def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
-    print_transactions(matrix_transactions)
+    get_transactions(matrix_transactions)
     
     id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
     if id_transaction == 0:
@@ -450,7 +450,7 @@ def change_month_transaction(transaction):
     transaction[7] = new_month.capitalize()
     print("\033[32mMes actualizado.\033[0m")
 
-def print_transactions(matrix_transactions):
+def get_transactions(matrix_transactions):
     RESET = "\033[0m"
     BOLD  = "\033[1m"
     print("="*MAX_SPACES_TRANSACTIONS)
@@ -459,8 +459,8 @@ def print_transactions(matrix_transactions):
     print(f"{BOLD}{'Numero':<8}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<20}{'Mes':<15}{RESET}")
     for i in range(len(matrix_transactions)):
         id=matrix_transactions[i][0]
-        account = matrix_transactions[i][1]
-        category = matrix_transactions[i][2]
+        account = get_by_id(accounts,matrix_transactions[i][1])
+        category = get_by_id(categories,matrix_transactions[i][2])
         date =  matrix_transactions[i][3]
         hour =  matrix_transactions[i][4]
         amount = matrix_transactions[i][5]
@@ -470,7 +470,7 @@ def print_transactions(matrix_transactions):
         underline = UNDERLINE_INCOME
         if amount < 0:
             underline = UNDERLINE_EXPENSE
-        print(f"{underline}{id:<8}{account:<15}{category:<15}{date:<15}{hour:<10}{amount_str:<15}{description:<20}{month:<11}{RESET}")
+        print(f"{underline}{id:<8}{account[1]:<15}{category[1]:<15}{date:<15}{hour:<10}{amount_str:<15}{description:<20}{month:<11}{RESET}")
     print()
 
 # Ejemplo con excepcion
@@ -480,19 +480,18 @@ add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
 add_category("Ropa")
 
-update_account(accounts)
-get_accounts(accounts)
+# update_account(accounts)
+# get_accounts(accounts)
 
-update_category(categories)
-get_categories(categories)
+# update_category(categories)
+# get_categories(categories)
 
-update_budget(budgets, categories)
-get_budgets(budgets)
+# update_budget(budgets, categories)
+# get_budgets(budgets)
 
 get_accounts(accounts)
-update_transaction(transactions, accounts, categories)
-print_transactions(transactions)
-get_accounts(accounts)
+# update_transaction(transactions, accounts, categories)
+get_transactions(transactions)
 
 # delete_account()
 # delete_budget()
