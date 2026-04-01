@@ -140,15 +140,23 @@ def delete_category():
     id = int(input("Que categoria deseas eliminar? Indique el numero o escriba 0 para salir: "))
     delete=[]
     index=0
+    
+    # Eliminar presupuesto con esa categoria
+    # Eliminar transaccion con categoria
+    
     if id == 0:
         print("\033[32mNo se elimino ninguna categoria.\033[0m")
         return
+    # Lambda
+    ids_budgets=list(filter(lambda x:x[1]==id,budgets))
+    delete_budget(ids_budgets, id)
     for category in categories:
         if category[0]==id:
             index=categories.index(category)
             delete=categories.pop(index)
             print("\033[32mOperación realizada con éxito. Categoria eliminada correctamente.\033[0m")
             return
+    
     print()
 
 def update_category(matrix_categories):
@@ -201,7 +209,14 @@ def add_budget(name_category, limit_amount):
             budgets.append([id, id_category, limit_amount])
             return
 
-def delete_budget():
+def delete_budget(ids_budgets_to_delete=[], id=None):
+    
+    if len(ids_budgets_to_delete):
+        for i in range(len(ids_budgets_to_delete)):
+            if ids_budgets_to_delete[i][1]==id:
+                index=budgets.index(ids_budgets_to_delete[i])
+                budgets.pop(index)
+        return
     get_budgets(budgets)
     id = int(input("Que presuepuesto deseas eliminar? Indique el numero o escriba 0 para salir: "))
     delete=[]
@@ -488,7 +503,6 @@ add_category("Ropa")
 # get_categories(categories)
 
 # update_budget(budgets, categories)
-# get_budgets(budgets)
 
 get_accounts(accounts)
 # update_transaction(transactions, accounts, categories)
@@ -496,6 +510,9 @@ get_transactions(transactions)
 
 # delete_account()
 # delete_budget()
-# delete_category()
+# get_budgets(budgets)
+
+delete_category()
+# get_budgets(budgets)
 # delete_transaction()
 # get_accounts(accounts)
