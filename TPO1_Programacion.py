@@ -135,22 +135,28 @@ def add_category(category_name):
             return
     categories.append([id, category_name])
 
-def delete_category(matrix_budgets):
+def delete_category(matrix_transactions, matrix_budgets):
     get_categories(categories)
     id = int(input("Que categoria deseas eliminar? Indique el numero o escriba 0 para salir: "))
     delete=[]
     index=0
     
+    if id == 1:
+        print("\033[31mLa categoría deseada no puede ser eliminada.\033[0m")
+        return
+    
     if id <= 0:
         print("\033[32mNo se elimino ninguna categoria.\033[0m")
         return
     
-    # Eliminar presupuesto con esa categoria
-    # Eliminar transaccion con categoria
+    # Eliminar la categoría de la transacción
+    for transaccion in matrix_transactions:
+        if transaccion[2] == id:
+            transaccion[2] = 1
     
-    # Cascada eliminación de presupuestos relacionados
     # Lambda
-    matrix_budgets = list(filter(lambda x : x[1] != id, matrix_budgets))
+    # Eliminar presupuesto con esa categoria
+    matrix_budgets = list(filter(lambda x : x[1] != id, matrix_budgets)) # Cascada eliminación de presupuestos relacionados
     
     for category in categories:
         if category[0]==id:
@@ -509,7 +515,8 @@ get_transactions(transactions)
 # delete_budget()
 # get_budgets(budgets)
 
-delete_category(budgets)
+delete_category(transactions, budgets)
 # get_budgets(budgets)
+get_transactions(transactions)
 # delete_transaction()
 # get_accounts(accounts)
