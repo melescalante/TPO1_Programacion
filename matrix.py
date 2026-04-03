@@ -18,3 +18,7 @@ budgets = [
     [2, 3, 150000], 
     [3, 2, 120000], 
     [4, 5, 300000]]
+users = [
+    [1, "Admin", "Pedro Alonso"], 
+    [2, "User", "Ramiro Lopez"], 
+    [3, "User", "Victoria Perez"], ]

@@ -1,4 +1,4 @@
-import print_styles
+from Styles import print_styles
 from matrix import categories
 from helper import create_id, get_by_id
 
@@ -40,8 +40,9 @@ def delete_category(matrix_transactions, matrix_budgets):
             transaccion[2] = 1
     
     # Lambda
-    # Eliminar presupuesto con esa categoria
-    matrix_budgets = list(filter(lambda x : x[1] != id, matrix_budgets)) # Cascada eliminación de presupuestos relacionados
+    # Filter
+    # Slicing
+    matrix_budgets[:] = list(filter(lambda x : x[1] != id, matrix_budgets))
     
     for category in categories:
         if category[0]==id:

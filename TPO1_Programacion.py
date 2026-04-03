@@ -9,7 +9,7 @@ add_transaction("Galicia","1","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 # Ejemplo correcto
 add_transaction("Galicia","Sueldo","2-3-2026","20:20",1200000,"Sueldo","Marzo")
 add_account("BBVA", 1200000)
-add_category("Ropa")
+# add_category("Ropa")
 
 # update_account(accounts)
 # get_accounts(accounts)
@@ -22,13 +22,16 @@ add_category("Ropa")
 get_accounts(accounts)
 # update_transaction(transactions, accounts, categories)
 get_transactions(transactions)
-
+6
 # delete_account()
 # delete_budget()
 # get_budgets(budgets)
 
-delete_category(transactions, budgets)
+# delete_category(transactions, budgets)
 # get_budgets(budgets)
 get_transactions(transactions)
+# get_budgets(budgets)
+# get_categories(categories)
+get_transactions_by_category(transactions,categories)
 # delete_transaction()
 # get_accounts(accounts)

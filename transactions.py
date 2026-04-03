@@ -1,4 +1,4 @@
-import print_styles
+from Styles import print_styles
 from categories import get_categories
 from accounts import revert_money_account
 from matrix import transactions, categories, accounts
@@ -168,12 +168,10 @@ def change_month_transaction(transaction):
     print("\033[32mMes actualizado.\033[0m")
 
 def get_transactions(matrix_transactions):
-    RESET = "\033[0m"
-    BOLD  = "\033[1m"
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f'{"Transacciones":^130}')
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
-    print(f"{BOLD}{'Numero':<10}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{'Mes':<15}{RESET}")
+    print(f"{print_styles.BOLD}{'Numero':<10}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{'Mes':<15}{print_styles.RESET}")
     for i in range(len(matrix_transactions)):
         id=matrix_transactions[i][0]
         account = get_by_id(accounts,matrix_transactions[i][1])
@@ -188,5 +186,14 @@ def get_transactions(matrix_transactions):
         underline = print_styles.UNDERLINE_INCOME
         if amount < 0:
             underline = print_styles.UNDERLINE_EXPENSE
-        print(f"{underline}{id:<10}{account[1]:<15}{category[1]:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{month:<15}{RESET}")
+        print(f"{underline}{id:<10}{account[1]:<15}{category[1]:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{month:<15}{print_styles.RESET}")
     print()
+
+def get_transactions_by_category(matrix_transactions,matrix_categories):
+    get_categories(matrix_categories)
+    id_category=int(input("Buscar en sus transacciones por la categoria(Ingrese el numero) :"))
+    transactions_by_category=list(filter(lambda x:x[2]==id_category, matrix_transactions))
+    if len(transactions_by_category)==0:
+        print(f"{print_styles.RED}No hay transacciones con dicha categoria.")
+        return
+    get_transactions(transactions_by_category)
