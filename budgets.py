@@ -1,6 +1,6 @@
 from Styles import print_styles
 from categories import get_categories
-from matrix import budgets, categories
+from data import budgets, categories
 from helper import create_id, get_by_id, obtain_id_by_name
 
 def get_budgets(matrix_budgets):
