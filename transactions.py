@@ -1,8 +1,8 @@
 from Styles import print_styles
 from categories import get_categories
 from accounts import revert_money_account
-from matrix import transactions, categories, accounts
-from helper import create_id, get_by_id, obtain_id_by_name
+from data import transactions, categories, accounts
+from helper import create_id, get_by_id, obtain_id_by_name, slice_words
 
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
@@ -176,6 +176,7 @@ def get_transactions(matrix_transactions):
         id=matrix_transactions[i][0]
         account = get_by_id(accounts,matrix_transactions[i][1])
         category = get_by_id(categories,matrix_transactions[i][2])
+        category_sliced= slice_words(10, category[1])
         date =  matrix_transactions[i][3]
         hour =  matrix_transactions[i][4]
         amount = matrix_transactions[i][5]
@@ -186,7 +187,7 @@ def get_transactions(matrix_transactions):
         underline = print_styles.UNDERLINE_INCOME
         if amount < 0:
             underline = print_styles.UNDERLINE_EXPENSE
-        print(f"{underline}{id:<10}{account[1]:<15}{category[1]:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{month:<15}{print_styles.RESET}")
+        print(f"{underline}{id:<10}{account[1]:<15}{category_sliced:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{month:<15}{print_styles.RESET}")
     print()
 
 def get_transactions_by_category(matrix_transactions,matrix_categories):

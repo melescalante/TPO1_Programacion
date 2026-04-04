@@ -19,6 +19,8 @@ budgets = [
     [3, 2, 120000], 
     [4, 5, 300000]]
 users = [
-    [1, "Admin", "Pedro Alonso"], 
-    [2, "User", "Ramiro Lopez"], 
-    [3, "User", "Victoria Perez"], ]
+    {"id":1, "rol":"Admin","username":"Pedro Alonso","password":"133"}, 
+    {"id":2, "rol":"User", "username":"Ramiro Lopez","password":"444"}, 
+    {"id":3, "rol":"User", "username":"Victoria Perez", "password":"123"}, ]
+
+loggedUser={}

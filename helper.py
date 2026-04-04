@@ -13,3 +13,7 @@ def get_by_id(matrix, id):
         if raw[0] == id:
             return raw
     return None
+
+def slice_words(len, word):
+    sliced_word=word[:len-3]+"..."
+    return sliced_word

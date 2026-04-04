@@ -1,5 +1,5 @@
 from Styles import print_styles
-from matrix import categories
+from data import categories
 from helper import create_id, get_by_id
 
 def get_categories(matrix_categories):

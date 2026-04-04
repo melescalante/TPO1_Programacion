@@ -1,8 +1,9 @@
-from matrix import accounts, transactions, categories, budgets
+from data import accounts, transactions, categories, budgets
 from transactions import * 
 from budgets import *
 from categories import *
 from accounts import *
+from user import *
 
 
 #----------------------------------------------------------------------------------------------
