@@ -34,7 +34,7 @@ get_transactions(transactions)
 # get_budgets(budgets)
 # get_categories(categories)
 # get_transactions_by_category(transactions,categories)
-login()
+# login()
 
 # delete_transaction()
 # get_accounts(accounts)
