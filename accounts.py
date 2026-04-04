@@ -1,5 +1,5 @@
 from Styles import print_styles
-from matrix import accounts
+from data import accounts
 from helper import create_id, get_by_id
 
 def add_account(account_name, total_money):

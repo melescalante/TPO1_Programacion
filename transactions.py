@@ -1,7 +1,7 @@
 from Styles import print_styles
 from categories import get_categories
 from accounts import revert_money_account
-from matrix import transactions, categories, accounts
+from data import transactions, categories, accounts
 from helper import create_id, get_by_id, obtain_id_by_name
 
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
