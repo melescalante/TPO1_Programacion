@@ -126,7 +126,7 @@ def main():
                     update_category(categories)
 
                 elif opcion == "4":   # Opción 4
-                    delete_category()
+                    delete_category(transactions,budgets)
 
         elif opcion == "3":   # Opción 3
 
@@ -166,12 +166,48 @@ def main():
                     update_budget(budgets,categories)
 
                 elif opcion == "4":   # Opción 4
-                    delete_budget()
+                    id = input("Ingrese el id: ")
+                    delete_budget(budgets,id)
 
         elif opcion == "4":   # Opción 4
-            ...
-        elif opcion == "5":   # Opción 5
-            ...
+
+            while True:
+                while True:
+                    opciones = 4
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > Gestión de Cuentas")
+                    print("---------------------------")
+                    print("[1] Mostrar Cuentas")
+                    print("[2] Añadir Cuentas")
+                    print("[3] Actualizar Cuentas")
+                    print("[4] Eliminar Cuentas")
+                    print("---------------------------")
+                    print("[0] Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    
+                    opcion = input("Seleccione una opción: ")
+                    if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
+
+                if opcion == "0": # Opción salir del submenú
+                    break # No salimos del programa, volvemos al menú anterior
+                elif opcion == "1":   # Opción 1
+                    get_accounts(accounts)
+                elif opcion == "2":   # Opción 2
+                    account_name = input("Ingrese el nombre de la cuenta: ")
+                    total_money = input("Ingrese el monto de la cuenta: ")
+                    add_account(account_name, total_money)
+
+                elif opcion == "3":   # Opción 3
+                    update_account(accounts)
+
+                elif opcion == "4":   # Opción 4
+                    delete_account()
 
         input("\nPresione ENTER para volver al menú.")
         print("\n\n")
