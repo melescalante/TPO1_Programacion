@@ -1,8 +1,8 @@
 from Styles import print_styles
 from categories import get_categories
-from accounts import update_account_balance
+from accounts import update_account_balance, get_accounts
 from data import transactions, categories, accounts
-from helper import create_id, get_raw_by_id, obtain_id_by_name, slice_words
+from helper import create_id, get_raw_by_id, slice_words
 
 def add_transaction(id_account, id_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
@@ -99,6 +99,7 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
 
 def change_account_transaction(transaction, matrix_accounts):
     while True:
+        get_accounts(matrix_accounts)
         new_account_id = int(input("Ingrese el número de la nueva cuenta: "))
         account = get_raw_by_id(matrix_accounts, new_account_id)
 
@@ -106,8 +107,8 @@ def change_account_transaction(transaction, matrix_accounts):
             print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
             continue
 
-        old_id_account = transactions[1]
-        money_transaction = transactions[5]
+        old_id_account = transaction[1]
+        money_transaction = transaction[5]
         update_account_balance(matrix_accounts, old_id_account, -money_transaction)
         update_account_balance(matrix_accounts, new_account_id, money_transaction)
         transaction[1] = new_account_id
