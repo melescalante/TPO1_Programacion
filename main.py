@@ -21,7 +21,7 @@ def main():
     #----------------------------------------------------------------------------------------------
     while True:
         while True:
-            opciones = 4
+            options = 4
             print()
             print("---------------------------")
             print("MENÚ PRINCIPAL")
@@ -35,20 +35,20 @@ def main():
             print("---------------------------")
             print()
             
-            opcion = input("Seleccione una opción: ")
-            if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+            option = input("Seleccione una opción: ")
+            if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
                 break
             else:
                 input("Opción inválida. Presione ENTER para volver a seleccionar.")
         print()
 
-        if opcion == "0": # Opción salir del programa
+        if option == "0": # Opción salir del programa
             exit() # También puede ser sys.exit() para lo cual hay que importar el módulo sys
 
-        elif opcion == "1":   # Opción 1
+        elif option == "1":   # Opción 1
             while True:
                 while True:
-                    opciones = 4
+                    options = 4
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Gestión de Transacciones")
@@ -62,38 +62,73 @@ def main():
                     print("---------------------------")
                     print()
                     
-                    opcion = input("Seleccione una opción: ")
-                    if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                    option = input("Seleccione una opción: ")
+                    if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
                         break
                     else:
                         input("Opción inválida. Presione ENTER para volver a seleccionar.")
                 print()
 
-                if opcion == "0": # Opción salir del submenú
+                if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
-                elif opcion == "1":   # Opción 1
+                elif option == "1":   # Opción 1
                     get_transactions(transactions)
-                elif opcion == "2":   # Opción 2
-                    name_account = input("Ingrese el nombre de la cuenta: ")
-                    name_category = input("Ingrese la categoria: ")
-                    date = input("Ingrese la fecha: ")
-                    time = input("Ingrese la hora: ")
-                    amount = int(input("Ingrese el importe: "))
-                    descripcion = input("Ingrese la descripcion: ")
-                    month = input("Ingrese el mes: ")                    
-                    add_transaction(name_account,name_category,date,time,amount,descripcion,month)
+                elif option == "2":   # Opción 2
+                    while True:
+                        while True:
+                            sub_options = 2
+                            print()
+                            print("---------------------------")
+                            print("MENÚ PRINCIPAL > Gestión de Transacciones > Añadir")
+                            print("---------------------------")
+                            print("[1] Opción 1 (Ingreso)")
+                            print("[2] Opción 2 (Egreso)")
+                            print("---------------------------")
+                            print("[0] Volver al menú anterior")
+                            print("---------------------------")
+                            print()
+                            
+                            sub_option = input("Seleccione una opción: ")
+                            if sub_option in [str(i) for i in range(0, sub_options + 1)]: 
+                                break
+                            else:
+                                input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                        print()
 
-                elif opcion == "3":   # Opción 3
-
+                        if sub_option == "0":
+                            break # Vuelve al menú de Gestión de Transacciones
+                        elif sub_option == "1":                                    
+                            get_accounts(accounts)
+                            id_account = int(input("Ingrese el nombre de la cuenta: "))
+                            get_categories(categories)
+                            id_category = int(input("Ingrese el nombre de la categoria: "))
+                            date = input("Ingrese el mes con este formato [DD-MM-YYYY]")
+                            time = input("Ingrese la hora: ")
+                            amount = int(input("Ingrese el importe: "))
+                            descripcion = input("Ingrese la descripcion: ")
+                            month = input("Ingrese el mes: ")
+                            add_transaction(id_account, id_category, date, time, amount, descripcion, month)
+                        elif sub_option == "2":
+                            get_accounts(accounts)
+                            id_account = int(input("Ingrese el nombre de la cuenta: "))
+                            get_categories(categories)
+                            id_category = int(input("Ingrese el nombre de la categoria: "))
+                            date = input("Ingrese la fecha (formato: DD-MM-YYYY): ")
+                            time = input("Ingrese la hora: ")
+                            amount = int(input("Ingrese el importe: "))
+                            descripcion = input("Ingrese la descripcion: ")
+                            month = input("Ingrese el mes: ")
+                            add_transaction(id_account, id_category, date, time, amount, descripcion, month, "Expense")
+                elif option == "3":   # Opción 3
                     update_transaction(transactions,accounts,categories)
-                elif opcion == "4":   # Opción 4
+                elif option == "4":   # Opción 4
                     delete_transaction()
 
-        elif opcion == "2":   # Opción 2
+        elif option == "2":   # Opción 2
 
             while True:
                 while True:
-                    opciones = 4
+                    options = 4
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Gestión de Categorías")
@@ -107,32 +142,32 @@ def main():
                     print("---------------------------")
                     print()
                     
-                    opcion = input("Seleccione una opción: ")
-                    if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                    option = input("Seleccione una opción: ")
+                    if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
                         break
                     else:
                         input("Opción inválida. Presione ENTER para volver a seleccionar.")
                 print()
 
-                if opcion == "0": # Opción salir del submenú
+                if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
-                elif opcion == "1":   # Opción 1
+                elif option == "1":   # Opción 1
                     get_categories(categories)
-                elif opcion == "2":   # Opción 2
-                    categoria = input("Ingrese el nombre de la categoria: ")
-                    add_category(categoria)
+                elif option == "2":   # Opción 2
+                    category = input("Ingrese el nombre de la categoria: ")
+                    add_category(category)
 
-                elif opcion == "3":   # Opción 3
+                elif option == "3":   # Opción 3
                     update_category(categories)
 
-                elif opcion == "4":   # Opción 4
+                elif option == "4":   # Opción 4
                     delete_category(transactions,budgets)
 
-        elif opcion == "3":   # Opción 3
+        elif option == "3":   # Opción 3
 
             while True:
                 while True:
-                    opciones = 4
+                    options = 4
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Gestión de Presupuestos")
@@ -146,34 +181,34 @@ def main():
                     print("---------------------------")
                     print()
                     
-                    opcion = input("Seleccione una opción: ")
-                    if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                    option = input("Seleccione una opción: ")
+                    if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
                         break
                     else:
                         input("Opción inválida. Presione ENTER para volver a seleccionar.")
                 print()
 
-                if opcion == "0": # Opción salir del submenú
+                if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
-                elif opcion == "1":   # Opción 1
+                elif option == "1":   # Opción 1
                     get_budgets(budgets)
-                elif opcion == "2":   # Opción 2
+                elif option == "2":   # Opción 2
                     get_categories(categories)
                     category_id = int(input("Ingrese el ID de la categoría: "))
                     limit_amount = int(input("Ingrese el monto limite para la categoría: "))
                     create_budget(category_id, limit_amount, categories)
 
-                elif opcion == "3":   # Opción 3
+                elif option == "3":   # Opción 3
                     update_budget(budgets,categories)
 
-                elif opcion == "4":   # Opción 4
+                elif option == "4":   # Opción 4
                     delete_budget(budgets)
 
-        elif opcion == "4":   # Opción 4
+        elif option == "4":   # Opción 4
 
             while True:
                 while True:
-                    opciones = 4
+                    options = 4
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Gestión de Cuentas")
@@ -187,26 +222,26 @@ def main():
                     print("---------------------------")
                     print()
                     
-                    opcion = input("Seleccione una opción: ")
-                    if opcion in [str(i) for i in range(0, opciones + 1)]: # Sólo continua si se elije una opcion de menú válida
+                    option = input("Seleccione una opción: ")
+                    if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
                         break
                     else:
                         input("Opción inválida. Presione ENTER para volver a seleccionar.")
                 print()
 
-                if opcion == "0": # Opción salir del submenú
+                if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
-                elif opcion == "1":   # Opción 1
+                elif option == "1":   # Opción 1
                     get_accounts(accounts)
-                elif opcion == "2":   # Opción 2
+                elif option == "2":   # Opción 2
                     account_name = input("Ingrese el nombre de la cuenta: ")
                     total_money = input("Ingrese el monto de la cuenta: ")
                     add_account(account_name, total_money)
 
-                elif opcion == "3":   # Opción 3
+                elif option == "3":   # Opción 3
                     update_account(accounts)
 
-                elif opcion == "4":   # Opción 4
+                elif option == "4":   # Opción 4
                     delete_account()
 
         print("\n\n")
