@@ -17,3 +17,6 @@ def get_raw_by_id(matrix, id):
 def slice_words(len, word):
     sliced_word=word[:len-3]+"..."
     return sliced_word
+
+def replace_spaces(word):
+    return word.replace(" ", "")
