@@ -1,6 +1,6 @@
 from Styles import print_styles
 from categories import get_categories
-from accounts import revert_money_account
+from accounts import update_account_balance
 from data import transactions, categories, accounts
 from helper import create_id, get_raw_by_id, obtain_id_by_name, slice_words
 
@@ -39,8 +39,8 @@ def delete_transaction():
             index=transactions.index(transaction)
             delete=transactions.pop(index)
             id_account = delete[1]
-            total_money = delete[5]
-            revert_money_account(accounts, id_account, total_money)
+            retrieve_total_money = delete[5]
+            update_account_balance(accounts, id_account, -retrieve_total_money)
             get_transactions(transactions)
             print("\033[32mOperación realizada con éxito. Transaccion eliminada correctamente.\033[0m")
             return
@@ -108,8 +108,8 @@ def change_account_transaction(transaction, matrix_accounts):
 
         old_id_account = transactions[1]
         money_transaction = transactions[5]
-        revert_money_account(accounts, old_id_account, money_transaction)
-        revert_money_account(accounts, new_account_id, -money_transaction)
+        update_account_balance(matrix_accounts, old_id_account, -money_transaction)
+        update_account_balance(matrix_accounts, new_account_id, money_transaction)
         transaction[1] = new_account_id
         print("\033[32mID de cuenta actualizado.\033[0m")
         return
@@ -145,13 +145,21 @@ def change_time_transaction(transaction):
     print("\033[32mHora actualizada.\033[0m")
 
 def change_amount_transaction(transaction, matrix_accounts):
-    new_amount = int(input("Ingrese el nuevo importe: "))
-    if new_amount:
+    while True:
+        new_amount_str = input("Ingrese el nuevo importe: ")
+        if (new_amount_str.isdigit):
+            print("\033[33mLa hora ingresada no tiene valor.\033[0m")
+            continue
+        
+        new_amount = int(new_amount_str)
         old_amount = transaction[5]
-        revert_money_account(matrix_accounts, transaction[1], old_amount)
-        revert_money_account(matrix_accounts, transaction[1], -new_amount)
+        
+        difference = new_amount - old_amount
+        update_account_balance(matrix_accounts, transaction[1], difference)
+        
         transaction[5] = new_amount
         print("\033[32mImporte actualizado.\033[0m")
+        return
 
 def change_description_transaction(transaction):
     new_desc = input("Ingrese una nueva descripción: ")

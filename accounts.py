@@ -87,12 +87,10 @@ def delete_account():
             return
     print()
     
-def revert_money_account(matrix_accounts, id_account, amount):
+def update_account_balance(matrix_accounts, id_account, amount):
     for account in matrix_accounts:
         if account[0] == id_account:
-            amount *= -1 # Invierte el monto para devolver al resultado anterior a la cuenta.
             account[2] += amount
-            print(amount)
             return
         
 
