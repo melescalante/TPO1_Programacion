@@ -19,15 +19,18 @@ def add_budget(name_category, limit_amount):
     id=create_id(budgets)
     id_category = obtain_id_by_name(categories, name_category)
     if (id_category == -1):
-        print("\033[31mThe category does not exist. Please create it.\033[0m")
-        return("The id category was not found ", name_category)
+        print("\033[31mLa categoría no existe. Por favor, cree una.\033[0m")
+        return ("The id category was not found ", name_category)
     for category in categories:
         if category[1] == name_category:
             budgets.append([id, id_category, limit_amount])
             return
 
-def delete_budget(matrix_budgets, id):
-    if id == 0:
+def delete_budget(matrix_budgets):    
+    get_budgets(budgets)    
+    id = int(input("Ingrese el id o 0 para no eliminar ningún presupuesto: "))
+
+    if id <= 0:
         return
     
     budget_deleted = None
@@ -37,12 +40,10 @@ def delete_budget(matrix_budgets, id):
         if (budget[0] == id):
             index = matrix_budgets.index(budget)
             budget_deleted = matrix_budgets.pop(index)
-            break
+            print("\033[32mOperación realizada con éxito. Presupuesto eliminado correctamente.\033[0m")
+            return
     
-    # Debería estar afuera
-    print("\033[32mOperación realizada con éxito. Presupuesto eliminado correctamente.\033[0m")	
-    print(index, budget_deleted)
-    return index, budget_deleted 
+    print("\033[31mNo se encontró el presupuesto a eliminar.\033[0m")
 
 def update_budget(matrix_budgets, matrix_categories):
     get_budgets(matrix_budgets)

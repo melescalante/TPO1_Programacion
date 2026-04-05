@@ -1,5 +1,5 @@
 from data import accounts, transactions, categories, budgets
-from transactions import * 
+from transactions import *
 from budgets import *
 from categories import *
 from accounts import *
@@ -166,8 +166,7 @@ def main():
                     update_budget(budgets,categories)
 
                 elif opcion == "4":   # Opción 4
-                    id = input("Ingrese el id: ")
-                    delete_budget(budgets,id)
+                    delete_budget(budgets)
 
         elif opcion == "4":   # Opción 4
 
@@ -209,10 +208,8 @@ def main():
                 elif opcion == "4":   # Opción 4
                     delete_account()
 
-        input("\nPresione ENTER para volver al menú.")
         print("\n\n")
 
 
 # Punto de entrada al programa
 main()
-
