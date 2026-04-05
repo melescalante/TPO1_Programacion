@@ -1,7 +1,7 @@
 from Styles import print_styles
 from categories import get_categories
 from data import budgets, categories
-from helper import create_id, get_by_id, obtain_id_by_name
+from helper import create_id, get_by_id
 
 def get_budgets(matrix_budgets):
     print("="*print_styles.MAX_SPACES_BUDGETS)
@@ -15,15 +15,18 @@ def get_budgets(matrix_budgets):
         print(f"{print_styles.BOLD}{id:<10}{print_styles.RESET}{category[1]:<25}{amount:<25}")
     return
 
-def add_budget(name_category, limit_amount):
-    id=create_id(budgets)
-    id_category = obtain_id_by_name(categories, name_category)
-    if (id_category == -1):
-        print("\033[31mLa categoría no existe. Por favor, cree una.\033[0m")
-        return ("The id category was not found ", name_category)
-    for category in categories:
-        if category[1] == name_category:
-            budgets.append([id, id_category, limit_amount])
+def create_budget(category_id, limit_amount, matrix_categories):
+    id_budget = create_id(budgets)
+    print("Id creado:", id_budget)
+    category = get_by_id(matrix_categories, category_id)
+    id_category = category[0]
+    if (id_category is None):
+        print("\033[31mLa categoría no existe. Por favor, cree una.\033[0m", id_category)
+        return
+    
+    for category in matrix_categories:
+        if category[0] == id_category:
+            budgets.append([id_budget, id_category, limit_amount])
             return
 
 def delete_budget(matrix_budgets):    

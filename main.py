@@ -158,9 +158,10 @@ def main():
                 elif opcion == "1":   # Opción 1
                     get_budgets(budgets)
                 elif opcion == "2":   # Opción 2
-                    presupuesto = input("Ingrese el nombre del Presupuesto: ")
-                    monto = input("Ingrese el monto limite: ")
-                    add_budget(presupuesto,monto)
+                    get_categories(categories)
+                    category_id = int(input("Ingrese el ID de la categoría: "))
+                    limit_amount = int(input("Ingrese el monto limite para la categoría: "))
+                    create_budget(category_id, limit_amount, categories)
 
                 elif opcion == "3":   # Opción 3
                     update_budget(budgets,categories)
