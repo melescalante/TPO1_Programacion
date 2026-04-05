@@ -4,21 +4,21 @@ from accounts import revert_money_account
 from data import transactions, categories, accounts
 from helper import create_id, get_raw_by_id, obtain_id_by_name, slice_words
 
-def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
+def add_transaction(id_account, id_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
-    id_account = obtain_id_by_name(accounts, name_account)
-    id_category = obtain_id_by_name(categories, name_category)
+    id_account = get_raw_by_id(accounts, id_account)[0]
+    id_category = get_raw_by_id(categories, id_category)[0]
 
-    if (id_account == -1):        
-        print(f"\033[31mLa cuenta con ID '{id_account}' no existe. Por favor, cree una.\033[0m")
+    if (id_account is None):        
+        print(f"\033[31mEl ID ingresado para la cuenta no existe. Por favor, intente nuevamente.\033[0m")
         return
         
-    if (id_category == -1):
-        print(f"\033[31mLa categoría '{name_category}' no existe. Por favor, cree una.\033[0m")
+    if (id_category is None):
+        print(f"\033[31mEl ID ingresado para la categoría no existe. Por favor, intente nuevamente.\033[0m")
         return
     
     multiplier = 1
-    if transaction_type == "expense":
+    if transaction_type.lower() == "expense":
         multiplier = -1
     final_amount = amount * multiplier
     
@@ -99,12 +99,12 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
 
 def change_account_transaction(transaction, matrix_accounts):
     while True:
-        new_account_id = input("Ingrese la nueva cuenta: ")
+        new_account_id = int(input("Ingrese el número de la nueva cuenta: "))
         account = get_raw_by_id(matrix_accounts, new_account_id)
 
         if account is None:
             print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
-            pass
+            continue
 
         old_id_account = transactions[1]
         money_transaction = transactions[5]
@@ -112,19 +112,21 @@ def change_account_transaction(transaction, matrix_accounts):
         revert_money_account(accounts, new_account_id, -money_transaction)
         transaction[1] = new_account_id
         print("\033[32mID de cuenta actualizado.\033[0m")
+        return
 
 def change_category_transaction(transaction, matrix_categories):
     while True:
         get_categories(matrix_categories)
-        new_category_id = input("Ingrese la nueva categoría: ")
+        new_category_id = int(input("Ingrese el número de la nueva categoría: "))
         category = get_raw_by_id(matrix_categories, new_category_id)
         
         if category is None:
             print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
-            pass
+            continue
         
         transaction[2] = new_category_id
         print("\033[32mID de categoría actualizado.\033[0m")
+        return
 
 def change_date_transaction(transaction):
     new_date = input("Ingrese la nueva fecha (formato: DD-MM-YYYY): ")
