@@ -18,5 +18,16 @@ def slice_words(len, word):
     sliced_word=word[:len-3]+"..."
     return sliced_word
 
-def replace_spaces(word):
-    return word.replace(" ", "")
+def is_word_alpha(word):
+    has_letters = False
+
+    for car in word:
+        if car == " ":
+            continue
+
+        if not car.isalpha():
+            return False
+    
+        has_letters = True
+
+    return has_letters

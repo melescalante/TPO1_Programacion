@@ -1,6 +1,6 @@
 from Styles import print_styles
 from data import categories
-from helper import create_id, get_raw_by_id, replace_spaces
+from helper import create_id, get_raw_by_id, is_word_alpha
 
 def get_categories(matrix_categories):
     print("="*print_styles.MAX_SPACES_CATEGORIES)
@@ -80,7 +80,7 @@ def update_category(matrix_categories):
 
 def change_category(category):
     name_category = input("Ingrese un nuevo nombre de categoría: ")
-    while len(name_category) == 0 or not replace_spaces(name_category).isalpha():
+    while len(name_category) == 0 or not is_word_alpha(name_category):
         print("\033[33mEl valor que ingreso no tiene valor o no es una palabra.\033[0m")
         name_category = input("Ingrese un nuevo nombre de categoría: ")
     category[1] = name_category
