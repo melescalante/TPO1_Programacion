@@ -8,7 +8,7 @@ def create_id(matrix):
     id=len(matrix) + 1
     return id
 
-def get_by_id(matrix, id):
+def get_raw_by_id(matrix, id):
     for raw in matrix:
         if raw[0] == id:
             return raw

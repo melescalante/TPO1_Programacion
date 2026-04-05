@@ -2,7 +2,7 @@ from Styles import print_styles
 from categories import get_categories
 from accounts import revert_money_account
 from data import transactions, categories, accounts
-from helper import create_id, get_by_id, obtain_id_by_name, slice_words
+from helper import create_id, get_raw_by_id, obtain_id_by_name, slice_words
 
 def add_transaction(name_account, name_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
@@ -55,14 +55,14 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
         print("\033[32mNo se actualizó ninguna transacción.\033[0m")
         return
 
-    transaction = get_by_id(matrix_transactions, id_transaction)
+    transaction = get_raw_by_id(matrix_transactions, id_transaction)
     while transaction is None:
         print("\033[31mLa transacción no existe.\033[0m")
         id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
         if id_transaction == 0:
             print("\033[32mNo se actualizó ninguna transacción.\033[0m")
             return
-        transaction = get_by_id(matrix_transactions, id_transaction)
+        transaction = get_raw_by_id(matrix_transactions, id_transaction)
 
     while True:
         print("\033[1;34m¿Qué campo de la transacción deseas actualizar?\033[0m")
@@ -100,7 +100,7 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
 def change_account_transaction(transaction, matrix_accounts):
     while True:
         new_account_id = input("Ingrese la nueva cuenta: ")
-        account = get_by_id(matrix_accounts, new_account_id)
+        account = get_raw_by_id(matrix_accounts, new_account_id)
 
         if account is None:
             print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
@@ -117,7 +117,7 @@ def change_category_transaction(transaction, matrix_categories):
     while True:
         get_categories(matrix_categories)
         new_category_id = input("Ingrese la nueva categoría: ")
-        category = get_by_id(matrix_categories, new_category_id)
+        category = get_raw_by_id(matrix_categories, new_category_id)
         
         if category is None:
             print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
@@ -174,8 +174,8 @@ def get_transactions(matrix_transactions):
     print(f"{print_styles.BOLD}{'Numero':<10}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{'Mes':<15}{print_styles.RESET}")
     for i in range(len(matrix_transactions)):
         id=matrix_transactions[i][0]
-        account = get_by_id(accounts,matrix_transactions[i][1])
-        category = get_by_id(categories,matrix_transactions[i][2])
+        account = get_raw_by_id(accounts,matrix_transactions[i][1])
+        category = get_raw_by_id(categories,matrix_transactions[i][2])
         category_sliced= slice_words(10, category[1])
         date =  matrix_transactions[i][3]
         hour =  matrix_transactions[i][4]

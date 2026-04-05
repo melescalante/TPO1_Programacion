@@ -1,6 +1,6 @@
 from Styles import print_styles
 from data import categories
-from helper import create_id, get_by_id
+from helper import create_id, get_raw_by_id
 
 def get_categories(matrix_categories):
     print("="*print_styles.MAX_SPACES_CATEGORIES)
@@ -60,7 +60,7 @@ def update_category(matrix_categories):
         print("\033[32mNo se actualizo ninguna categoría.\033[0m")
         return
 
-    category = get_by_id(matrix_categories, id_category)
+    category = get_raw_by_id(matrix_categories, id_category)
     while category is None:
         print("\033[31mLa categoría no existe.\033[0m")
 
@@ -69,7 +69,7 @@ def update_category(matrix_categories):
             print("\033[32mNo se actualizo ninguna categoría.\033[0m")
             return
                 
-        category = get_by_id(matrix_categories, id_category)
+        category = get_raw_by_id(matrix_categories, id_category)
     
     change_category(category)
 

@@ -1,6 +1,6 @@
 from Styles import print_styles
 from data import accounts
-from helper import create_id, get_by_id
+from helper import create_id, get_raw_by_id
 
 def add_account(account_name, total_money):
     id=create_id(accounts)
@@ -28,7 +28,7 @@ def update_account(matrix_accounts):
         print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
         return
 
-    account = get_by_id(matrix_accounts, id_account)
+    account = get_raw_by_id(matrix_accounts, id_account)
     while account is None:
         print("\033[31mLa cuenta no existe.\033[0m")
 
@@ -37,7 +37,7 @@ def update_account(matrix_accounts):
             print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
             return
                 
-        account = get_by_id(matrix_accounts, id_account)
+        account = get_raw_by_id(matrix_accounts, id_account)
 
     while True:
         print("\033[1;34m¿Qué campo de la cuenta deseas actualizar?\033[0m")

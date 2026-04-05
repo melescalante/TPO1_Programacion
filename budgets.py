@@ -1,7 +1,7 @@
 from Styles import print_styles
 from categories import get_categories
 from data import budgets, categories
-from helper import create_id, get_by_id
+from helper import create_id, get_raw_by_id
 
 def get_budgets(matrix_budgets):
     print("="*print_styles.MAX_SPACES_BUDGETS)
@@ -10,7 +10,7 @@ def get_budgets(matrix_budgets):
     print(f"{print_styles.BOLD}{'Numero':<10}{'Categoria':<25}{'Monto':<25}{print_styles.RESET}")
     for i in range(len(matrix_budgets)):
         id=matrix_budgets[i][0]
-        category = get_by_id(categories,matrix_budgets[i][1])
+        category = get_raw_by_id(categories,matrix_budgets[i][1])
         amount = "$"+str(matrix_budgets[i][2])
         print(f"{print_styles.BOLD}{id:<10}{print_styles.RESET}{category[1]:<25}{amount:<25}")
     return
@@ -18,7 +18,7 @@ def get_budgets(matrix_budgets):
 def create_budget(category_id, limit_amount, matrix_categories):
     id_budget = create_id(budgets)
     print("Id creado:", id_budget)
-    category = get_by_id(matrix_categories, category_id)
+    category = get_raw_by_id(matrix_categories, category_id)
     id_category = category[0]
     if (id_category is None):
         print("\033[31mLa categoría no existe. Por favor, cree una.\033[0m", id_category)
@@ -55,7 +55,7 @@ def update_budget(matrix_budgets, matrix_categories):
         print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
         return
     
-    budget = get_by_id(matrix_budgets, id_budget)
+    budget = get_raw_by_id(matrix_budgets, id_budget)
     while budget is None:
         print("\033[31mEl presupuesto no existe.\033[0m")
         
@@ -68,7 +68,7 @@ def update_budget(matrix_budgets, matrix_categories):
             print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
             return
                 
-        budget = get_by_id(matrix_budgets, id_budget)
+        budget = get_raw_by_id(matrix_budgets, id_budget)
     
     while True:
         print("\033[1;34m¿Qué campo del presupuesto deseas actualizar?\033[0m")
@@ -95,7 +95,7 @@ def change_category_for_budget(budget, matrix_categories):
         print("\033[32mNo se actualizó la categoría.\033[0m")
         return
     
-    category = get_by_id(matrix_categories, id_category)
+    category = get_raw_by_id(matrix_categories, id_category)
     while category is None:
         print("\033[31mLa categoría no existe.\033[0m")
 
@@ -104,7 +104,7 @@ def change_category_for_budget(budget, matrix_categories):
             print("\033[32mNo se actualizo la categoría.\033[0m")
             return
                 
-        category = get_by_id(matrix_categories, id_category)
+        category = get_raw_by_id(matrix_categories, id_category)
 
     budget[1] = id_category
     print("\033[32mCategoría actualizada.\033[0m")
