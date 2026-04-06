@@ -10,11 +10,11 @@ def add_transaction(id_account, id_category, date, time, amount, description, mo
     id_raw_category = get_raw_by_id(categories, id_category)[0]
 
     if (id_raw_account is None):        
-        print(f"\033[31mEl ID ingresado para la cuenta no existe. Por favor, intente nuevamente.\033[0m")
+        print(f"{print_styles.RED}El ID ingresado para la cuenta no existe. Por favor, intente nuevamente.{print_styles.RESET}")
         return
         
     if (id_raw_category is None):
-        print(f"\033[31mEl ID ingresado para la categoría no existe. Por favor, intente nuevamente.\033[0m")
+        print(f"{print_styles.RED}El ID ingresado para la categoría no existe. Por favor, intente nuevamente.{print_styles.RESET}")
         return
     
     multiplier = 1
@@ -30,7 +30,7 @@ def delete_transaction():
     get_transactions(transactions)
     id = int(input("Que transaccion deseas eliminar? Indique el numero o escriba 0 para salir: "))
     if id == 0:
-        print("\033[32mNo se elimino ninguna transacción.\033[0m")
+        print("f{print_styles.GREEN}No se elimino ninguna transacción.{print_styles.RESET}")
         return
     for transaction in transactions:
         if transaction[0]==id:
@@ -40,30 +40,30 @@ def delete_transaction():
             retrieve_total_money = delete[5]
             update_account_balance(accounts, id_account, -retrieve_total_money)
             get_transactions(transactions)
-            print("\033[32mOperación realizada con éxito. Transaccion eliminada correctamente.\033[0m")
+            print("f{print_styles.GREEN}Operación realizada con éxito. Transaccion eliminada correctamente.{print_styles.RESET}")
             return
         
-    print("\033[31mOperación realizada sin éxito, el número de ID no existe.\033[0m")
+    print(f"{print_styles.RED}Operación realizada sin éxito, el número de ID no existe.{print_styles.RESET}")
 
 def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
     get_transactions(matrix_transactions)
     
     id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
     if id_transaction == 0:
-        print("\033[32mNo se actualizó ninguna transacción.\033[0m")
+        print("f{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
         return
 
     transaction = get_raw_by_id(matrix_transactions, id_transaction)
     while transaction is None:
-        print("\033[31mLa transacción no existe.\033[0m")
+        print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
         id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
         if id_transaction == 0:
-            print("\033[32mNo se actualizó ninguna transacción.\033[0m")
+            print("f{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
             return
         transaction = get_raw_by_id(matrix_transactions, id_transaction)
 
     while True:
-        print("\033[1;34m¿Qué campo de la transacción deseas actualizar?\033[0m")
+        print("\033[1;34m¿Qué campo de la transacción deseas actualizar?{print_styles.RESET}")
         print("1. Cuenta")
         print("2. Categoría")
         print("3. Fecha")
@@ -90,10 +90,10 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
         elif opcion == "7":
             change_month_transaction(transaction)
         elif opcion == "0":
-            print("\033[32mLa transacción se actualizó con éxito.\033[0m")
+            print("f{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
             return
         else:
-            print("\033[31mOpción no válida. Intente nuevamente.\033[0m")
+            print(f"{print_styles.RED}Opción no válida. Intente nuevamente.{print_styles.RESET}")
 
 def change_account_transaction(transaction, matrix_accounts):
     while True:
@@ -102,7 +102,7 @@ def change_account_transaction(transaction, matrix_accounts):
         account = get_raw_by_id(matrix_accounts, new_account_id)
 
         if account is None:
-            print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
+            print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
             continue
 
         old_id_account = transaction[1]
@@ -110,7 +110,7 @@ def change_account_transaction(transaction, matrix_accounts):
         update_account_balance(matrix_accounts, old_id_account, -money_transaction)
         update_account_balance(matrix_accounts, new_account_id, money_transaction)
         transaction[1] = new_account_id
-        print("\033[32mID de cuenta actualizado.\033[0m")
+        print("f{print_styles.GREEN}ID de cuenta actualizado.{print_styles.RESET}")
         return
 
 def change_category_transaction(transaction, matrix_categories):
@@ -120,35 +120,35 @@ def change_category_transaction(transaction, matrix_categories):
         category = get_raw_by_id(matrix_categories, new_category_id)
         
         if category is None:
-            print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
+            print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
             continue
         
         transaction[2] = new_category_id
-        print("\033[32mID de categoría actualizado.\033[0m")
+        print("f{print_styles.GREEN}ID de categoría actualizado.{print_styles.RESET}")
         return
 
 def change_date_transaction(transaction):
     new_date = input("Ingrese la nueva fecha (formato: DD-MM-YYYY): ")
     while len(new_date.strip()) == 0:
-        print("\033[33mLa fecha ingresada no tiene valor.\033[0m")
+        print(f"{print_styles.RED}La fecha ingresada no tiene valor.{print_styles.RESET}")
         new_date = input("Ingrese la nueva fecha (formato: DD-MM-YYYY): ")
     transaction[3] = new_date
-    print("\033[32mFecha actualizada.\033[0m")
+    print(f"{print_styles.GREEN}Fecha actualizada.{print_styles.RESET}")
 
 def change_time_transaction(transaction):
     new_time = input("Ingrese la nueva hora (formato: HH:MM): ")
     while len(new_time) == 0:
-        print("\033[33mLa hora ingresada no tiene valor.\033[0m")
+        print(f"{print_styles.RED}La hora ingresada no tiene valor.{print_styles.RESET}")
         new_time = input("Ingrese la nueva hora (formato: HH:MM): ")
     transaction[4] = new_time
-    print("\033[32mHora actualizada.\033[0m")
+    print(f"{print_styles.GREEN}Hora actualizada.{print_styles.RESET}")
 
 def change_amount_transaction(transaction, matrix_accounts):
     while True:
         new_amount_str = input("Ingrese el nuevo importe: ")
         not_sign = new_amount_str.replace("-", "", 1)
         if (not not_sign.isdigit()):
-            print("\033[33mEl importe ingresado no es un digito.\033[0m")
+            print(f"{print_styles.RED}El importe ingresado no es un digito.{print_styles.RESET}")
             continue
         
         new_amount = int(new_amount_str)
@@ -158,24 +158,24 @@ def change_amount_transaction(transaction, matrix_accounts):
         update_account_balance(matrix_accounts, transaction[1], difference)
         
         transaction[5] = new_amount
-        print("\033[32mImporte actualizado.\033[0m")
+        print(f"{print_styles.GREEN}Importe actualizado.{print_styles.RESET}")
         return
 
 def change_description_transaction(transaction):
     new_desc = input("Ingrese una nueva descripción: ")
     while len(new_desc) == 0:
-        print("\033[33mLa descripción ingresada no tiene valor.\033[0m")
+        print(f"{print_styles.YELLOW}La descripción ingresada no tiene valor.{print_styles.RESET}")
         new_desc = input("Ingrese una nueva descripción: ")
     transaction[6] = new_desc
-    print("\033[32mDescripción actualizada.\033[0m")
+    print(f"{print_styles.GREEN}Descripción actualizada.{print_styles.RESET}")
 
 def change_month_transaction(transaction):
     new_month = input("Ingrese el nuevo mes: ")
     while len(new_month) == 0 or not new_month.isalpha():
-        print("\033[33mEl mes ingresado no tiene valor o contiene números.\033[0m")
+        print(f"{print_styles.RED}El mes ingresado no tiene valor o contiene números.{print_styles.RESET}")
         new_month = input("Ingrese el nuevo mes: ")
     transaction[7] = new_month.capitalize()
-    print("\033[32mMes actualizado.\033[0m")
+    print("f{print_styles.GREEN}Mes actualizado.{print_styles.RESET}")
 
 def get_transactions(matrix_transactions):
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
@@ -205,6 +205,6 @@ def get_transactions_by_category(matrix_transactions,matrix_categories):
     id_category=int(input("Buscar en sus transacciones por la categoria(Ingrese el numero) :"))
     transactions_by_category=list(filter(lambda x:x[2]==id_category, matrix_transactions))
     if len(transactions_by_category)==0:
-        print(f"{print_styles.RED}No hay transacciones con dicha categoria.")
+        print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
         return
     get_transactions(transactions_by_category)
