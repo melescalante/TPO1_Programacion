@@ -146,8 +146,9 @@ def change_time_transaction(transaction):
 def change_amount_transaction(transaction, matrix_accounts):
     while True:
         new_amount_str = input("Ingrese el nuevo importe: ")
-        if (new_amount_str.isdigit):
-            print("\033[33mLa hora ingresada no tiene valor.\033[0m")
+        not_sign = new_amount_str.replace("-", "", 1)
+        if (not not_sign.isdigit()):
+            print("\033[33mEl importe ingresado no es un digito.\033[0m")
             continue
         
         new_amount = int(new_amount_str)
