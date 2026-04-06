@@ -6,14 +6,14 @@ from helper import create_id, get_raw_by_id, slice_words
 
 def add_transaction(id_account, id_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(transactions)
-    id_account = get_raw_by_id(accounts, id_account)[0]
-    id_category = get_raw_by_id(categories, id_category)[0]
+    id_raw_account = get_raw_by_id(accounts, id_account)[0]
+    id_raw_category = get_raw_by_id(categories, id_category)[0]
 
-    if (id_account is None):        
+    if (id_raw_account is None):        
         print(f"\033[31mEl ID ingresado para la cuenta no existe. Por favor, intente nuevamente.\033[0m")
         return
         
-    if (id_category is None):
+    if (id_raw_category is None):
         print(f"\033[31mEl ID ingresado para la categoría no existe. Por favor, intente nuevamente.\033[0m")
         return
     
@@ -22,11 +22,9 @@ def add_transaction(id_account, id_category, date, time, amount, description, mo
         multiplier = -1
     final_amount = amount * multiplier
     
-    transactions.append([id, id_account, id_category, date, time, final_amount, description, month])
+    transactions.append([id, id_raw_account, id_raw_category, date, time, final_amount, description, month])
     
-    # Modificar saldo del id de la cuenta
-    account = accounts[id_account]
-    account[2] += final_amount
+    update_account_balance(accounts, id_raw_account, final_amount)
 
 def delete_transaction():
     get_transactions(transactions)
