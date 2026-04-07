@@ -4,8 +4,11 @@ from budgets import *
 from categories import *
 from accounts import *
 from user import *
+user=None
+while user==None:
+    user=login()
 
-user=login()
+
 is_logged(user)
 
 #----------------------------------------------------------------------------------------------
