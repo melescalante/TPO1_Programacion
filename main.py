@@ -1,10 +1,13 @@
-from data import accounts, transactions, categories, budgets
+from data import accounts, transactions, categories, budgets, loggedUser
 from transactions import *
 from budgets import *
 from categories import *
 from accounts import *
 from user import *
+from permissions import middleware
 
+user=login()
+is_logged(user)
 
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
@@ -14,7 +17,7 @@ def main():
     # Inicialización de variables
     #----------------------------------------------------------------------------------------------
     clientes = {...}
-
+    
 
     #-------------------------------------------------
     # Bloque de menú
@@ -72,7 +75,8 @@ def main():
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
-                    get_transactions(transactions)
+                    middleware(user,get_transactions, transactions)
+                    # get_transactions(transactions)
                 elif option == "2":   # Opción 2
                     while True:
                         while True:
