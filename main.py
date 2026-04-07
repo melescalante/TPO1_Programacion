@@ -5,6 +5,8 @@ from categories import *
 from accounts import *
 from user import *
 
+user=login()
+is_logged(user)
 
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
