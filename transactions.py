@@ -186,13 +186,13 @@ def get_transactions(matrix_transactions):
         id=matrix_transactions[i][0]
         account = get_raw_by_id(accounts,matrix_transactions[i][1])
         category = get_raw_by_id(categories,matrix_transactions[i][2])
-        category_sliced= slice_words(10, category[1])
+        category_sliced= slice_words(14, category[1])
         date =  matrix_transactions[i][3]
         hour =  matrix_transactions[i][4]
         amount = matrix_transactions[i][5]
         amount_str = "$"+ str(matrix_transactions[i][5])
         description =  matrix_transactions[i][6]
-        description_slicing = f"{description[:25]}..." if len(description) > 25 else description
+        description_slicing = slice_words(29,description)
         month =  matrix_transactions[i][7]
         underline = print_styles.UNDERLINE_INCOME
         if amount < 0:

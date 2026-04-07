@@ -14,8 +14,8 @@ def get_raw_by_id(matrix, id):
             return raw
     return None
 
-def slice_words(len, word):
-    sliced_word=word[:len-3]+"..."
+def slice_words(length, word):
+    sliced_word=f"{word[:length-3]}..." if len(word)>length else word
     return sliced_word
 
 def is_word_alpha(word):
