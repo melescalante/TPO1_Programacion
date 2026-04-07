@@ -25,22 +25,22 @@ def update_account(matrix_accounts):
     get_accounts(matrix_accounts)
     id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
     if id_account == 0:
-        print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
+        print(f"{print_styles.GREEN}No se actualizo ninguna cuenta.{print_styles.RESET}")
         return
 
     account = get_raw_by_id(matrix_accounts, id_account)
     while account is None:
-        print("\033[31mLa cuenta no existe.\033[0m")
+        print(f"{print_styles.RED}La cuenta no existe.{print_styles.RESET}")
 
         id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))            
         if id_account == 0:
-            print("\033[32mNo se actualizo ninguna cuenta.\033[0m")
+            print(f"{print_styles.GREEN}No se actualizo ninguna cuenta.{print_styles.RESET}")
             return
                 
         account = get_raw_by_id(matrix_accounts, id_account)
 
     while True:
-        print("\033[1;34m¿Qué campo de la cuenta deseas actualizar?\033[0m")
+        print(f"{print_styles.BOLD_BLUE}¿Qué campo de la cuenta deseas actualizar?{print_styles.RESET}")
         print("1. Nombre")
         print("2. Monto")
         print("0. Guardar y salir")
@@ -52,22 +52,22 @@ def update_account(matrix_accounts):
         elif opcion == "2":
             change_money_account(account)
         elif opcion == "0":
-            print("\033[32mLa cuenta se actualizó con éxito.\033[0m")
+            print(f"{print_styles.GREEN}La cuenta se actualizó con éxito.{print_styles.RESET}")
             return
         else:
-            print("\033[31mOpción no válida. Intente nuevamente.\033[0m")
+            print(f"{print_styles.RED}Opción no válida. Intente nuevamente.{print_styles.RESET}")
 
 def change_name_account(account):
     name_account = input("Ingrese un nuevo nombre de cuenta: ")
     while len(name_account) == 0 or not name_account.isalpha():
-        print("\033[33mEl nombre que ingreso no tiene valor o no es una palabra.\033[0m")
+        print(f"{print_styles.YELLOW}El nombre que ingreso no tiene valor o no es una palabra.{print_styles.RESET}")
         name_account = input("Ingrese un nuevo nombre de cuenta: ")
     account[1] = name_account
 
 def change_money_account(account):            
     total_money = input("Ingrese un nuevo monto de dinero: ")
     while not total_money.isnumeric():
-        print("\033[33mEl valor que ingreso no es número o es menor a 0.\033[0m")
+        print(f"{print_styles.YELLOW}El valor que ingreso no es número o es menor a 0.{print_styles.RESET}")
         total_money = input("Ingrese un nuevo monto de dinero: ")
     account[2] = int(total_money)
 
@@ -77,13 +77,13 @@ def delete_account():
     delete=[]
     index=0
     if id == 0:
-        print("\033[32mNo se elimino ninguna cuenta.\033[0m")
+        print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
         return
     for acc in accounts:
         if acc[0]==id:
             index=accounts.index(acc)
             delete=accounts.pop(index)
-            print("\033[32mOperación realizada con éxito. Cuenta eliminada correctamente.\033[0m")
+            print(f"{print_styles.GREEN}Operación realizada con éxito. Cuenta eliminada correctamente.{print_styles.RESET}")
             return
     print()
     
