@@ -168,16 +168,21 @@ def main():
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
-                    get_categories(categories)
+                    permission= has_permission(user,READ)
+                    if permission:get_categories(categories)
                 elif option == "2":   # Opción 2
-                    category = input("Ingrese el nombre de la categoria: ")
-                    add_category(category)
+                    if permission:
+                        permission= has_permission(user,READ_WRITE)
+                        category = input("Ingrese el nombre de la categoria: ")
+                        add_category(category)
 
                 elif option == "3":   # Opción 3
-                    update_category(categories)
+                    permission= has_permission(user,READ_WRITE)
+                    if permission:update_category(categories)
 
                 elif option == "4":   # Opción 4
-                    delete_category(transactions,budgets)
+                    permission= has_permission(user,READ_WRITE)
+                    if permission:delete_category(transactions,budgets)
 
         elif option == "3":   # Opción 3
 
