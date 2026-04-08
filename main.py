@@ -1,11 +1,11 @@
-from data import accounts, transactions, categories, budgets, loggedUser
+from data import accounts, transactions, categories, budgets
 from transactions import *
 from budgets import *
 from categories import *
 from accounts import *
 from user import *
 
-from permissions import middleware
+from permissions import has_permission
 
 user=None
 while user==None:
@@ -79,8 +79,8 @@ def main():
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
-                    middleware(user,get_transactions, transactions)
-                    # get_transactions(transactions)
+                    permission= has_permission(user,1)
+                    if permission:get_transactions(transactions)
                 elif option == "2":   # Opción 2
                     while True:
                         while True:
@@ -130,7 +130,8 @@ def main():
                 elif option == "3":   # Opción 3
                     update_transaction(transactions,accounts,categories)
                 elif option == "4":   # Opción 4
-                    delete_transaction()
+                    permission= has_permission(user,2)
+                    if permission:delete_transaction()
 
         elif option == "2":   # Opción 2
 
