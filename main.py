@@ -4,9 +4,13 @@ from budgets import *
 from categories import *
 from accounts import *
 from user import *
+
 from permissions import middleware
 
-user=login()
+user=None
+while user==None:
+    user=login()
+
 is_logged(user)
 
 #----------------------------------------------------------------------------------------------
