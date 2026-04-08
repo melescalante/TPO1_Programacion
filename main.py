@@ -258,17 +258,22 @@ def main():
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
-                    get_accounts(accounts)
+                    permission= has_permission(user,READ)
+                    if permission:get_accounts(accounts)
                 elif option == "2":   # Opción 2
-                    account_name = input("Ingrese el nombre de la cuenta: ")
-                    total_money = input("Ingrese el monto de la cuenta: ")
-                    add_account(account_name, total_money)
+                    permission= has_permission(user,READ_WRITE)
+                    if permission:
+                        account_name = input("Ingrese el nombre de la cuenta: ")
+                        total_money = input("Ingrese el monto de la cuenta: ")
+                        add_account(account_name, total_money)
 
                 elif option == "3":   # Opción 3
-                    update_account(accounts)
+                    permission= has_permission(user,READ_WRITE)
+                    if permission:update_account(accounts)
 
                 elif option == "4":   # Opción 4
-                    delete_account()
+                    permission= has_permission(user,READ_WRITE)
+                    if permission:delete_account()
 
         print("\n\n")
 
