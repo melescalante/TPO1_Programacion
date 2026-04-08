@@ -59,7 +59,7 @@ def main():
         elif option == "1":   # Opción 1
             while True:
                 while True:
-                    options = 4
+                    options = 5
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Gestión de Transacciones")
@@ -68,6 +68,7 @@ def main():
                     print("[2] Añadir Transacciones")
                     print("[3] Actualizar Transacciones")
                     print("[4] Eliminar Transacciones")
+                    print("[5] Ver Transacciones por Categoria")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
                     print("---------------------------")
@@ -139,7 +140,9 @@ def main():
                 elif option == "4":   # Opción 4
                     permission= has_permission(user,READ_WRITE)
                     if permission:delete_transaction()
-
+                elif option=='5':
+                     permission= has_permission(user,READ)
+                     if permission:get_transactions_by_category(transactions,categories)
         elif option == "2":   # Opción 2
 
             while True:
