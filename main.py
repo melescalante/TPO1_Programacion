@@ -7,6 +7,10 @@ from user import *
 
 from permissions import has_permission
 
+# Permissions
+READ=1
+READ_WRITE=2
+
 user=None
 while user==None:
     user=login()
@@ -79,7 +83,7 @@ def main():
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
-                    permission= has_permission(user,1)
+                    permission= has_permission(user,READ)
                     if permission:get_transactions(transactions)
                 elif option == "2":   # Opción 2
                     while True:
@@ -130,7 +134,7 @@ def main():
                 elif option == "3":   # Opción 3
                     update_transaction(transactions,accounts,categories)
                 elif option == "4":   # Opción 4
-                    permission= has_permission(user,2)
+                    permission= has_permission(user,READ_WRITE)
                     if permission:delete_transaction()
 
         elif option == "2":   # Opción 2
