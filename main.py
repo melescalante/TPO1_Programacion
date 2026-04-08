@@ -212,18 +212,23 @@ def main():
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
-                    get_budgets(budgets)
+                    permission= has_permission(user,READ)
+                    if permission:get_budgets(budgets)
                 elif option == "2":   # Opción 2
-                    get_categories(categories)
-                    category_id = int(input("Ingrese el ID de la categoría: "))
-                    limit_amount = int(input("Ingrese el monto limite para la categoría: "))
-                    create_budget(category_id, limit_amount, categories)
+                    permission= has_permission(user,READ_WRITE)
+                    if permission:
+                        get_categories(categories)
+                        category_id = int(input("Ingrese el ID de la categoría: "))
+                        limit_amount = int(input("Ingrese el monto limite para la categoría: "))
+                        create_budget(category_id, limit_amount, categories)
 
                 elif option == "3":   # Opción 3
-                    update_budget(budgets,categories)
+                    permission= has_permission(user,READ_WRITE)
+                    if permission:update_budget(budgets,categories)
 
                 elif option == "4":   # Opción 4
-                    delete_budget(budgets)
+                    permission= has_permission(user,READ_WRITE)
+                    if permission:delete_budget(budgets)
 
         elif option == "4":   # Opción 4
 
