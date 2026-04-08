@@ -86,53 +86,56 @@ def main():
                     permission= has_permission(user,READ)
                     if permission:get_transactions(transactions)
                 elif option == "2":   # Opción 2
-                    while True:
+                    permission= has_permission(user,READ_WRITE)
+                    if permission:
                         while True:
-                            sub_options = 2
+                            while True:
+                                sub_options = 2
+                                print()
+                                print("---------------------------")
+                                print("MENÚ PRINCIPAL > Gestión de Transacciones > Añadir")
+                                print("---------------------------")
+                                print("[1] Opción 1 (Ingreso)")
+                                print("[2] Opción 2 (Egreso)")
+                                print("---------------------------")
+                                print("[0] Volver al menú anterior")
+                                print("---------------------------")
+                                print()
+                                
+                                sub_option = input("Seleccione una opción: ")
+                                if sub_option in [str(i) for i in range(0, sub_options + 1)]: 
+                                    break
+                                else:
+                                    input("Opción inválida. Presione ENTER para volver a seleccionar.")
                             print()
-                            print("---------------------------")
-                            print("MENÚ PRINCIPAL > Gestión de Transacciones > Añadir")
-                            print("---------------------------")
-                            print("[1] Opción 1 (Ingreso)")
-                            print("[2] Opción 2 (Egreso)")
-                            print("---------------------------")
-                            print("[0] Volver al menú anterior")
-                            print("---------------------------")
-                            print()
-                            
-                            sub_option = input("Seleccione una opción: ")
-                            if sub_option in [str(i) for i in range(0, sub_options + 1)]: 
-                                break
-                            else:
-                                input("Opción inválida. Presione ENTER para volver a seleccionar.")
-                        print()
 
-                        if sub_option == "0":
-                            break # Vuelve al menú de Gestión de Transacciones
-                        elif sub_option == "1":                                    
-                            get_accounts(accounts)
-                            id_account = int(input("Ingrese el número de la cuenta: "))
-                            get_categories(categories)
-                            id_category = int(input("Ingrese el número de la categoria: "))
-                            date = input("Ingrese la fecha (formato: DD-MM-YYYY): ")
-                            time = input("Ingrese la hora (formato: HH:MM): ")
-                            amount = int(input("Ingrese el importe: "))
-                            descripcion = input("Ingrese la descripcion: ")
-                            month = input("Ingrese el mes: ")
-                            add_transaction(id_account, id_category, date, time, amount, descripcion, month)
-                        elif sub_option == "2":
-                            get_accounts(accounts)
-                            id_account = int(input("Ingrese el nombre de la cuenta: "))
-                            get_categories(categories)
-                            id_category = int(input("Ingrese el nombre de la categoria: "))
-                            date = input("Ingrese la fecha (formato: DD-MM-YYYY): ")
-                            time = input("Ingrese la hora (formato: HH:MM): ")
-                            amount = int(input("Ingrese el importe: "))
-                            descripcion = input("Ingrese la descripcion: ")
-                            month = input("Ingrese el mes: ")
-                            add_transaction(id_account, id_category, date, time, amount, descripcion, month, "Expense")
+                            if sub_option == "0":
+                                break # Vuelve al menú de Gestión de Transacciones
+                            elif sub_option == "1":                                    
+                                get_accounts(accounts)
+                                id_account = int(input("Ingrese el número de la cuenta: "))
+                                get_categories(categories)
+                                id_category = int(input("Ingrese el número de la categoria: "))
+                                date = input("Ingrese la fecha (formato: DD-MM-YYYY): ")
+                                time = input("Ingrese la hora (formato: HH:MM): ")
+                                amount = int(input("Ingrese el importe: "))
+                                descripcion = input("Ingrese la descripcion: ")
+                                month = input("Ingrese el mes: ")
+                                add_transaction(id_account, id_category, date, time, amount, descripcion, month)
+                            elif sub_option == "2":
+                                get_accounts(accounts)
+                                id_account = int(input("Ingrese el nombre de la cuenta: "))
+                                get_categories(categories)
+                                id_category = int(input("Ingrese el nombre de la categoria: "))
+                                date = input("Ingrese la fecha (formato: DD-MM-YYYY): ")
+                                time = input("Ingrese la hora (formato: HH:MM): ")
+                                amount = int(input("Ingrese el importe: "))
+                                descripcion = input("Ingrese la descripcion: ")
+                                month = input("Ingrese el mes: ")
+                                add_transaction(id_account, id_category, date, time, amount, descripcion, month, "Expense")
                 elif option == "3":   # Opción 3
-                    update_transaction(transactions,accounts,categories)
+                    permission=has_permission(user,READ_WRITE)
+                    if permission: update_transaction(transactions,accounts,categories)
                 elif option == "4":   # Opción 4
                     permission= has_permission(user,READ_WRITE)
                     if permission:delete_transaction()
