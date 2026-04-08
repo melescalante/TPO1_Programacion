@@ -1,13 +1,12 @@
 from Styles import print_styles
 from categories import get_categories
 from accounts import update_account_balance, get_accounts
-from data import transactions, categories, accounts
 from helper import create_id, get_raw_by_id, slice_words
 
-def add_transaction(id_account, id_category, date, time, amount, description, month, transaction_type="income"):  
-    id= create_id(transactions)
-    id_raw_account = get_raw_by_id(accounts, id_account)[0]
-    id_raw_category = get_raw_by_id(categories, id_category)[0]
+def add_transaction(matrix_transactions, matrix_accounts, matrix_categories, id_account, id_category, date, time, amount, description, month, transaction_type="income"):  
+    id= create_id(matrix_transactions)
+    id_raw_account = get_raw_by_id(matrix_accounts, id_account)[0]
+    id_raw_category = get_raw_by_id(matrix_categories, id_category)[0]
 
     if (id_raw_account is None):        
         print(f"{print_styles.RED}El ID ingresado para la cuenta no existe. Por favor, intente nuevamente.{print_styles.RESET}")
@@ -22,31 +21,31 @@ def add_transaction(id_account, id_category, date, time, amount, description, mo
         multiplier = -1
     final_amount = amount * multiplier
     
-    transactions.append([id, id_raw_account, id_raw_category, date, time, final_amount, description, month])
+    matrix_transactions.append([id, id_raw_account, id_raw_category, date, time, final_amount, description, month])
     
-    update_account_balance(accounts, id_raw_account, final_amount)
+    update_account_balance(matrix_accounts, id_raw_account, final_amount)
 
-def delete_transaction():
-    get_transactions(transactions)
+def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories):
+    get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
     id = int(input("Que transaccion deseas eliminar? Indique el numero o escriba 0 para salir: "))
     if id == 0:
         print("f{print_styles.GREEN}No se elimino ninguna transacción.{print_styles.RESET}")
         return
-    for transaction in transactions:
+    for transaction in matrix_transactions:
         if transaction[0]==id:
-            index=transactions.index(transaction)
-            delete=transactions.pop(index)
+            index=matrix_transactions.index(transaction)
+            delete=matrix_transactions.pop(index)
             id_account = delete[1]
             retrieve_total_money = delete[5]
-            update_account_balance(accounts, id_account, -retrieve_total_money)
-            get_transactions(transactions)
+            update_account_balance(matrix_accounts, id_account, -retrieve_total_money)
+            get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
             print("f{print_styles.GREEN}Operación realizada con éxito. Transaccion eliminada correctamente.{print_styles.RESET}")
             return
         
     print(f"{print_styles.RED}Operación realizada sin éxito, el número de ID no existe.{print_styles.RESET}")
 
 def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
-    get_transactions(matrix_transactions)
+    get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
     
     id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
     if id_transaction == 0:
@@ -177,15 +176,15 @@ def change_month_transaction(transaction):
     transaction[7] = new_month.capitalize()
     print("f{print_styles.GREEN}Mes actualizado.{print_styles.RESET}")
 
-def get_transactions(matrix_transactions):
+def get_transactions(matrix_transactions, matrix_accounts, matrix_categories):
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f'{"Transacciones":^130}')
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{'Mes':<15}{print_styles.RESET}")
     for i in range(len(matrix_transactions)):
         id=matrix_transactions[i][0]
-        account = get_raw_by_id(accounts,matrix_transactions[i][1])
-        category = get_raw_by_id(categories,matrix_transactions[i][2])
+        account = get_raw_by_id(matrix_accounts,matrix_transactions[i][1])
+        category = get_raw_by_id(matrix_categories,matrix_transactions[i][2])
         category_sliced= slice_words(14, category[1])
         date =  matrix_transactions[i][3]
         hour =  matrix_transactions[i][4]
@@ -200,7 +199,7 @@ def get_transactions(matrix_transactions):
         print(f"{underline}{id:<10}{account[1]:<15}{category_sliced:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{month:<15}{print_styles.RESET}")
     print()
 
-def get_transactions_by_category(matrix_transactions,matrix_categories):
+def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_categories):
     get_categories(matrix_categories)
     print(" ")
     id_category=int(input(f"{print_styles.BOLD_BLUE}Buscar en sus transacciones por la categoria (Ingrese el numero):{print_styles.RESET}"))
@@ -208,4 +207,4 @@ def get_transactions_by_category(matrix_transactions,matrix_categories):
     if len(transactions_by_category)==0:
         print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
         return
-    get_transactions(transactions_by_category)
+    get_transactions(transactions_by_category, matrix_accounts, matrix_categories)

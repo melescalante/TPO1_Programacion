@@ -1,5 +1,4 @@
 from Styles import print_styles
-from data import categories
 from helper import create_id, get_raw_by_id, is_word_alpha
 
 def get_categories(matrix_categories):
@@ -13,15 +12,15 @@ def get_categories(matrix_categories):
         print(f"{print_styles.BOLD}{id:<20}{print_styles.RESET}{amount:<30}")
     return
 
-def add_category(category_name):
-    id=create_id(categories)
-    for category in categories:
+def add_category(matrix_categories, category_name):
+    id=create_id(matrix_categories)
+    for category in matrix_categories:
         if category[1] == category_name:
             return
-    categories.append([id, category_name])
+    matrix_categories.append([id, category_name])
 
-def delete_category(matrix_transactions, matrix_budgets):
-    get_categories(categories)
+def delete_category(matrix_categories, matrix_transactions, matrix_budgets):
+    get_categories(matrix_categories)
     id = int(input("Que categoria deseas eliminar? Indique el numero o escriba 0 para salir: "))
     delete=[]
     index=0
@@ -44,10 +43,10 @@ def delete_category(matrix_transactions, matrix_budgets):
     # Slicing
     matrix_budgets[:] = list(filter(lambda x : x[1] != id, matrix_budgets))
     
-    for category in categories:
+    for category in matrix_categories:
         if category[0]==id:
-            index=categories.index(category)
-            delete=categories.pop(index)
+            index=matrix_categories.index(category)
+            delete=matrix_categories.pop(index)
             print("\033[32mOperación realizada con éxito. Categoria eliminada correctamente.\033[0m")
             break
     

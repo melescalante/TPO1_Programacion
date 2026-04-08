@@ -85,9 +85,10 @@ def main():
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
                     permission= has_permission(user,READ)
-                    if permission:get_transactions(transactions)
+                    if permission:
+                        get_transactions(transactions, accounts, categories)
                 elif option == "2":   # Opción 2
-                    permission= has_permission(user,READ_WRITE)
+                    permission = has_permission(user,READ_WRITE)
                     if permission:
                         while True:
                             while True:
@@ -112,37 +113,33 @@ def main():
 
                             if sub_option == "0":
                                 break # Vuelve al menú de Gestión de Transacciones
-                            elif sub_option == "1":                                    
-                                get_accounts(accounts)
-                                id_account = int(input("Ingrese el número de la cuenta: "))
-                                get_categories(categories)
-                                id_category = int(input("Ingrese el número de la categoria: "))
-                                date = input("Ingrese la fecha (formato: DD-MM-YYYY): ")
-                                time = input("Ingrese la hora (formato: HH:MM): ")
-                                amount = int(input("Ingrese el importe: "))
-                                descripcion = input("Ingrese la descripcion: ")
-                                month = input("Ingrese el mes: ")
-                                add_transaction(id_account, id_category, date, time, amount, descripcion, month)
+
+                            get_accounts(accounts)
+                            id_account = int(input("Ingrese el número de la cuenta: "))
+                            get_categories(categories)
+                            id_category = int(input("Ingrese el número de la categoria: "))
+                            date = input("Ingrese la fecha (formato: DD-MM-YYYY): ")
+                            time = input("Ingrese la hora (formato: HH:MM): ")
+                            amount = int(input("Ingrese el importe: "))
+                            descripcion = input("Ingrese la descripcion: ")
+                            month = input("Ingrese el mes: ")
+
+                            if sub_option == "1":
+                                add_transaction(transactions, accounts, categories, id_account, id_category, date, time, amount, descripcion, month)
                             elif sub_option == "2":
-                                get_accounts(accounts)
-                                id_account = int(input("Ingrese el nombre de la cuenta: "))
-                                get_categories(categories)
-                                id_category = int(input("Ingrese el nombre de la categoria: "))
-                                date = input("Ingrese la fecha (formato: DD-MM-YYYY): ")
-                                time = input("Ingrese la hora (formato: HH:MM): ")
-                                amount = int(input("Ingrese el importe: "))
-                                descripcion = input("Ingrese la descripcion: ")
-                                month = input("Ingrese el mes: ")
-                                add_transaction(id_account, id_category, date, time, amount, descripcion, month, "Expense")
+                                add_transaction(transactions, accounts, categories, id_account, id_category, date, time, amount, descripcion, month, "Expense")
                 elif option == "3":   # Opción 3
-                    permission=has_permission(user,READ_WRITE)
-                    if permission: update_transaction(transactions,accounts,categories)
+                    permission = has_permission(user,READ_WRITE)
+                    if permission: 
+                        update_transaction(transactions, accounts, categories)
                 elif option == "4":   # Opción 4
-                    permission= has_permission(user,READ_WRITE)
-                    if permission:delete_transaction()
+                    permission = has_permission(user,READ_WRITE)
+                    if permission:
+                        delete_transaction(transactions, accounts, categories)
                 elif option=='5':
-                     permission= has_permission(user,READ)
-                     if permission:get_transactions_by_category(transactions,categories)
+                     permission = has_permission(user,READ)
+                     if permission:
+                        get_transactions_by_category(transactions, accounts, categories)
         elif option == "2":   # Opción 2
 
             while True:
@@ -174,18 +171,20 @@ def main():
                     permission= has_permission(user,READ)
                     if permission:get_categories(categories)
                 elif option == "2":   # Opción 2
+                    permission= has_permission(user,READ_WRITE)
                     if permission:
-                        permission= has_permission(user,READ_WRITE)
                         category = input("Ingrese el nombre de la categoria: ")
-                        add_category(category)
+                        add_category(categories, category)
 
                 elif option == "3":   # Opción 3
-                    permission= has_permission(user,READ_WRITE)
-                    if permission:update_category(categories)
+                    permission = has_permission(user,READ_WRITE)
+                    if permission:
+                        update_category(categories)
 
                 elif option == "4":   # Opción 4
-                    permission= has_permission(user,READ_WRITE)
-                    if permission:delete_category(transactions,budgets)
+                    permission = has_permission(user,READ_WRITE)
+                    if permission: 
+                        delete_category(categories, transactions, budgets)
 
         elif option == "3":   # Opción 3
 
@@ -223,15 +222,17 @@ def main():
                         get_categories(categories)
                         category_id = int(input("Ingrese el ID de la categoría: "))
                         limit_amount = int(input("Ingrese el monto limite para la categoría: "))
-                        create_budget(category_id, limit_amount, categories)
+                        create_budget(budgets, category_id, limit_amount, categories)
 
                 elif option == "3":   # Opción 3
-                    permission= has_permission(user,READ_WRITE)
-                    if permission:update_budget(budgets,categories)
+                    permission = has_permission(user,READ_WRITE)
+                    if permission:
+                        update_budget(budgets, categories)
 
                 elif option == "4":   # Opción 4
-                    permission= has_permission(user,READ_WRITE)
-                    if permission:delete_budget(budgets)
+                    permission = has_permission(user,READ_WRITE)
+                    if permission:
+                        delete_budget(budgets, categories)
 
         elif option == "4":   # Opción 4
 
@@ -261,22 +262,23 @@ def main():
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
-                    permission= has_permission(user,READ)
+                    permission = has_permission(user,READ)
                     if permission:get_accounts(accounts)
                 elif option == "2":   # Opción 2
-                    permission= has_permission(user,READ_WRITE)
+                    permission = has_permission(user,READ_WRITE)
                     if permission:
                         account_name = input("Ingrese el nombre de la cuenta: ")
                         total_money = input("Ingrese el monto de la cuenta: ")
-                        add_account(account_name, total_money)
+                        add_account(accounts, account_name, total_money)
 
                 elif option == "3":   # Opción 3
-                    permission= has_permission(user,READ_WRITE)
+                    permission = has_permission(user,READ_WRITE)
                     if permission:update_account(accounts)
 
                 elif option == "4":   # Opción 4
-                    permission= has_permission(user,READ_WRITE)
-                    if permission:delete_account()
+                    permission = has_permission(user,READ_WRITE)
+                    if permission:
+                        delete_account(accounts)
 
         print("\n\n")
 

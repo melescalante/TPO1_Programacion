@@ -1,22 +1,21 @@
 from Styles import print_styles
 from categories import get_categories
-from data import budgets, categories
 from helper import create_id, get_raw_by_id
 
-def get_budgets(matrix_budgets):
+def get_budgets(matrix_budgets, matrix_categories):
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f'{"Presupuestos":^60}')
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Categoria':<25}{'Monto':<25}{print_styles.RESET}")
     for i in range(len(matrix_budgets)):
         id=matrix_budgets[i][0]
-        category = get_raw_by_id(categories,matrix_budgets[i][1])
+        category = get_raw_by_id(matrix_categories,matrix_budgets[i][1])
         amount = "$"+str(matrix_budgets[i][2])
         print(f"{print_styles.BOLD}{id:<10}{print_styles.RESET}{category[1]:<25}{amount:<25}")
     return
 
-def create_budget(category_id, limit_amount, matrix_categories):
-    id_budget = create_id(budgets)
+def create_budget(matrix_budgets, category_id, limit_amount, matrix_categories):
+    id_budget = create_id(matrix_budgets)
     print("Id creado:", id_budget)
     category = get_raw_by_id(matrix_categories, category_id)
     id_category = category[0]
@@ -26,11 +25,11 @@ def create_budget(category_id, limit_amount, matrix_categories):
     
     for category in matrix_categories:
         if category[0] == id_category:
-            budgets.append([id_budget, id_category, limit_amount])
+            matrix_budgets.append([id_budget, id_category, limit_amount])
             return
 
-def delete_budget(matrix_budgets):    
-    get_budgets(budgets)    
+def delete_budget(matrix_budgets, matrix_categories):    
+    get_budgets(matrix_budgets, matrix_categories)    
     id = int(input("Ingrese el id o 0 para no eliminar ningún presupuesto: "))
 
     if id <= 0:
@@ -49,7 +48,7 @@ def delete_budget(matrix_budgets):
     print("\033[31mNo se encontró el presupuesto a eliminar.\033[0m")
 
 def update_budget(matrix_budgets, matrix_categories):
-    get_budgets(matrix_budgets)
+    get_budgets(matrix_budgets, matrix_categories)
     id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))    
     if id_budget == 0:
         print("\033[32mNo se actualizó ningún presupuesto.\033[0m")

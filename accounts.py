@@ -1,13 +1,12 @@
 from Styles import print_styles
-from data import accounts
 from helper import create_id, get_raw_by_id
 
-def add_account(account_name, total_money):
-    id=create_id(accounts)
-    for account in accounts:
+def add_account(matrix_accounts, account_name, total_money):
+    id=create_id(matrix_accounts)
+    for account in matrix_accounts:
         if account[1] == account_name:
             return
-    accounts.append([id, account_name, total_money])
+    matrix_accounts.append([id, account_name, total_money])
  
 def get_accounts(matrix_account):
     print("="*print_styles.MAX_SPACES_BUDGETS)
@@ -71,18 +70,18 @@ def change_money_account(account):
         total_money = input("Ingrese un nuevo monto de dinero: ")
     account[2] = int(total_money)
 
-def delete_account():
-    get_accounts(accounts)
+def delete_account(matrix_accounts):
+    get_accounts(matrix_accounts)
     id = int(input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: "))
     delete=[]
     index=0
     if id == 0:
         print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
         return
-    for acc in accounts:
+    for acc in matrix_accounts:
         if acc[0]==id:
-            index=accounts.index(acc)
-            delete=accounts.pop(index)
+            index=matrix_accounts.index(acc)
+            delete=matrix_accounts.pop(index)
             print(f"{print_styles.GREEN}Operación realizada con éxito. Cuenta eliminada correctamente.{print_styles.RESET}")
             return
     print()
