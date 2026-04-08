@@ -169,7 +169,8 @@ def main():
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
                     permission= has_permission(user,READ)
-                    if permission:get_categories(categories)
+                    if permission:
+                        get_categories(categories)
                 elif option == "2":   # Opción 2
                     permission= has_permission(user,READ_WRITE)
                     if permission:
@@ -214,10 +215,11 @@ def main():
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
-                    permission= has_permission(user,READ)
-                    if permission:get_budgets(budgets)
+                    permission = has_permission(user, READ)
+                    if permission:
+                        get_budgets(budgets, categories)
                 elif option == "2":   # Opción 2
-                    permission= has_permission(user,READ_WRITE)
+                    permission = has_permission(user, READ_WRITE)
                     if permission:
                         get_categories(categories)
                         category_id = int(input("Ingrese el ID de la categoría: "))
@@ -263,7 +265,8 @@ def main():
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":   # Opción 1
                     permission = has_permission(user,READ)
-                    if permission:get_accounts(accounts)
+                    if permission:
+                        get_accounts(accounts)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user,READ_WRITE)
                     if permission:

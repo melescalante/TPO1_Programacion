@@ -16,12 +16,17 @@ def get_budgets(matrix_budgets, matrix_categories):
 
 def create_budget(matrix_budgets, category_id, limit_amount, matrix_categories):
     id_budget = create_id(matrix_budgets)
-    print("Id creado:", id_budget)
     category = get_raw_by_id(matrix_categories, category_id)
-    id_category = category[0]
-    if (id_category is None):
-        print("\033[31mLa categoría no existe. Por favor, cree una.\033[0m", id_category)
+
+    if category is None:
+        print("\033[31mLa categoría no existe. Por favor, cree una.\033[0m")
         return
+    
+    id_category = category[0]
+    
+    if limit_amount < 0:
+        print("\033[31mEl presupuesto a asignar debe ser positivo.\033[0m")
+        return 
     
     for category in matrix_categories:
         if category[0] == id_category:

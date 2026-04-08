@@ -48,9 +48,9 @@ def delete_category(matrix_categories, matrix_transactions, matrix_budgets):
             index=matrix_categories.index(category)
             delete=matrix_categories.pop(index)
             print("\033[32mOperación realizada con éxito. Categoria eliminada correctamente.\033[0m")
-            break
+            return
     
-    print()
+    print(f"{print_styles.RED}La categoría no existe.{print_styles.RESET}")
 
 def update_category(matrix_categories):
     get_categories(matrix_categories)

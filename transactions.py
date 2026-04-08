@@ -29,7 +29,7 @@ def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories):
     get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
     id = int(input("Que transaccion deseas eliminar? Indique el numero o escriba 0 para salir: "))
     if id == 0:
-        print("f{print_styles.GREEN}No se elimino ninguna transacción.{print_styles.RESET}")
+        print(f"{print_styles.GREEN}No se elimino ninguna transacción.{print_styles.RESET}")
         return
     for transaction in matrix_transactions:
         if transaction[0]==id:
@@ -202,7 +202,7 @@ def get_transactions(matrix_transactions, matrix_accounts, matrix_categories):
 def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_categories):
     get_categories(matrix_categories)
     print(" ")
-    id_category=int(input(f"{print_styles.BOLD_BLUE}Buscar en sus transacciones por la categoria (Ingrese el numero):{print_styles.RESET}"))
+    id_category = int(input(f"{print_styles.BOLD_BLUE}Buscar en sus transacciones por la categoria (Ingrese el numero):{print_styles.RESET} "))
     transactions_by_category=list(filter(lambda x:x[2]==id_category, matrix_transactions))
     if len(transactions_by_category)==0:
         print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
