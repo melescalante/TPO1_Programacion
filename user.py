@@ -5,10 +5,10 @@ def login():
     print("Bienvenido/a al sistema de Gestor de Gastos.")
     email= input("Ingrese su email: ")
     email_lower=email.lower()
-    email_validation=re.findall('.@',email_lower)
     password= input("Ingrese su contraseña: ")
     password_lower= password.lower()
-    if not email_validation:
+    result=validate_email(email)
+    if not result:
         print(f"{print_styles.RED}Debe ingresar un email valido.{print_styles.RESET}")
         return
     user_found=list(filter(lambda x:x["email"].lower()==email_lower and x["password"].lower()==password_lower, users))
@@ -18,6 +18,11 @@ def login():
     if not user_found:
         print(f"{print_styles.RED}No existe el usuario ingresado.{print_styles.RESET}")
     return
+
+def validate_email(email):
+    patter=re.compile(r'[\w\-=+\[{;:\'\"}\],\./?`~\$]+@[a-z0-9]+\.[a-z]{2,}')
+    result= re.findall(patter, email)
+    if result: return True
 
 def is_logged(loggedUser):
     if (loggedUser): return True
