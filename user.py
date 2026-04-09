@@ -12,9 +12,15 @@ def login():
     password= input("Ingrese su contraseña: ")
     password_lower= password.lower()
     result=validate_email(email)
+    valid_password = validate_password(password_lower)
     if not result:
         print(f"{print_styles.RED}Debe ingresar un email valido.{print_styles.RESET}")
         return
+    
+    if not valid_password:
+        print(f"{print_styles.RED}Debe ingresar una contraseña valida.{print_styles.RESET}")
+        return
+    
     user_found=list(filter(lambda x:x["email"].lower()==email_lower and x["password"].lower()==password_lower, users))
     if user_found:
         print(f"Bienvenido {print_styles.BOLD}{user_found[0]["username"].title()}!{print_styles.RESET}")
