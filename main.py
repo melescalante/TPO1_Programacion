@@ -11,7 +11,7 @@ from permissions import has_permission
 READ=1
 READ_WRITE=2
 
-# user=users[0]
+user=users[0]
 while user==None:
     user=login()
 
@@ -87,6 +87,7 @@ def main():
                     permission= has_permission(user,READ)
                     if permission:
                         get_transactions(transactions, accounts, categories)
+                        # get_transactions(transactions, accounts, categories, lambda x: x[5] >= 10000)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user,READ_WRITE)
                     if permission:

@@ -184,12 +184,15 @@ def change_month_transaction(transaction):
     transaction[7] = new_month.capitalize()
     print(f"{print_styles.GREEN}Mes actualizado.{print_styles.RESET}")
 
-def get_transactions(matrix_transactions, matrix_accounts, matrix_categories):
+def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, predicate = None):
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f'{"Transacciones":^125}')
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{'Mes':<15}{print_styles.RESET}")
     for i in range(len(matrix_transactions)):
+        if predicate is not None and not predicate(matrix_transactions[i]):
+            continue
+
         id=matrix_transactions[i][0]
         account = get_raw_by_id(matrix_accounts,matrix_transactions[i][1])
         category = get_raw_by_id(matrix_categories,matrix_transactions[i][2])
@@ -197,7 +200,7 @@ def get_transactions(matrix_transactions, matrix_accounts, matrix_categories):
         date =  matrix_transactions[i][3]
         hour =  matrix_transactions[i][4]
         amount = matrix_transactions[i][5]
-        amount_str = "$"+ str(matrix_transactions[i][5])
+        amount_str = "$"+ str(abs(matrix_transactions[i][5]))
         description =  matrix_transactions[i][6]
         description_slicing = slice_words(29,description)
         month =  matrix_transactions[i][7]

@@ -2,12 +2,13 @@ from Styles import print_styles
 from categories import get_categories
 from helper import create_id, get_raw_by_id
 from functools import reduce
+
 def update_budget_balance(matrix_budgets, id_budget, amount):
     for budget in matrix_budgets:
         if budget[0] == id_budget:
             budget[2] += amount
             return
-    return
+        
 def get_budgets(matrix_budgets, matrix_categories):
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f'{"Presupuestos":^60}')
@@ -22,7 +23,7 @@ def get_budgets(matrix_budgets, matrix_categories):
         if amount<0:
             underline = print_styles.UNDERLINE_EXPENSE
         print(f"{underline}{id:<10}{category[1]:<25}{amount_str:<25}{print_styles.RESET}")
-    return
+    
 
 def create_budget(matrix_budgets, category_id, limit_amount, matrix_categories):
     id_budget = create_id(matrix_budgets)
