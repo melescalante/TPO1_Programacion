@@ -1,6 +1,10 @@
 from data import users
 import re 
 from Styles import print_styles
+
+email_pattern =re.compile(r'[\w\-=+\[{;:\'\"}\],\./?`~\$]+@[a-z0-9]+\.[a-z]{2,}')
+password_pattern =re.compile("^[\w=+-]{8,20}$")
+
 def login():
     print("Bienvenido/a al sistema de Gestor de Gastos.")
     email= input("Ingrese su email: ")
@@ -20,9 +24,12 @@ def login():
     return
 
 def validate_email(email):
-    patter=re.compile(r'[\w\-=+\[{;:\'\"}\],\./?`~\$]+@[a-z0-9]+\.[a-z]{2,}')
-    result= re.findall(patter, email)
-    if result: return True
+    result = email_pattern.findall(email)
+    return True if result else False
+
+def validate_password(password):
+    result = password_pattern.search(password)
+    return True if result else False
 
 def is_logged(loggedUser):
     if (loggedUser): return True
