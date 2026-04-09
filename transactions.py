@@ -29,7 +29,7 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
     update_account_balance(matrix_accounts, id_raw_account, final_amount)
     update_budget_balance(matrix_budgets,id_raw_budget,final_amount)
 
-def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories):
+def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, matrix_budgets):
     get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
     id = int(input("Que transaccion deseas eliminar? Indique el numero o escriba 0 para salir: "))
     if id == 0:
@@ -40,10 +40,13 @@ def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories):
             index=matrix_transactions.index(transaction)
             delete=matrix_transactions.pop(index)
             id_account = delete[1]
+            id_category = delete[2]
+            id_budget=get_budget_by_category(matrix_budgets,id_category)[0]
             retrieve_total_money = delete[5]
             update_account_balance(matrix_accounts, id_account, -retrieve_total_money)
+            update_budget_balance(matrix_budgets,id_budget,-retrieve_total_money)
             get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
-            print("f{print_styles.GREEN}Operación realizada con éxito. Transaccion eliminada correctamente.{print_styles.RESET}")
+            print(f"{print_styles.GREEN}Operación realizada con éxito. Transaccion eliminada correctamente.{print_styles.RESET}")
             return
         
     print(f"{print_styles.RED}Operación realizada sin éxito, el número de ID no existe.{print_styles.RESET}")
@@ -53,7 +56,7 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
     
     id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
     if id_transaction == 0:
-        print("f{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
+        print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
         return
 
     transaction = get_raw_by_id(matrix_transactions, id_transaction)
@@ -61,7 +64,7 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
         print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
         id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
         if id_transaction == 0:
-            print("f{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
+            print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
             return
         transaction = get_raw_by_id(matrix_transactions, id_transaction)
 
@@ -93,7 +96,7 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
         elif opcion == "7":
             change_month_transaction(transaction)
         elif opcion == "0":
-            print("f{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
+            print(f"{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
             return
         else:
             print(f"{print_styles.RED}Opción no válida. Intente nuevamente.{print_styles.RESET}")
@@ -113,7 +116,7 @@ def change_account_transaction(transaction, matrix_accounts):
         update_account_balance(matrix_accounts, old_id_account, -money_transaction)
         update_account_balance(matrix_accounts, new_account_id, money_transaction)
         transaction[1] = new_account_id
-        print("f{print_styles.GREEN}ID de cuenta actualizado.{print_styles.RESET}")
+        print(f"{print_styles.GREEN}ID de cuenta actualizado.{print_styles.RESET}")
         return
 
 def change_category_transaction(transaction, matrix_categories):
@@ -127,7 +130,7 @@ def change_category_transaction(transaction, matrix_categories):
             continue
         
         transaction[2] = new_category_id
-        print("f{print_styles.GREEN}ID de categoría actualizado.{print_styles.RESET}")
+        print(f"{print_styles.GREEN}ID de categoría actualizado.{print_styles.RESET}")
         return
 
 def change_date_transaction(transaction):
@@ -178,7 +181,7 @@ def change_month_transaction(transaction):
         print(f"{print_styles.RED}El mes ingresado no tiene valor o contiene números.{print_styles.RESET}")
         new_month = input("Ingrese el nuevo mes: ")
     transaction[7] = new_month.capitalize()
-    print("f{print_styles.GREEN}Mes actualizado.{print_styles.RESET}")
+    print(f"{print_styles.GREEN}Mes actualizado.{print_styles.RESET}")
 
 def get_transactions(matrix_transactions, matrix_accounts, matrix_categories):
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
