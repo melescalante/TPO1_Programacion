@@ -11,7 +11,7 @@ from permissions import has_permission
 READ=1
 READ_WRITE=2
 
-user=None
+# user=users[0]
 while user==None:
     user=login()
 
@@ -125,17 +125,17 @@ def main():
                             month = input("Ingrese el mes: ")
 
                             if sub_option == "1":
-                                add_transaction(transactions, accounts, categories, id_account, id_category, date, time, amount, descripcion, month)
+                                add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, time, amount, descripcion, month)
                             elif sub_option == "2":
-                                add_transaction(transactions, accounts, categories, id_account, id_category, date, time, amount, descripcion, month, "Expense")
+                                add_transaction(transactions, accounts, categories, budgets,id_account, id_category, date, time, amount, descripcion, month, "Expense")
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
-                        update_transaction(transactions, accounts, categories)
+                        update_transaction(transactions, accounts, categories, budgets)
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
                     if permission:
-                        delete_transaction(transactions, accounts, categories)
+                        delete_transaction(transactions, accounts, categories, budgets)
                 elif option=='5':
                      permission = has_permission(user,READ)
                      if permission:

@@ -51,7 +51,7 @@ def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, 
         
     print(f"{print_styles.RED}Operación realizada sin éxito, el número de ID no existe.{print_styles.RESET}")
 
-def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
+def update_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets):
     get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
     
     id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
@@ -69,7 +69,7 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
         transaction = get_raw_by_id(matrix_transactions, id_transaction)
 
     while True:
-        print("\033[1;34m¿Qué campo de la transacción deseas actualizar?{print_styles.RESET}")
+        print(f"\033[1;34m¿Qué campo de la transacción deseas actualizar?{print_styles.RESET}")
         print("1. Cuenta")
         print("2. Categoría")
         print("3. Fecha")
@@ -90,7 +90,7 @@ def update_transaction(matrix_transactions, matrix_accounts, matrix_categories):
         elif opcion == "4":
             change_time_transaction(transaction)
         elif opcion == "5":
-            change_amount_transaction(transaction, matrix_accounts)
+            change_amount_transaction(transaction, matrix_accounts, matrix_budgets)
         elif opcion == "6":
             change_description_transaction(transaction)
         elif opcion == "7":
@@ -149,7 +149,7 @@ def change_time_transaction(transaction):
     transaction[4] = new_time
     print(f"{print_styles.GREEN}Hora actualizada.{print_styles.RESET}")
 
-def change_amount_transaction(transaction, matrix_accounts):
+def change_amount_transaction(transaction, matrix_accounts, matrix_budgets):
     while True:
         new_amount_str = input("Ingrese el nuevo importe: ")
         not_sign = new_amount_str.replace("-", "", 1)
@@ -159,9 +159,10 @@ def change_amount_transaction(transaction, matrix_accounts):
         
         new_amount = int(new_amount_str)
         old_amount = transaction[5]
-        
+        id_budget=get_budget_by_category(matrix_budgets,transaction[2])[0]
         difference = new_amount - old_amount
         update_account_balance(matrix_accounts, transaction[1], difference)
+        update_budget_balance(matrix_budgets,id_budget,difference)
         
         transaction[5] = new_amount
         print(f"{print_styles.GREEN}Importe actualizado.{print_styles.RESET}")
