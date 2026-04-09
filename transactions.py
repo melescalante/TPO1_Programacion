@@ -2,11 +2,14 @@ from Styles import print_styles
 from categories import get_categories
 from accounts import update_account_balance, get_accounts
 from helper import create_id, get_raw_by_id, slice_words
+from budgets import update_budget_balance, get_budget_by_category
 
-def add_transaction(matrix_transactions, matrix_accounts, matrix_categories, id_account, id_category, date, time, amount, description, month, transaction_type="income"):  
+def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets, id_account, id_category, date, time, amount, description, month, transaction_type="income"):  
     id= create_id(matrix_transactions)
     id_raw_account = get_raw_by_id(matrix_accounts, id_account)[0]
     id_raw_category = get_raw_by_id(matrix_categories, id_category)[0]
+    
+    id_raw_budget= get_budget_by_category(matrix_budgets,id_raw_category)[0]
 
     if (id_raw_account is None):        
         print(f"{print_styles.RED}El ID ingresado para la cuenta no existe. Por favor, intente nuevamente.{print_styles.RESET}")
@@ -24,6 +27,7 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories, id_
     matrix_transactions.append([id, id_raw_account, id_raw_category, date, time, final_amount, description, month])
     
     update_account_balance(matrix_accounts, id_raw_account, final_amount)
+    update_budget_balance(matrix_budgets,id_raw_budget,final_amount)
 
 def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories):
     get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
@@ -178,7 +182,7 @@ def change_month_transaction(transaction):
 
 def get_transactions(matrix_transactions, matrix_accounts, matrix_categories):
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
-    print(f'{"Transacciones":^130}')
+    print(f'{"Transacciones":^125}')
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{'Mes':<15}{print_styles.RESET}")
     for i in range(len(matrix_transactions)):
