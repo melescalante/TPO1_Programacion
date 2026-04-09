@@ -1,7 +1,13 @@
 from Styles import print_styles
 from categories import get_categories
 from helper import create_id, get_raw_by_id
-
+from functools import reduce
+def update_budget_balance(matrix_budgets, id_budget, amount):
+    for budget in matrix_budgets:
+        if budget[0] == id_budget:
+            budget[2] += amount
+            return
+    return
 def get_budgets(matrix_budgets, matrix_categories):
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f'{"Presupuestos":^60}')
@@ -122,3 +128,6 @@ def change_budget_amount(budget):
     budget[2] = int(budget_amount)
     print("\033[32mMonto actualizado.\033[0m")
 
+def get_budget_by_category(matrix_budgets,id_category):
+    register= reduce(lambda x,y: y if y[1]==id_category else x, matrix_budgets)
+    return register
