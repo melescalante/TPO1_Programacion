@@ -16,8 +16,12 @@ def get_budgets(matrix_budgets, matrix_categories):
     for i in range(len(matrix_budgets)):
         id=matrix_budgets[i][0]
         category = get_raw_by_id(matrix_categories,matrix_budgets[i][1])
-        amount = "$"+str(matrix_budgets[i][2])
-        print(f"{print_styles.BOLD}{id:<10}{print_styles.RESET}{category[1]:<25}{amount:<25}")
+        amount = matrix_budgets[i][2]
+        amount_str = "$"+str(matrix_budgets[i][2])
+        underline = print_styles.UNDERLINE_INCOME
+        if amount<0:
+            underline = print_styles.UNDERLINE_EXPENSE
+        print(f"{underline}{id:<10}{category[1]:<25}{amount_str:<25}{print_styles.RESET}")
     return
 
 def create_budget(matrix_budgets, category_id, limit_amount, matrix_categories):
