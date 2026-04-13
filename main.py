@@ -134,20 +134,25 @@ def main():
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
-                        get_transactions(transactions, accounts, categories)    
-                        id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
-                        if id_transaction == 0:
-                            print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
-                            break
+                        get_transactions(transactions, accounts, categories)
 
-                        transaction = get_raw_by_id(transactions, id_transaction)
-                        while transaction is None:
-                            print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
+                        transaction = None
+                        while True:
                             id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
+                            if id_transaction < 0 or id_transaction > len(transactions):
+                                print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
+                                continue
+
                             if id_transaction == 0:
                                 print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
-                                return
+                                break
+
                             transaction = get_raw_by_id(transactions, id_transaction)
+                            
+                            if transaction is not None:
+                                break
+                            else:
+                                print(f"{print_styles.RED}La transacción no existe. Intente de nuevo.{print_styles.RESET}")
 
                         while transaction is not None:
                             print(f"\033[1;34m¿Qué campo de la transacción deseas actualizar?{print_styles.RESET}")
