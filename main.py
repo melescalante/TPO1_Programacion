@@ -144,7 +144,41 @@ def main():
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
-                        update_transaction(transactions, accounts, categories, budgets)
+                        get_transactions(transactions, accounts, categories)
+                        transaction = get_transaction_by_user_input(transactions)
+
+                        while transaction is not None:
+                            print(f"\033[1;34m¿Qué campo de la transacción deseas actualizar?{print_styles.RESET}")
+                            print("1. Cuenta")
+                            print("2. Categoría")
+                            print("3. Fecha")
+                            print("4. Hora")
+                            print("5. Importe")
+                            print("6. Descripción")
+                            print("7. Mes")
+                            print("0. Guardar y salir")
+                            
+                            opcion = input("Seleccione una opción: ")
+                            
+                            if opcion == "1":
+                                change_account_transaction(transaction, accounts)
+                            elif opcion == "2":
+                                change_category_transaction(transaction, categories)
+                            elif opcion == "3":
+                                change_date_transaction(transaction)
+                            elif opcion == "4":
+                                change_time_transaction(transaction)
+                            elif opcion == "5":
+                                change_amount_transaction(transaction, accounts, budgets)
+                            elif opcion == "6":
+                                change_description_transaction(transaction)
+                            elif opcion == "7":
+                                change_month_transaction(transaction)
+                            elif opcion == "0":
+                                print(f"{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
+                                break
+                            else:
+                                print(f"{print_styles.RED}Opción no válida. Intente nuevamente.{print_styles.RESET}")
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
                     if permission:
@@ -244,9 +278,28 @@ def main():
                         create_budget(budgets, category_id, limit_amount, categories)
 
                 elif option == "3":   # Opción 3
-                    permission = has_permission(user,READ_WRITE)
-                    if permission:
-                        update_budget(budgets, categories)
+                    permission = has_permission(user, READ_WRITE)
+                    if permission:                             
+                        get_budgets(budgets, categories)
+                        budget = get_budget_by_user_input(budgets)
+
+                        while budget is not None:
+                            print("\033[1;34m¿Qué campo del presupuesto deseas actualizar?\033[0m")
+                            print("1. Categoría")
+                            print("2. Monto")
+                            print("0. Guardar y salir")
+                            
+                            opcion = input("Seleccione una opción: ")
+                            
+                            if opcion == "1":
+                                update_category_for_budget(budget, categories)
+                            elif opcion == "2":
+                                update_budget_amount(budget)
+                            elif opcion == "0":
+                                print("\033[32mEl presupuesto se actualizó con éxito.\033[0m")
+                                break
+                            else:
+                                print("\033[31mOpción no válida. Intente nuevamente.\033[0m")
 
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
@@ -295,7 +348,28 @@ def main():
 
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
-                    if permission:update_account(accounts)
+                    if permission:
+                        get_accounts(accounts)
+
+                        account = get_account_by_user_input(accounts)
+
+                        while account is not None:
+                            print(f"{print_styles.BOLD_BLUE}¿Qué campo de la cuenta deseas actualizar?{print_styles.RESET}")
+                            print("1. Nombre")
+                            print("2. Monto")
+                            print("0. Guardar y salir")
+                            
+                            opcion = input("Selecciona una opción: ")
+                            
+                            if opcion == "1":
+                                update_name_account(account)
+                            elif opcion == "2":
+                                update_money_account(account)
+                            elif opcion == "0":
+                                print(f"{print_styles.GREEN}La cuenta se actualizó con éxito.{print_styles.RESET}")
+                                break
+                            else:
+                                print(f"{print_styles.RED}Opción no válida. Intente nuevamente.{print_styles.RESET}")
 
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)

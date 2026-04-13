@@ -9,6 +9,26 @@ def update_budget_balance(matrix_budgets, id_budget, amount):
             budget[2] += amount
             return
         
+def get_budget_by_user_input(matrix_budgets):
+    while True:
+        id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))    
+        
+        if id_budget < 0 or id_budget > matrix_budgets[-1][0]:
+            print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
+            continue
+
+        if id_budget == 0:
+            print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
+            return
+
+        budget = get_raw_by_id(matrix_budgets, id_budget)
+        
+        if budget is None:
+            print(f"{print_styles.RED}El presupuesto no existe. Intente de nuevo.{print_styles.RESET}")
+            continue
+
+        return budget
+        
 def get_budgets(matrix_budgets, matrix_categories):
     count_matrix= len(matrix_budgets)
     print("="*print_styles.MAX_SPACES_BUDGETS)
@@ -64,49 +84,9 @@ def delete_budget(matrix_budgets, matrix_categories):
             print("\033[32mOperación realizada con éxito. Presupuesto eliminado correctamente.\033[0m")
             return
     
-    print("\033[31mNo se encontró el presupuesto a eliminar.\033[0m")
+    print("\033[31mNo se encontró el presupuesto a eliminar.\033[0m")    
 
-def update_budget(matrix_budgets, matrix_categories):
-    get_budgets(matrix_budgets, matrix_categories)
-    id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))    
-    if id_budget == 0:
-        print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
-        return
-    
-    budget = get_raw_by_id(matrix_budgets, id_budget)
-    while budget is None:
-        print("\033[31mEl presupuesto no existe.\033[0m")
-        
-        id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))
-        while id_budget < 0 or id_budget >= matrix_budgets[-1][0]:
-            print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
-            id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))
-            
-        if id_budget == 0:
-            print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
-            return
-                
-        budget = get_raw_by_id(matrix_budgets, id_budget)
-    
-    while True:
-        print("\033[1;34m¿Qué campo del presupuesto deseas actualizar?\033[0m")
-        print("1. Categoría")
-        print("2. Monto")
-        print("0. Guardar y salir")
-        
-        opcion = input("Seleccione una opción: ")
-        
-        if opcion == "1":
-            change_category_for_budget(budget, matrix_categories)
-        elif opcion == "2":
-            change_budget_amount(budget)
-        elif opcion == "0":
-            print("\033[32mEl presupuesto se actualizó con éxito.\033[0m")
-            return
-        else:
-            print("\033[31mOpción no válida. Intente nuevamente.\033[0m")
-
-def change_category_for_budget(budget, matrix_categories):
+def update_category_for_budget(budget, matrix_categories):
     get_categories(matrix_categories)
     id_category = int(input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: "))
     if id_category == 0:
@@ -127,7 +107,7 @@ def change_category_for_budget(budget, matrix_categories):
     budget[1] = id_category
     print("\033[32mCategoría actualizada.\033[0m")
 
-def change_budget_amount(budget):
+def update_budget_amount(budget):
     budget_amount = input("Ingrese el nuevo monto del presupuesto: ")
     while not budget_amount.isnumeric():
         print("\033[33mEl valor que ingresó no es un número válido.\033[0m")

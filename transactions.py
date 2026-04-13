@@ -51,56 +51,6 @@ def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, 
         
     print(f"{print_styles.RED}Operación realizada sin éxito, el número de ID no existe.{print_styles.RESET}")
 
-def update_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets):
-    get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
-    
-    id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
-    if id_transaction == 0:
-        print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
-        return
-
-    transaction = get_raw_by_id(matrix_transactions, id_transaction)
-    while transaction is None:
-        print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
-        id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
-        if id_transaction == 0:
-            print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
-            return
-        transaction = get_raw_by_id(matrix_transactions, id_transaction)
-
-    while True:
-        print(f"\033[1;34m¿Qué campo de la transacción deseas actualizar?{print_styles.RESET}")
-        print("1. Cuenta")
-        print("2. Categoría")
-        print("3. Fecha")
-        print("4. Hora")
-        print("5. Importe")
-        print("6. Descripción")
-        print("7. Mes")
-        print("0. Guardar y salir")
-        
-        opcion = input("Seleccione una opción: ")
-        
-        if opcion == "1":
-            change_account_transaction(transaction, matrix_accounts)
-        elif opcion == "2":
-            change_category_transaction(transaction, matrix_categories)
-        elif opcion == "3":
-            change_date_transaction(transaction)
-        elif opcion == "4":
-            change_time_transaction(transaction)
-        elif opcion == "5":
-            change_amount_transaction(transaction, matrix_accounts, matrix_budgets)
-        elif opcion == "6":
-            change_description_transaction(transaction)
-        elif opcion == "7":
-            change_month_transaction(transaction)
-        elif opcion == "0":
-            print(f"{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
-            return
-        else:
-            print(f"{print_styles.RED}Opción no válida. Intente nuevamente.{print_styles.RESET}")
-
 def change_account_transaction(transaction, matrix_accounts):
     while True:
         get_accounts(matrix_accounts)
@@ -223,3 +173,22 @@ def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_ca
         print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
         return
     get_transactions(transactions_by_category, matrix_accounts, matrix_categories)
+
+def get_transaction_by_user_input(matrix_Transactions):
+    while True:
+        id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
+        if id_transaction < 0 or id_transaction > len(matrix_Transactions):
+            print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
+            continue
+
+        if id_transaction == 0:
+            print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
+            return None
+
+        transaction = get_raw_by_id(matrix_Transactions, id_transaction)
+        
+        if transaction is None:
+            print(f"{print_styles.RED}La transacción no existe. Intente de nuevo.{print_styles.RESET}")
+            continue
+
+        return transaction

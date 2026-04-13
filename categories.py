@@ -55,29 +55,31 @@ def delete_category(matrix_categories, matrix_transactions, matrix_budgets):
     
     print(f"{print_styles.RED}La categoría no existe.{print_styles.RESET}")
 
-def update_category(matrix_categories):
+def update_category(matrix_categories):    
     get_categories(matrix_categories)
-    id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
-    
-    if id_category == 1:
-        print("\033[31mLa categoría deseada no puede ser actualizada.\033[0m")
-        return
-
-    if id_category == 0:
-        print("\033[32mNo se actualizo ninguna categoría.\033[0m")
-        return
-
-    category = get_raw_by_id(matrix_categories, id_category)
-    while category is None:
-        print("\033[31mLa categoría no existe.\033[0m")
-
+    category = None
+    while True:
         id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
+        
+        if id_category < 0 or id_category > len(matrix_categories):
+            print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
+            continue
+
         if id_category == 0:
             print("\033[32mNo se actualizo ninguna categoría.\033[0m")
             return
-                
+            
+        if id_category == 1:
+            print("\033[31mLa categoría deseada no puede ser actualizada.\033[0m")
+            return
+
         category = get_raw_by_id(matrix_categories, id_category)
-    
+        
+        if category is not None:
+            break
+        else:
+            print("\033[31mLa categoría no existe.\033[0m")
+
     change_category(category)
 
 def change_category(category):
