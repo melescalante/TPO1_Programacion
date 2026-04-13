@@ -10,7 +10,6 @@ def update_budget_balance(matrix_budgets, id_budget, amount):
             return
         
 def get_budget_by_user_input(matrix_budgets):
-    budget = None
     while True:
         id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))    
         
@@ -24,10 +23,11 @@ def get_budget_by_user_input(matrix_budgets):
 
         budget = get_raw_by_id(matrix_budgets, id_budget)
         
-        if budget is not None:
-            return
-        else:
+        if budget is None:
             print(f"{print_styles.RED}El presupuesto no existe. Intente de nuevo.{print_styles.RESET}")
+            continue
+
+        return budget
         
 def get_budgets(matrix_budgets, matrix_categories):
     count_matrix= len(matrix_budgets)

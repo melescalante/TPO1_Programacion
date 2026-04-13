@@ -173,3 +173,22 @@ def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_ca
         print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
         return
     get_transactions(transactions_by_category, matrix_accounts, matrix_categories)
+
+def get_transaction_by_user_input(matrix_Transactions):
+    while True:
+        id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
+        if id_transaction < 0 or id_transaction > len(matrix_Transactions):
+            print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
+            continue
+
+        if id_transaction == 0:
+            print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
+            return None
+
+        transaction = get_raw_by_id(matrix_Transactions, id_transaction)
+        
+        if transaction is None:
+            print(f"{print_styles.RED}La transacción no existe. Intente de nuevo.{print_styles.RESET}")
+            continue
+
+        return transaction
