@@ -4,7 +4,7 @@ from budgets import *
 from categories import *
 from accounts import *
 from user import *
-
+from analytics import * 
 from permissions import has_permission
 
 # Permissions
@@ -32,7 +32,7 @@ def main():
     #----------------------------------------------------------------------------------------------
     while True:
         while True:
-            options = 4
+            options = 5
             print()
             print("---------------------------")
             print("MENÚ PRINCIPAL")
@@ -41,6 +41,8 @@ def main():
             print("[2] Gestión de Categorías")
             print("[3] Gestión de Presupuestos")
             print("[4] Gestión de Cuentas")
+            print("[5] Resumen")
+
             print("---------------------------")
             print("[0] Salir del programa")
             print("---------------------------")
@@ -284,6 +286,34 @@ def main():
                     if permission:
                         delete_account(accounts)
 
+        elif option == "5":   # Opción 5
+
+            while True:
+                while True:
+                    options = 4
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > Resumen")
+                    print("---------------------------")
+                    print(f"Total Gastado en el mes: {total_last_month(transactions)}")
+                    print(f"Promedio de total gastado por mes: {average_month(transactions)}")
+                    print("Categoria con mas gastos: ")
+                    print("Cuenta con mas gastos:")
+                    print("---------------------------")
+                    print("[0] Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    
+                    option = input("Seleccione una opción: ")
+                    if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
+
+                if option == "0": # Opción salir del submenú
+                    break # No salimos del programa, volvemos al menú anterior
+              
         print("\n\n")
 
 
