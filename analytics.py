@@ -1,11 +1,14 @@
+from helper import get_month
+
 def total_last_month(transactions):
     last_year = 0
     last_month = 0
+    month = ""
 
     for i in transactions:
         date = i[3]
         day, month, year = date.split("-")
-
+        
         month = int(month)
         year = int(year)
 
@@ -25,7 +28,7 @@ def total_last_month(transactions):
         if month == last_month and year == last_year and i[5] < 0:
             total_expenses += i[5]
 
-    return abs(total_expenses)
+    return abs(total_expenses), get_month(last_month)
 
 def average_month(transactions):
     total_month = {}
