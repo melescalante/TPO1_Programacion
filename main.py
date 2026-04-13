@@ -11,7 +11,7 @@ from permissions import has_permission
 READ=1
 READ_WRITE=2
 
-user=users[1]
+user=users[0]
 while user==None:
     user=login()
 
@@ -21,11 +21,6 @@ is_logged(user)
 # CUERPO PRINCIPAL
 #----------------------------------------------------------------------------------------------
 def main():
-    #-------------------------------------------------
-    # Inicialización de variables
-    #----------------------------------------------------------------------------------------------
-    clientes = {...}
-    
 
     #-------------------------------------------------
     # Bloque de menú
@@ -72,15 +67,15 @@ def main():
                     print("MENÚ PRINCIPAL > Gestión de Transacciones")
                     print("---------------------------")
                     if can_read:
-                        print("[1] Mostrar Transacciones")
+                        print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Transacciones")
             
                         if can_write:
-                            print("[2] Añadir Transacciones")
-                            print("[3] Actualizar Transacciones")
-                            print("[4] Eliminar Transacciones")
-                        print("[5] Ver Transacciones por Categoria")
+                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Transacciones")
+                            print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Transacciones")
+                            print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Transacciones")
+                        print(f"{print_styles.BOLD}[5]{print_styles.RESET} Ver Transacciones por Categoria")
                     print("---------------------------")
-                    print("[0] Volver al menú anterior")
+                    print(f"{print_styles.BOLD}[0]{print_styles.RESET} Volver al menú anterior")
                     print("---------------------------")
                     print()
                     
@@ -110,10 +105,10 @@ def main():
                                 print("---------------------------")
                                 print("MENÚ PRINCIPAL > Gestión de Transacciones > Añadir")
                                 print("---------------------------")
-                                print("[1] Opción 1 (Ingreso)")
-                                print("[2] Opción 2 (Egreso)")
+                                print(f"{print_styles.BOLD}[1]{print_styles.RESET} Opción 1 (Ingreso)")
+                                print(f"{print_styles.BOLD}[2]{print_styles.RESET} Opción 2 (Egreso)")
                                 print("---------------------------")
-                                print("[0] Volver al menú anterior")
+                                print(f"{print_styles.BOLD}[0]{print_styles.RESET} Volver al menú anterior")
                                 print("---------------------------")
                                 print()
                                 
@@ -149,14 +144,14 @@ def main():
 
                         while transaction is not None:
                             print(f"\033[1;34m¿Qué campo de la transacción deseas actualizar?{print_styles.RESET}")
-                            print("1. Cuenta")
-                            print("2. Categoría")
-                            print("3. Fecha")
-                            print("4. Hora")
-                            print("5. Importe")
-                            print("6. Descripción")
-                            print("7. Mes")
-                            print("0. Guardar y salir")
+                            print(f"{print_styles.BOLD}[1]{print_styles.RESET} Cuenta")
+                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Categoría")
+                            print(f"{print_styles.BOLD}[3]{print_styles.RESET} Fecha")
+                            print(f"{print_styles.BOLD}[4]{print_styles.RESET} Hora")
+                            print(f"{print_styles.BOLD}[5]{print_styles.RESET} Importe")
+                            print(f"{print_styles.BOLD}[6]{print_styles.RESET} Descripción")
+                            print(f"{print_styles.BOLD}[7]{print_styles.RESET} Mes")
+                            print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
                             opcion = input("Seleccione una opción: ")
                             
@@ -285,9 +280,9 @@ def main():
 
                         while budget is not None:
                             print("\033[1;34m¿Qué campo del presupuesto deseas actualizar?\033[0m")
-                            print("1. Categoría")
-                            print("2. Monto")
-                            print("0. Guardar y salir")
+                            print(f"{print_styles.BOLD}[1]{print_styles.RESET} Categoría")
+                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Monto")
+                            print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
                             opcion = input("Seleccione una opción: ")
                             
@@ -355,9 +350,9 @@ def main():
 
                         while account is not None:
                             print(f"{print_styles.BOLD_BLUE}¿Qué campo de la cuenta deseas actualizar?{print_styles.RESET}")
-                            print("1. Nombre")
-                            print("2. Monto")
-                            print("0. Guardar y salir")
+                            print(f"{print_styles.BOLD}[1]{print_styles.RESET} Nombre")
+                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Monto")
+                            print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
                             opcion = input("Selecciona una opción: ")
                             
