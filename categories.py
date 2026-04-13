@@ -62,7 +62,7 @@ def update_category(matrix_categories):
         id_category = int(input("¿Que categoría desea actualizar? Indique el numero o escriba 0 para salir: "))
         
         if id_category < 0 or id_category > len(matrix_categories):
-            print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
+            print("\033[31mNúmero invalido. Vuelva a ingresar un ID\033[0m")
             continue
 
         if id_category == 0:
