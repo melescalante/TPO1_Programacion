@@ -11,7 +11,7 @@ from permissions import has_permission
 READ=1
 READ_WRITE=2
 
-user=users[0]
+user=users[1]
 while user==None:
     user=login()
 
@@ -31,20 +31,25 @@ def main():
     # Bloque de menú
     #----------------------------------------------------------------------------------------------
     while True:
+        can_read = has_permission(user, READ)
+        can_write = has_permission(user, READ_WRITE)
+        valid_options = ["0"]
+        if can_read: valid_options.extend(["1"])
+        if can_write: valid_options.extend(["2", "3", "4"])
         while True:
             options = 5
             print()
             print("---------------------------")
             print("MENÚ PRINCIPAL")
             print("---------------------------")
-            print("[1] Gestión de Transacciones")
-            print("[2] Gestión de Categorías")
-            print("[3] Gestión de Presupuestos")
-            print("[4] Gestión de Cuentas")
-            print("[5] Resumen")
+            print(f"{print_styles.BOLD}[1]{print_styles.RESET} Gestión de Transacciones")
+            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Gestión de Categorías")
+            print(f"{print_styles.BOLD}[3]{print_styles.RESET} Gestión de Presupuestos")
+            print(f"{print_styles.BOLD}[4]{print_styles.RESET} Gestión de Cuentas")
+            print(f"{print_styles.BOLD}[5]{print_styles.RESET} Resumen")
 
             print("---------------------------")
-            print("[0] Salir del programa")
+            print(f"{print_styles.BOLD}[0]{print_styles.RESET} Salir del programa")
             print("---------------------------")
             print()
             
@@ -66,18 +71,23 @@ def main():
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Gestión de Transacciones")
                     print("---------------------------")
-                    print("[1] Mostrar Transacciones")
-                    print("[2] Añadir Transacciones")
-                    print("[3] Actualizar Transacciones")
-                    print("[4] Eliminar Transacciones")
-                    print("[5] Ver Transacciones por Categoria")
+                    if can_read:
+                        print("[1] Mostrar Transacciones")
+            
+                        if can_write:
+                            print("[2] Añadir Transacciones")
+                            print("[3] Actualizar Transacciones")
+                            print("[4] Eliminar Transacciones")
+                        print("[5] Ver Transacciones por Categoria")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
                     print("---------------------------")
                     print()
                     
                     option = input("Seleccione una opción: ")
-                    if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
+                    
+                    if can_read: valid_options.extend(["5"])
+                    if option in valid_options: 
                         break
                     else:
                         input("Opción inválida. Presione ENTER para volver a seleccionar.")
@@ -152,17 +162,19 @@ def main():
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Gestión de Categorías")
                     print("---------------------------")
-                    print("[1] Mostrar Categorías")
-                    print("[2] Añadir Categoría")
-                    print("[3] Actualizar Categoría")
-                    print("[4] Eliminar Categoría")
+                    if can_read:
+                        print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Categorías")
+                        if can_write:
+                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Categoría")
+                            print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Categoría")
+                            print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Categoría")
                     print("---------------------------")
-                    print("[0] Volver al menú anterior")
+                    print(f"{print_styles.BOLD}[0]{print_styles.RESET} Volver al menú anterior")
                     print("---------------------------")
                     print()
                     
                     option = input("Seleccione una opción: ")
-                    if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
+                    if option in valid_options: 
                         break
                     else:
                         input("Opción inválida. Presione ENTER para volver a seleccionar.")
@@ -199,17 +211,19 @@ def main():
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Gestión de Presupuestos")
                     print("---------------------------")
-                    print("[1] Mostrar Presupuestos")
-                    print("[2] Añadir Presupuesto")
-                    print("[3] Actualizar Presupuestos")
-                    print("[4] Eliminar Presupuesto")
+                    if can_read:
+                        print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Presupuestos")
+                        if can_write:
+                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Presupuesto")
+                            print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Presupuestos")
+                            print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Presupuesto")
                     print("---------------------------")
-                    print("[0] Volver al menú anterior")
+                    print(f"{print_styles.BOLD}[0]{print_styles.RESET} Volver al menú anterior")
                     print("---------------------------")
                     print()
                     
                     option = input("Seleccione una opción: ")
-                    if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
+                    if option in valid_options: # Sólo continua si se elije una opcion de menú válida
                         break
                     else:
                         input("Opción inválida. Presione ENTER para volver a seleccionar.")
@@ -248,17 +262,19 @@ def main():
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Gestión de Cuentas")
                     print("---------------------------")
-                    print("[1] Mostrar Cuentas")
-                    print("[2] Añadir Cuentas")
-                    print("[3] Actualizar Cuentas")
-                    print("[4] Eliminar Cuentas")
+                    if can_read:
+                        print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Cuentas")
+                        if can_write:
+                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Cuentas")
+                            print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Cuentas")
+                            print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Cuentas")
                     print("---------------------------")
-                    print("[0] Volver al menú anterior")
+                    print(f"{print_styles.BOLD}[0]{print_styles.RESET} Volver al menú anterior")
                     print("---------------------------")
                     print()
                     
                     option = input("Seleccione una opción: ")
-                    if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
+                    if option in valid_options: # Sólo continua si se elije una opcion de menú válida
                         break
                     else:
                         input("Opción inválida. Presione ENTER para volver a seleccionar.")

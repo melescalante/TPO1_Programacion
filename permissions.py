@@ -15,5 +15,5 @@ def has_permission(user, required_level):
     if user_level >= required_level:
         return True
             
-    print('No tienes permiso')
+    # print('No tienes permiso')
     return False
