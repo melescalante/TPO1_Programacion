@@ -185,8 +185,12 @@ def change_month_transaction(transaction):
     print(f"{print_styles.GREEN}Mes actualizado.{print_styles.RESET}")
 
 def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, predicate = None):
+    count_matrix= len(matrix_transactions)
+    
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f'{"Transacciones":^125}')
+    print("="*print_styles.MAX_SPACES_TRANSACTIONS)
+    print(f"{print_styles.BOLD_BLUE}Registros Totales: {count_matrix:<40}{print_styles.RESET}")
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{'Mes':<15}{print_styles.RESET}")
     for i in range(len(matrix_transactions)):

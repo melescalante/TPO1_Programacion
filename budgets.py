@@ -10,8 +10,11 @@ def update_budget_balance(matrix_budgets, id_budget, amount):
             return
         
 def get_budgets(matrix_budgets, matrix_categories):
+    count_matrix= len(matrix_budgets)
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f'{"Presupuestos":^60}')
+    print("="*print_styles.MAX_SPACES_BUDGETS)
+    print(f"{print_styles.BOLD_BLUE}Registros Totales: {count_matrix:<40}{print_styles.RESET}")
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Categoria':<25}{'Monto':<25}{print_styles.RESET}")
     for i in range(len(matrix_budgets)):

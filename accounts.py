@@ -9,15 +9,22 @@ def add_account(matrix_accounts, account_name, total_money):
     matrix_accounts.append([id, account_name, total_money])
  
 def get_accounts(matrix_account):
+    count_matrix= len(matrix_account)
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f'{"Cuentas":^60}')
     print("="*print_styles.MAX_SPACES_BUDGETS)
-    print(f"{print_styles.BOLD}{'Numero':<20}{'Nombre Cuenta':<30}{'Dinero':<30}{print_styles.RESET}")
+    print(f"{print_styles.BOLD_BLUE}Registros Totales: {count_matrix:<40}{print_styles.RESET}")
+    print("="*print_styles.MAX_SPACES_BUDGETS)
+    print(f"{print_styles.BOLD}{'Numero':<10}{'Nombre Cuenta':<25}{'Dinero':<25}{print_styles.RESET}")
     for i in range(len(matrix_account)):
         id=matrix_account[i][0]
         name = matrix_account[i][1]
-        amount = "$"+str(matrix_account[i][2])
-        print(f"{print_styles.BOLD}{id:<20}{print_styles.RESET}{name:<30}{amount:<30}")
+        amount=matrix_account[i][2]
+        amount_str = "$"+str(matrix_account[i][2])
+        underline = print_styles.UNDERLINE_INCOME
+        if amount<0:
+            underline= print_styles.UNDERLINE_EXPENSE
+        print(f"{underline}{id:<10}{name:<25}{amount_str:<25}{print_styles.RESET}")
     return
 
 def update_account(matrix_accounts):

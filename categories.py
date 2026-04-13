@@ -2,8 +2,11 @@ from Styles import print_styles
 from helper import create_id, get_raw_by_id, is_word_alpha
 
 def get_categories(matrix_categories):
+    count_matrix= len(matrix_categories)
     print("="*print_styles.MAX_SPACES_CATEGORIES)
     print(f'{"Categorias":^50}')
+    print("="*print_styles.MAX_SPACES_CATEGORIES)
+    print(f"{print_styles.BOLD_BLUE}Registros Totales: {count_matrix:<40}{print_styles.RESET}")
     print("="*print_styles.MAX_SPACES_CATEGORIES)
     print(f"{print_styles.BOLD}{'Numero':<20}{'Categoria':<30}{print_styles.RESET}")
     for i in range(len(matrix_categories)):
