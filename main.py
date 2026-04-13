@@ -284,24 +284,7 @@ def main():
                     permission = has_permission(user, READ_WRITE)
                     if permission:                             
                         get_budgets(budgets, categories)
-                        budget = None
-                        while True:
-                            id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))    
-                            
-                            if id_budget < 0 or id_budget > budgets[-1][0]:
-                                print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
-                                continue
-
-                            if id_budget == 0:
-                                print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
-                                break
-
-                            budget = get_raw_by_id(budgets, id_budget)
-                            
-                            if budget is not None:
-                                break
-                            else:
-                                print(f"{print_styles.RED}El presupuesto no existe. Intente de nuevo.{print_styles.RESET}")
+                        budget = get_budget_by_user_input(budgets)
 
                         while budget is not None:
                             print("\033[1;34m¿Qué campo del presupuesto deseas actualizar?\033[0m")
@@ -312,9 +295,9 @@ def main():
                             opcion = input("Seleccione una opción: ")
                             
                             if opcion == "1":
-                                change_category_for_budget(budget, categories)
+                                update_category_for_budget(budget, categories)
                             elif opcion == "2":
-                                change_budget_amount(budget)
+                                update_budget_amount(budget)
                             elif opcion == "0":
                                 print("\033[32mEl presupuesto se actualizó con éxito.\033[0m")
                                 break
