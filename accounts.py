@@ -27,50 +27,33 @@ def get_accounts(matrix_account):
         print(f"{underline}{id:<10}{name:<25}{amount_str:<25}{print_styles.RESET}")
     return
 
-def update_account(matrix_accounts):
-    get_accounts(matrix_accounts)
-    id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
-    if id_account == 0:
-        print(f"{print_styles.GREEN}No se actualizo ninguna cuenta.{print_styles.RESET}")
-        return
-
-    account = get_raw_by_id(matrix_accounts, id_account)
-    while account is None:
-        print(f"{print_styles.RED}La cuenta no existe.{print_styles.RESET}")
-
-        id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))            
-        if id_account == 0:
-            print(f"{print_styles.GREEN}No se actualizo ninguna cuenta.{print_styles.RESET}")
-            return
-                
-        account = get_raw_by_id(matrix_accounts, id_account)
-
+def get_account_by_user_input(matrix_accounts):
     while True:
-        print(f"{print_styles.BOLD_BLUE}¿Qué campo de la cuenta deseas actualizar?{print_styles.RESET}")
-        print("1. Nombre")
-        print("2. Monto")
-        print("0. Guardar y salir")
+        id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
         
-        opcion = input("Selecciona una opción: ")
-        
-        if opcion == "1":
-            change_name_account(account)
-        elif opcion == "2":
-            change_money_account(account)
-        elif opcion == "0":
-            print(f"{print_styles.GREEN}La cuenta se actualizó con éxito.{print_styles.RESET}")
-            return
-        else:
-            print(f"{print_styles.RED}Opción no válida. Intente nuevamente.{print_styles.RESET}")
+        if id_account < 0 or id_account > len(matrix_accounts):
+            print(f"{print_styles.RED}Entrada inválida. Debe ingresar un número.{print_styles.RESET}")
+            continue
 
-def change_name_account(account):
+        if id_account == 0:
+            print(f"{print_styles.GREEN}No se actualizó ninguna cuenta.{print_styles.RESET}")
+            return None
+
+        account = get_raw_by_id(matrix_accounts, id_account)
+        if account is None:
+            print(f"{print_styles.RED}La cuenta no existe.{print_styles.RESET}")
+            continue
+
+        return account
+
+def update_name_account(account):
     name_account = input("Ingrese un nuevo nombre de cuenta: ")
-    while len(name_account) == 0 or not name_account.isalpha():
+    while len(name_account) == 0 or not name_account.isalpha(): # bug, no admite espacios
         print(f"{print_styles.YELLOW}El nombre que ingreso no tiene valor o no es una palabra.{print_styles.RESET}")
         name_account = input("Ingrese un nuevo nombre de cuenta: ")
     account[1] = name_account
 
-def change_money_account(account):            
+def update_money_account(account):            
     total_money = input("Ingrese un nuevo monto de dinero: ")
     while not total_money.isnumeric():
         print(f"{print_styles.YELLOW}El valor que ingreso no es número o es menor a 0.{print_styles.RESET}")

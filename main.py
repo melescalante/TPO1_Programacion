@@ -135,7 +135,6 @@ def main():
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
                         get_transactions(transactions, accounts, categories)
-
                         transaction = get_transaction_by_user_input(transactions)
 
                         while transaction is not None:
@@ -333,7 +332,28 @@ def main():
 
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
-                    if permission:update_account(accounts)
+                    if permission:
+                        get_accounts(accounts)
+
+                        account = get_account_by_user_input(accounts)
+
+                        while account is not None:
+                            print(f"{print_styles.BOLD_BLUE}¿Qué campo de la cuenta deseas actualizar?{print_styles.RESET}")
+                            print("1. Nombre")
+                            print("2. Monto")
+                            print("0. Guardar y salir")
+                            
+                            opcion = input("Selecciona una opción: ")
+                            
+                            if opcion == "1":
+                                update_name_account(account)
+                            elif opcion == "2":
+                                update_money_account(account)
+                            elif opcion == "0":
+                                print(f"{print_styles.GREEN}La cuenta se actualizó con éxito.{print_styles.RESET}")
+                                break
+                            else:
+                                print(f"{print_styles.RED}Opción no válida. Intente nuevamente.{print_styles.RESET}")
 
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
