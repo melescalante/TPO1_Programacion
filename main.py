@@ -136,7 +136,7 @@ def main():
                     if permission: 
                         get_transactions(transactions, accounts, categories)
 
-                        transaction = None
+                        budget = None
                         while True:
                             id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
                             if id_transaction < 0 or id_transaction > len(transactions):
@@ -147,14 +147,14 @@ def main():
                                 print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
                                 break
 
-                            transaction = get_raw_by_id(transactions, id_transaction)
+                            budget = get_raw_by_id(transactions, id_transaction)
                             
-                            if transaction is not None:
+                            if budget is not None:
                                 break
                             else:
                                 print(f"{print_styles.RED}La transacción no existe. Intente de nuevo.{print_styles.RESET}")
 
-                        while transaction is not None:
+                        while budget is not None:
                             print(f"\033[1;34m¿Qué campo de la transacción deseas actualizar?{print_styles.RESET}")
                             print("1. Cuenta")
                             print("2. Categoría")
@@ -168,19 +168,19 @@ def main():
                             opcion = input("Seleccione una opción: ")
                             
                             if opcion == "1":
-                                change_account_transaction(transaction, accounts)
+                                change_account_transaction(budget, accounts)
                             elif opcion == "2":
-                                change_category_transaction(transaction, categories)
+                                change_category_transaction(budget, categories)
                             elif opcion == "3":
-                                change_date_transaction(transaction)
+                                change_date_transaction(budget)
                             elif opcion == "4":
-                                change_time_transaction(transaction)
+                                change_time_transaction(budget)
                             elif opcion == "5":
-                                change_amount_transaction(transaction, accounts, budgets)
+                                change_amount_transaction(budget, accounts, budgets)
                             elif opcion == "6":
-                                change_description_transaction(transaction)
+                                change_description_transaction(budget)
                             elif opcion == "7":
-                                change_month_transaction(transaction)
+                                change_month_transaction(budget)
                             elif opcion == "0":
                                 print(f"{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
                                 break
@@ -281,9 +281,45 @@ def main():
                         create_budget(budgets, category_id, limit_amount, categories)
 
                 elif option == "3":   # Opción 3
-                    permission = has_permission(user,READ_WRITE)
-                    if permission:
-                        update_budget(budgets, categories)
+                    permission = has_permission(user, READ_WRITE)
+                    if permission:                             
+                        get_budgets(budgets, categories)
+                        budget = None
+                        while True:
+                            id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))    
+                            
+                            if id_budget < 0 or id_budget > budgets[-1][0]:
+                                print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
+                                continue
+
+                            if id_budget == 0:
+                                print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
+                                break
+
+                            budget = get_raw_by_id(budgets, id_budget)
+                            
+                            if budget is not None:
+                                break
+                            else:
+                                print(f"{print_styles.RED}El presupuesto no existe. Intente de nuevo.{print_styles.RESET}")
+
+                        while budget is not None:
+                            print("\033[1;34m¿Qué campo del presupuesto deseas actualizar?\033[0m")
+                            print("1. Categoría")
+                            print("2. Monto")
+                            print("0. Guardar y salir")
+                            
+                            opcion = input("Seleccione una opción: ")
+                            
+                            if opcion == "1":
+                                change_category_for_budget(budget, categories)
+                            elif opcion == "2":
+                                change_budget_amount(budget)
+                            elif opcion == "0":
+                                print("\033[32mEl presupuesto se actualizó con éxito.\033[0m")
+                                break
+                            else:
+                                print("\033[31mOpción no válida. Intente nuevamente.\033[0m")
 
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
