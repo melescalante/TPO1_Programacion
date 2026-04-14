@@ -16,8 +16,8 @@ while user==None:
     user=login()
 
 is_logged(user)
-trans, total=calculate_porcent_of_category(transactions)
-get_porcent_of_category(trans,total, categories)
+trans, total=calculate_percentage_of_category(transactions)
+get_percentage_of_category(trans,total, categories)
 
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
