@@ -211,9 +211,9 @@ def calculate_percentage_of_category(matrix_transactions):
             filter_transactions.append(category)
             categories_proccess.add(current_category)
 
-    return filter_transactions,total
+    return filter_transactions, total
 
-def get_percentage_of_category(dicc, count_matrix, matrix_categories):
+def get_percentage_of_category(filter_transactions, count_matrix, matrix_categories):
     """
     dicc: lista de diccionarios con {'category': ..., 'registers': [...]}
     count_matrix: total general de transacciones (el len de la matriz original)
@@ -226,7 +226,7 @@ def get_percentage_of_category(dicc, count_matrix, matrix_categories):
     print(f"{print_styles.BOLD}{'Categoría':<25} | {'Cant.':<8} | {'Porcentaje':<15} | {'Dinero I/E':<15}| {'Transc. Minima':<15} | {'Transc. Maxima':<15}{print_styles.RESET} ")
     print("-" * 110)
 
-    for item in dicc:
+    for item in filter_transactions:
         name_category= get_raw_by_id(matrix_categories,item["category"])[1]
         name_sliced=slice_words(25,name_category)
         cant_registros_cat = len(item["registers"])

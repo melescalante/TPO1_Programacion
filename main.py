@@ -16,8 +16,6 @@ while user==None:
     user=login()
 
 is_logged(user)
-trans, total=calculate_percentage_of_category(transactions)
-get_percentage_of_category(trans,total, categories)
 
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
@@ -60,7 +58,7 @@ def main():
         if option == "0": # Opción salir del programa
             exit() # También puede ser sys.exit() para lo cual hay que importar el módulo sys
 
-        elif option == "1":   # Opción 1
+        elif option == "1":   # Opción 1 --> Gestión de transacciones
             while True:
                 while True:
                     options = 5
@@ -184,7 +182,10 @@ def main():
                      permission = has_permission(user,READ)
                      if permission:
                         get_transactions_by_category(transactions, accounts, categories)
-        elif option == "2":   # Opción 2
+                                                                                
+                input("Presione ENTER para volver a seleccionar.")
+        
+        elif option == "2":   # Opción 2 --> Gestión de categorías
 
             while True:
                 while True:
@@ -232,8 +233,10 @@ def main():
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
                         delete_category(categories, transactions, budgets)
+                                                        
+                input("Presione ENTER para volver a seleccionar.")
 
-        elif option == "3":   # Opción 3
+        elif option == "3":   # Opción 3 --> Gestión de Presupuestos
 
             while True:
                 while True:
@@ -302,8 +305,10 @@ def main():
                     permission = has_permission(user,READ_WRITE)
                     if permission:
                         delete_budget(budgets, categories)
+                                                        
+                input("Presione ENTER para volver a seleccionar.")
 
-        elif option == "4":   # Opción 4
+        elif option == "4":   # Opción 4 --> Gestión de cuentas
 
             while True:
                 while True:
@@ -372,21 +377,20 @@ def main():
                     permission = has_permission(user,READ_WRITE)
                     if permission:
                         delete_account(accounts)
+                                                        
+                input("Presione ENTER para volver a seleccionar.")
 
-        elif option == "5":   # Opción 5
+        elif option == "5":   # Opción 5 --> Resumen
 
             while True:
                 while True:
-                    options = 4
+                    options = 2
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Resumen")
                     print("---------------------------")
-                    total, month = total_last_month(transactions)
-                    print(f"Total Gastado en el mes de {month}: {total}")
-                    print(f"Promedio de total gastado por mes: {average_month(transactions)}")
-                    print("Categoria con mas gastos: ")
-                    print("Cuenta con mas gastos:")
+                    print("[1] Ver resumen de gastos totales")
+                    print("[2] Ver resumen de gastos por categoría")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
                     print("---------------------------")
@@ -401,6 +405,17 @@ def main():
 
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
+                elif option == "1":
+                    total, month = total_last_month(transactions)
+                    print(f"Total Gastado en el mes de {month}: {total}")
+                    print(f"Promedio de total gastado por mes: {average_month(transactions)}")
+                    print("Categoria con mas gastos: ")
+                    print("Cuenta con mas gastos:")
+                elif option == "2":
+                    filter_transactions, total = calculate_percentage_of_category(transactions)
+                    get_percentage_of_category(filter_transactions, total, categories)                
+                
+                input("Presione ENTER para volver a seleccionar.")
               
         print("\n\n")
 
