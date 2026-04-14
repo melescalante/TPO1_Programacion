@@ -1,10 +1,13 @@
+from datetime import datetime, time
+
 from data import accounts, transactions, categories, budgets
 from transactions import *
 from budgets import *
 from categories import *
 from accounts import *
 from user import *
-from analytics import * 
+from analytics import *
+from helper import *
 from permissions import has_permission
 
 # Permissions
@@ -58,7 +61,7 @@ def main():
         if option == "0": # Opción salir del programa
             exit() # También puede ser sys.exit() para lo cual hay que importar el módulo sys
 
-        elif option == "1":   # Opción 1
+        elif option == "1":   # Opción 1 --> Gestión de transacciones
             while True:
                 while True:
                     options = 5
@@ -121,21 +124,41 @@ def main():
 
                             if sub_option == "0":
                                 break # Vuelve al menú de Gestión de Transacciones
+                            
+                            actual_date = datetime.now().date()
+                            print(f"Su fecha actual es: {print_styles.YELLOW}{actual_date}{print_styles.RESET}, presione Enter si desea dejar la fecha actual")
+                            date = input("Ingrese la fecha (formato: YYYY-MM-DD): ")
+                            if len(date) == 0:
+                                date = str(actual_date)
+                            else:
+                                message, is_valid = validate_date(date)
+                                if not is_valid:
+                                    print(f"{print_styles.RED}{message}{print_styles.RESET}")
+                                    break
+                            
+                            parse_time = time(datetime.now().hour, datetime.now().minute)
+                            print(f"Su hora actual es: {print_styles.YELLOW}{str(parse_time)[0:-3]}{print_styles.RESET}, presione Enter si desea dejar la hora actual")
+                            actual_time = input("Ingrese la hora (formato: HH:MM): ")
+                            if len(actual_time) == 0:
+                                actual_time = str(parse_time)[0:-3]
+                            else:
+                                message, is_valid = validate_hour(actual_time)
+                                if not is_valid:
+                                    print(f"{print_styles.RED}{message}{print_styles.RESET}")
+                                    break
 
                             get_accounts(accounts)
                             id_account = int(input("Ingrese el número de la cuenta: "))
                             get_categories(categories)
                             id_category = int(input("Ingrese el número de la categoria: "))
-                            date = input("Ingrese la fecha (formato: DD-MM-YYYY): ")
-                            time = input("Ingrese la hora (formato: HH:MM): ")
                             amount = int(input("Ingrese el importe: "))
                             descripcion = input("Ingrese la descripcion: ")
-                            month = input("Ingrese el mes: ")
+                            month = "Marzo"
 
                             if sub_option == "1":
-                                add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, time, amount, descripcion, month)
+                                add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, actual_time, amount, descripcion, month)
                             elif sub_option == "2":
-                                add_transaction(transactions, accounts, categories, budgets,id_account, id_category, date, time, amount, descripcion, month, "Expense")
+                                add_transaction(transactions, accounts, categories, budgets,id_account, id_category, date, actual_time, amount, descripcion, month, "Expense")
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
@@ -153,23 +176,23 @@ def main():
                             print(f"{print_styles.BOLD}[7]{print_styles.RESET} Mes")
                             print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
-                            opcion = input("Seleccione una opción: ")
+                            option = input("Seleccione una opción: ")
                             
-                            if opcion == "1":
-                                change_account_transaction(transaction, accounts)
-                            elif opcion == "2":
-                                change_category_transaction(transaction, categories)
-                            elif opcion == "3":
-                                change_date_transaction(transaction)
-                            elif opcion == "4":
-                                change_time_transaction(transaction)
-                            elif opcion == "5":
-                                change_amount_transaction(transaction, accounts, budgets)
-                            elif opcion == "6":
-                                change_description_transaction(transaction)
-                            elif opcion == "7":
-                                change_month_transaction(transaction)
-                            elif opcion == "0":
+                            if option == "1":
+                                update_account_transaction(transaction, accounts)
+                            elif option == "2":
+                                update_category_transaction(transaction, categories)
+                            elif option == "3":
+                                update_date_transaction(transaction)
+                            elif option == "4":
+                                update_time_transaction(transaction)
+                            elif option == "5":
+                                update_amount_transaction(transaction, accounts, budgets)
+                            elif option == "6":
+                                update_description_transaction(transaction)
+                            elif option == "7":
+                                update_month_transaction(transaction)
+                            elif option == "0":
                                 print(f"{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
                                 break
                             else:
@@ -182,7 +205,10 @@ def main():
                      permission = has_permission(user,READ)
                      if permission:
                         get_transactions_by_category(transactions, accounts, categories)
-        elif option == "2":   # Opción 2
+                                                                                
+                input("Presione ENTER para volver a seleccionar.")
+        
+        elif option == "2":   # Opción 2 --> Gestión de categorías
 
             while True:
                 while True:
@@ -230,8 +256,10 @@ def main():
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
                         delete_category(categories, transactions, budgets)
+                                                        
+                input("Presione ENTER para volver a seleccionar.")
 
-        elif option == "3":   # Opción 3
+        elif option == "3":   # Opción 3 --> Gestión de Presupuestos
 
             while True:
                 while True:
@@ -284,13 +312,13 @@ def main():
                             print(f"{print_styles.BOLD}[2]{print_styles.RESET} Monto")
                             print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
-                            opcion = input("Seleccione una opción: ")
+                            option = input("Seleccione una opción: ")
                             
-                            if opcion == "1":
+                            if option == "1":
                                 update_category_for_budget(budget, categories)
-                            elif opcion == "2":
+                            elif option == "2":
                                 update_budget_amount(budget)
-                            elif opcion == "0":
+                            elif option == "0":
                                 print("\033[32mEl presupuesto se actualizó con éxito.\033[0m")
                                 break
                             else:
@@ -300,8 +328,10 @@ def main():
                     permission = has_permission(user,READ_WRITE)
                     if permission:
                         delete_budget(budgets, categories)
+                                                        
+                input("Presione ENTER para volver a seleccionar.")
 
-        elif option == "4":   # Opción 4
+        elif option == "4":   # Opción 4 --> Gestión de cuentas
 
             while True:
                 while True:
@@ -354,13 +384,13 @@ def main():
                             print(f"{print_styles.BOLD}[2]{print_styles.RESET} Monto")
                             print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
-                            opcion = input("Selecciona una opción: ")
+                            option = input("Selecciona una opción: ")
                             
-                            if opcion == "1":
+                            if option == "1":
                                 update_name_account(account)
-                            elif opcion == "2":
+                            elif option == "2":
                                 update_money_account(account)
-                            elif opcion == "0":
+                            elif option == "0":
                                 print(f"{print_styles.GREEN}La cuenta se actualizó con éxito.{print_styles.RESET}")
                                 break
                             else:
@@ -370,21 +400,20 @@ def main():
                     permission = has_permission(user,READ_WRITE)
                     if permission:
                         delete_account(accounts)
+                                                        
+                input("Presione ENTER para volver a seleccionar.")
 
-        elif option == "5":   # Opción 5
+        elif option == "5":   # Opción 5 --> Resumen
 
             while True:
                 while True:
-                    options = 4
+                    options = 2
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Resumen")
                     print("---------------------------")
-                    total, month = total_last_month(transactions)
-                    print(f"Total Gastado en el mes de {month}: {total}")
-                    print(f"Promedio de total gastado por mes: {average_month(transactions)}")
-                    print("Categoria con mas gastos: ")
-                    print("Cuenta con mas gastos:")
+                    print("[1] Ver resumen de gastos totales")
+                    print("[2] Ver resumen de gastos por categoría")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
                     print("---------------------------")
@@ -399,6 +428,17 @@ def main():
 
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
+                elif option == "1":
+                    total, month = total_last_month(transactions)
+                    print(f"Total Gastado en el mes de {month}: {total}")
+                    print(f"Promedio de total gastado por mes: {average_month(transactions)}")
+                    print("Categoria con mas gastos: ")
+                    print("Cuenta con mas gastos:")
+                elif option == "2":
+                    filter_transactions, total = calculate_percentage_of_category(transactions)
+                    get_percentage_of_category(filter_transactions, total, categories)                
+                
+                input("Presione ENTER para volver a seleccionar.")
               
         print("\n\n")
 
