@@ -1,3 +1,5 @@
+from datetime import datetime, date, time
+
 def obtain_id_by_name(matrix, name):
     for raw in matrix:
         if raw[1] == name:
@@ -32,6 +34,29 @@ def is_word_alpha(word):
 
     return has_letters
 
+def validate_hour(hour_input):
+    parse_hour = datetime.strptime(hour_input, "%H:%M").time()
+    
+    actual_hour = time(datetime.now().hour, datetime.now().minute)
+    
+    if parse_hour > actual_hour:
+        return "Inválida. La hora ingresada es mayor a la actual", False
+    
+    return "", True
+
+def validate_date(date_input):
+    parse_date = datetime.strptime(date_input, "%Y-%m-%d").date()
+    
+    min_limit = date(1980, 1, 1)
+    max_limit = datetime.today().date()
+    
+    if parse_date < min_limit:
+        return f"[{date_input}] Inválida: Es anterior a 1980.", False
+    elif parse_date > max_limit:
+        return f"[{date_input}] Inválida: Es una fecha futura.", False
+    
+    return "", True
+    
 months = {
     1: "Enero",
     2: "Febrero",

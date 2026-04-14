@@ -1,10 +1,13 @@
+from datetime import datetime, time
+
 from data import accounts, transactions, categories, budgets
 from transactions import *
 from budgets import *
 from categories import *
 from accounts import *
 from user import *
-from analytics import * 
+from analytics import *
+from helper import *
 from permissions import has_permission
 
 # Permissions
@@ -121,21 +124,41 @@ def main():
 
                             if sub_option == "0":
                                 break # Vuelve al menú de Gestión de Transacciones
+                            
+                            actual_date = datetime.now().date()
+                            print(f"Su fecha actual es: {print_styles.YELLOW}{actual_date}{print_styles.RESET}, presione Enter si desea dejar la fecha actual")
+                            date = input("Ingrese la fecha (formato: YYYY-MM-DD): ")
+                            if len(date) == 0:
+                                date = str(actual_date)
+                            else:
+                                message, is_valid = validate_date(date)
+                                if not is_valid:
+                                    print(f"{print_styles.RED}{message}{print_styles.RESET}")
+                                    break
+                            
+                            parse_time = time(datetime.now().hour, datetime.now().minute)
+                            print(f"Su hora actual es: {print_styles.YELLOW}{str(parse_time)[0:-3]}{print_styles.RESET}, presione Enter si desea dejar la hora actual")
+                            actual_time = input("Ingrese la hora (formato: HH:MM): ")
+                            if len(actual_time) == 0:
+                                actual_time = str(parse_time)[0:-3]
+                            else:
+                                message, is_valid = validate_hour(actual_time)
+                                if not is_valid:
+                                    print(f"{print_styles.RED}{message}{print_styles.RESET}")
+                                    break
 
                             get_accounts(accounts)
                             id_account = int(input("Ingrese el número de la cuenta: "))
                             get_categories(categories)
                             id_category = int(input("Ingrese el número de la categoria: "))
-                            date = input("Ingrese la fecha (formato: DD-MM-YYYY): ")
-                            time = input("Ingrese la hora (formato: HH:MM): ")
                             amount = int(input("Ingrese el importe: "))
                             descripcion = input("Ingrese la descripcion: ")
-                            month = input("Ingrese el mes: ")
+                            month = "Marzo"
 
                             if sub_option == "1":
-                                add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, time, amount, descripcion, month)
+                                add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, actual_time, amount, descripcion, month)
                             elif sub_option == "2":
-                                add_transaction(transactions, accounts, categories, budgets,id_account, id_category, date, time, amount, descripcion, month, "Expense")
+                                add_transaction(transactions, accounts, categories, budgets,id_account, id_category, date, actual_time, amount, descripcion, month, "Expense")
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
