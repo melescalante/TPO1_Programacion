@@ -31,7 +31,7 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
 
 def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, matrix_budgets):
     get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
-    id = int(input("Que transaccion deseas eliminar? Indique el numero o escriba 0 para salir: "))
+    id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
     if id == 0:
         print(f"{print_styles.GREEN}No se elimino ninguna transacción.{print_styles.RESET}")
         return
@@ -51,7 +51,7 @@ def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, 
         
     print(f"{print_styles.RED}Operación realizada sin éxito, el número de ID no existe.{print_styles.RESET}")
 
-def change_account_transaction(transaction, matrix_accounts):
+def update_account_transaction(transaction, matrix_accounts):
     while True:
         get_accounts(matrix_accounts)
         new_account_id = int(input("Ingrese el número de la nueva cuenta: "))
@@ -69,7 +69,7 @@ def change_account_transaction(transaction, matrix_accounts):
         print(f"{print_styles.GREEN}ID de cuenta actualizado.{print_styles.RESET}")
         return
 
-def change_category_transaction(transaction, matrix_categories):
+def update_category_transaction(transaction, matrix_categories):
     while True:
         get_categories(matrix_categories)
         new_category_id = int(input("Ingrese el número de la nueva categoría: "))
@@ -83,7 +83,7 @@ def change_category_transaction(transaction, matrix_categories):
         print(f"{print_styles.GREEN}ID de categoría actualizado.{print_styles.RESET}")
         return
 
-def change_date_transaction(transaction):
+def update_date_transaction(transaction):
     new_date = input("Ingrese la nueva fecha (formato: DD-MM-YYYY): ")
     while len(new_date.strip()) == 0:
         print(f"{print_styles.RED}La fecha ingresada no tiene valor.{print_styles.RESET}")
@@ -91,7 +91,7 @@ def change_date_transaction(transaction):
     transaction[3] = new_date
     print(f"{print_styles.GREEN}Fecha actualizada.{print_styles.RESET}")
 
-def change_time_transaction(transaction):
+def update_time_transaction(transaction):
     new_time = input("Ingrese la nueva hora (formato: HH:MM): ")
     while len(new_time) == 0:
         print(f"{print_styles.RED}La hora ingresada no tiene valor.{print_styles.RESET}")
@@ -99,7 +99,7 @@ def change_time_transaction(transaction):
     transaction[4] = new_time
     print(f"{print_styles.GREEN}Hora actualizada.{print_styles.RESET}")
 
-def change_amount_transaction(transaction, matrix_accounts, matrix_budgets):
+def update_amount_transaction(transaction, matrix_accounts, matrix_budgets):
     while True:
         new_amount_str = input("Ingrese el nuevo importe: ")
         not_sign = new_amount_str.replace("-", "", 1)
@@ -118,7 +118,7 @@ def change_amount_transaction(transaction, matrix_accounts, matrix_budgets):
         print(f"{print_styles.GREEN}Importe actualizado.{print_styles.RESET}")
         return
 
-def change_description_transaction(transaction):
+def update_description_transaction(transaction):
     new_desc = input("Ingrese una nueva descripción: ")
     while len(new_desc) == 0:
         print(f"{print_styles.YELLOW}La descripción ingresada no tiene valor.{print_styles.RESET}")
@@ -126,7 +126,7 @@ def change_description_transaction(transaction):
     transaction[6] = new_desc
     print(f"{print_styles.GREEN}Descripción actualizada.{print_styles.RESET}")
 
-def change_month_transaction(transaction):
+def update_month_transaction(transaction):
     new_month = input("Ingrese el nuevo mes: ")
     while len(new_month) == 0 or not new_month.isalpha():
         print(f"{print_styles.RED}El mes ingresado no tiene valor o contiene números.{print_styles.RESET}")

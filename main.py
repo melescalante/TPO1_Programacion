@@ -153,23 +153,23 @@ def main():
                             print(f"{print_styles.BOLD}[7]{print_styles.RESET} Mes")
                             print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
-                            opcion = input("Seleccione una opción: ")
+                            option = input("Seleccione una opción: ")
                             
-                            if opcion == "1":
-                                change_account_transaction(transaction, accounts)
-                            elif opcion == "2":
-                                change_category_transaction(transaction, categories)
-                            elif opcion == "3":
-                                change_date_transaction(transaction)
-                            elif opcion == "4":
-                                change_time_transaction(transaction)
-                            elif opcion == "5":
-                                change_amount_transaction(transaction, accounts, budgets)
-                            elif opcion == "6":
-                                change_description_transaction(transaction)
-                            elif opcion == "7":
-                                change_month_transaction(transaction)
-                            elif opcion == "0":
+                            if option == "1":
+                                update_account_transaction(transaction, accounts)
+                            elif option == "2":
+                                update_category_transaction(transaction, categories)
+                            elif option == "3":
+                                update_date_transaction(transaction)
+                            elif option == "4":
+                                update_time_transaction(transaction)
+                            elif option == "5":
+                                update_amount_transaction(transaction, accounts, budgets)
+                            elif option == "6":
+                                update_description_transaction(transaction)
+                            elif option == "7":
+                                update_month_transaction(transaction)
+                            elif option == "0":
                                 print(f"{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
                                 break
                             else:
@@ -289,13 +289,13 @@ def main():
                             print(f"{print_styles.BOLD}[2]{print_styles.RESET} Monto")
                             print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
-                            opcion = input("Seleccione una opción: ")
+                            option = input("Seleccione una opción: ")
                             
-                            if opcion == "1":
+                            if option == "1":
                                 update_category_for_budget(budget, categories)
-                            elif opcion == "2":
+                            elif option == "2":
                                 update_budget_amount(budget)
-                            elif opcion == "0":
+                            elif option == "0":
                                 print("\033[32mEl presupuesto se actualizó con éxito.\033[0m")
                                 break
                             else:
@@ -361,13 +361,13 @@ def main():
                             print(f"{print_styles.BOLD}[2]{print_styles.RESET} Monto")
                             print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
-                            opcion = input("Selecciona una opción: ")
+                            option = input("Selecciona una opción: ")
                             
-                            if opcion == "1":
+                            if option == "1":
                                 update_name_account(account)
-                            elif opcion == "2":
+                            elif option == "2":
                                 update_money_account(account)
-                            elif opcion == "0":
+                            elif option == "0":
                                 print(f"{print_styles.GREEN}La cuenta se actualizó con éxito.{print_styles.RESET}")
                                 break
                             else:
