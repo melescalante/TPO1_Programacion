@@ -17,10 +17,11 @@ def get_categories(matrix_categories):
 
 def add_category(matrix_categories, category_name):
     id=create_id(matrix_categories)
-    for category in matrix_categories:
-        if category[1] == category_name:
-            return
+    if exists_category(category_name,matrix_categories):
+        print(f"{print_styles.RED}La categoria ya existe. Ingrese otra por favor{print_styles.RESET}")
+        return
     matrix_categories.append([id, category_name])
+    print(f"{print_styles.GREEN}La categoría se ha creado con éxito.{print_styles.RESET}")
 
 def delete_category(matrix_categories, matrix_transactions, matrix_budgets):
     get_categories(matrix_categories)
@@ -89,3 +90,7 @@ def change_category(category):
         name_category = input("Ingrese un nuevo nombre de categoría: ")
     category[1] = name_category
 
+def exists_category(category, matrix_categories):
+    category_lower= category.lower()
+    exists= list(filter(lambda x:x[1].lower()==category_lower, matrix_categories))
+    return True if len(exists) else False
