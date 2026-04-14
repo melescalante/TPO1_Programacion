@@ -5,8 +5,10 @@ accounts = [
 transactions = [
 
     [1, 2, 2, "2-3-2026", "20:20", 1000000, "Sueldo", "Marzo"], 
+    [7, 2, 2, "2-4-2026", "20:20", 3400, "Sueldo", "Marzo"], 
     [2, 3, 4, "11-3-2026", "13:21", -5000, "Chocolate del Kiosco", "Marzo"], 
     [3, 1, 3, "12-3-2026", "14:55", -200000, "Expensas", "Marzo"], 
+    [6, 1, 3, "12-3-2026", "14:55", -200000, "Expensas", "Marzo"], 
     [4, 2, 5, "13-3-2026", "00:02", -400000, "Matricula", "Marzo"]]
 categories = [
     [1, "Otros"], # No se puede eliminar
