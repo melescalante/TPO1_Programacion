@@ -2,11 +2,10 @@ from data import users
 import re 
 from Styles import print_styles
 
-email_pattern =re.compile(r'[\w\-=+\[{;:\'\"}\],\./?`~\$]+@[a-z0-9]+\.[a-z]{2,}')
-password_pattern =re.compile("^[\w=+-]{8,20}$")
+email_pattern = re.compile(r'[\w\-=+\[{;:\'\"}\],\./?`~\$]+@[a-z0-9]+\.[a-z]{2,}')
+password_pattern = re.compile(r"^[\w=+-]{8,20}$")
 
 def login():
-    print("Bienvenido/a al sistema de Gestor de Gastos.")
     email= input("Ingrese su email: ")
     email_lower=email.lower()
     password= input("Ingrese su contraseña: ")
@@ -23,7 +22,7 @@ def login():
     
     user_found=list(filter(lambda x:x["email"].lower()==email_lower and x["password"].lower()==password_lower, users))
     if user_found:
-        print(f"Bienvenido {print_styles.BOLD}{user_found[0]["username"].title()}!{print_styles.RESET}")
+        print(f"\nBienvenido {print_styles.BOLD}{user_found[0]["username"].title()}!{print_styles.RESET}")
         return user_found[0]
     if not user_found:
         print(f"{print_styles.RED}No existe el usuario ingresado.{print_styles.RESET}")
@@ -35,7 +34,7 @@ def validate_email(email):
 
 def validate_password(password):
     result = password_pattern.search(password)
-    return True if result else False
+    return result is not None
 
 def is_logged(loggedUser):
     if (loggedUser): return True

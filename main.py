@@ -14,7 +14,9 @@ from permissions import has_permission
 READ=1
 READ_WRITE=2
 
-user=users[0]
+
+print("¡Bienvenido/a al sistema de Gestor de Gastos!\n")
+user = users[0]
 while user==None:
     user=login()
 
