@@ -6,6 +6,9 @@ email_pattern = re.compile(r'[\w\-=+\[{;:\'\"}\],\./?`~\$]+@[a-z0-9]+\.[a-z]{2,}
 password_pattern = re.compile(r"^[\w=+-]{8,20}$")
 
 def login():
+    """
+    Retorna: diccionario con datos del usuario autenticado o None si la autenticación falla
+    """
     email= input("Ingrese su email: ")
     email_lower=email.lower()
     password= input("Ingrese su contraseña: ")
@@ -29,12 +32,24 @@ def login():
     return
 
 def validate_email(email):
+    """
+    email: dirección de correo electrónico a validar
+    Retorna: True si el email es válido según el patrón, False en caso contrario
+    """
     result = email_pattern.findall(email)
     return True if result else False
 
 def validate_password(password):
+    """
+    password: contraseña a validar
+    Retorna: True si la contraseña es válida según el patrón, False en caso contrario
+    """
     result = password_pattern.search(password)
     return result is not None
 
 def is_logged(loggedUser):
+    """
+    loggedUser: información del usuario logueado
+    Retorna: True si el usuario está logueado, False en caso contrario
+    """
     if (loggedUser): return True
