@@ -169,9 +169,6 @@ def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_ca
         return
     get_transactions(transactions_by_category, matrix_accounts, matrix_categories)
 
-def get_specifics_transactions(matrix_transactions, func):
-    return list(filter(func, matrix_transactions))
-
 def get_transaction_by_user_input(matrix_Transactions):
     while True:
         id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
