@@ -202,7 +202,15 @@ def main():
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
                     if permission:
-                        delete_transaction(transactions, accounts, categories, budgets)
+                        get_transactions(transactions, accounts, categories)
+                        id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
+                        while id < 0 or id > len(transactions):
+                            id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
+                            
+                        if id != 0:
+                            delete_transaction(transactions, accounts, categories, budgets)
+                        else:
+                            print(f"{print_styles.GREEN}No se elimino ninguna transacción.{print_styles.RESET}")
                 elif option=='5':
                      permission = has_permission(user,READ)
                      if permission:
@@ -400,9 +408,33 @@ def main():
 
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
-                    if permission:
-                        delete_account(accounts)
-                                                        
+                    if permission:                        
+                        allow_delete = input(f"{print_styles.YELLOW}Se borraran todas las transacciones relacionadas a esta cuenta{print_styles.RESET}, ¿desea proseguir? y/n: ")
+
+                        while allow_delete != 'y' and allow_delete != 'n':
+                            print(f"\n{print_styles.RED}No se reconoce el carácter{print_styles.RESET}")
+                            allow_delete = input("¿Desea proseguir? y/n: ")
+
+                        if (allow_delete == 'n'):
+                            print(f"\n{print_styles.GREEN}No se borrará ninguna cuenta.{print_styles.RESET}")
+                            break                        
+                        
+                        get_accounts(accounts)
+                        id_account = int(input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: "))
+                        while id_account < 0 or id_account > len(accounts):
+                            if id_account == 0:
+                                print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
+                                break
+                            id_account = int(input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: "))
+
+                        if id_account != 0:
+                            related_accounts_transaction = get_specifics_transactions(transactions, lambda x: x[1] == id_account)
+                            for actual_transaction in related_accounts_transaction:
+                                delete_transaction(transactions, accounts, categories, budgets, actual_transaction[0])
+                            delete_account(accounts, id_account)
+                        else:
+                            print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
+
                 input("Presione ENTER para volver a seleccionar.")
 
         elif option == "5":   # Opción 5 --> Resumen
