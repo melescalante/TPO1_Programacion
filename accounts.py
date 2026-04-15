@@ -60,14 +60,10 @@ def update_money_account(account):
         total_money = input("Ingrese un nuevo monto de dinero: ")
     account[2] = int(total_money)
 
-def delete_account(matrix_accounts):
-    get_accounts(matrix_accounts)
-    id = int(input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: "))
+def delete_account(matrix_accounts, id):
     delete=[]
     index=0
-    if id == 0:
-        print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
-        return
+
     for acc in matrix_accounts:
         if acc[0]==id:
             index=matrix_accounts.index(acc)

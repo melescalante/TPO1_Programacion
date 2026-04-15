@@ -29,14 +29,9 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
     update_account_balance(matrix_accounts, id_raw_account, final_amount)
     update_budget_balance(matrix_budgets,id_raw_budget,final_amount)
 
-def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, matrix_budgets):
-    get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
-    id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
-    if id == 0:
-        print(f"{print_styles.GREEN}No se elimino ninguna transacción.{print_styles.RESET}")
-        return
+def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, matrix_budgets, id_delete):
     for transaction in matrix_transactions:
-        if transaction[0]==id:
+        if transaction[0]==id_delete:
             index=matrix_transactions.index(transaction)
             delete=matrix_transactions.pop(index)
             id_account = delete[1]
@@ -168,7 +163,7 @@ def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_ca
     get_categories(matrix_categories)
     print(" ")
     id_category = int(input(f"{print_styles.BOLD_BLUE}Buscar en sus transacciones por la categoria (Ingrese el numero):{print_styles.RESET} "))
-    transactions_by_category=list(filter(lambda x:x[2]==id_category, matrix_transactions))
+    transactions_by_category= list(filter(lambda x:x[2]==id_category, matrix_transactions))
     if len(transactions_by_category)==0:
         print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
         return
