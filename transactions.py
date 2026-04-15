@@ -163,11 +163,14 @@ def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_ca
     get_categories(matrix_categories)
     print(" ")
     id_category = int(input(f"{print_styles.BOLD_BLUE}Buscar en sus transacciones por la categoria (Ingrese el numero):{print_styles.RESET} "))
-    transactions_by_category= list(filter(lambda x:x[2]==id_category, matrix_transactions))
+    transactions_by_category = list(filter(lambda x:x[2]==id_category, matrix_transactions))
     if len(transactions_by_category)==0:
         print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
         return
     get_transactions(transactions_by_category, matrix_accounts, matrix_categories)
+
+def get_specifics_transactions(matrix_transactions, func):
+    return list(filter(func, matrix_transactions))
 
 def get_transaction_by_user_input(matrix_Transactions):
     while True:

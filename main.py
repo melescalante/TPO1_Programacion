@@ -428,7 +428,7 @@ def main():
                             id_account = int(input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: "))
 
                         if id_account != 0:
-                            related_accounts_transaction = list(filter(transactions, lambda x: x[1] == id_account))
+                            related_accounts_transaction = list(filter(lambda x: x[1] == id_account, transactions))
                             for actual_transaction in related_accounts_transaction:
                                 delete_transaction(transactions, accounts, categories, budgets, actual_transaction[0])
                             delete_account(accounts, id_account)
