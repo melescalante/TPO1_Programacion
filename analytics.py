@@ -1,6 +1,10 @@
 from helper import get_month
 
 def total_last_month(transactions):
+    """
+    transactions: lista de transacciones a analizar
+    Retorna: tupla (monto_absoluto_gastos, nombre_mes) del último mes con transacciones
+    """
     last_year = 0
     last_month = 0
     month = ""
@@ -31,6 +35,10 @@ def total_last_month(transactions):
     return abs(total_expenses), get_month(last_month)
 
 def average_month(transactions):
+    """
+    transactions: lista de transacciones a analizar
+    Retorna: promedio absoluto mensual de gastos redondeado a dos decimales
+    """
     total_month = {}
 
     for i in transactions:
