@@ -2,6 +2,12 @@ from Styles import print_styles
 from helper import create_id, get_raw_by_id
 
 def add_account(matrix_accounts, account_name, total_money):
+    """
+    matrix_accounts: lista de cuentas existentes
+    account_name: nombre de la cuenta a agregar
+    total_money: saldo inicial de la cuenta
+    Retorna: None. Agrega una nueva cuenta si no existe con ese nombre
+    """
     id=create_id(matrix_accounts)
     for account in matrix_accounts:
         if account[1] == account_name:
@@ -9,6 +15,10 @@ def add_account(matrix_accounts, account_name, total_money):
     matrix_accounts.append([id, account_name, total_money])
  
 def get_accounts(matrix_account):
+    """
+    matrix_account: lista de cuentas a mostrar
+    Retorna: None. Imprime una tabla con todas las cuentas y sus saldos
+    """
     count_matrix= len(matrix_account)
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f'{"Cuentas":^60}')
@@ -28,6 +38,10 @@ def get_accounts(matrix_account):
     return
 
 def get_account_by_user_input(matrix_accounts):
+    """
+    matrix_accounts: lista de cuentas disponibles
+    Retorna: cuenta seleccionada por el usuario o None si cancela
+    """
     while True:
         id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
         
@@ -47,6 +61,10 @@ def get_account_by_user_input(matrix_accounts):
         return account
 
 def update_name_account(account):
+    """
+    account: registro de cuenta a modificar
+    Retorna: None. Solicita y actualiza el nombre de la cuenta
+    """
     name_account = input("Ingrese un nuevo nombre de cuenta: ")
     while len(name_account) == 0 or not name_account.isalpha(): # bug, no admite espacios
         print(f"{print_styles.YELLOW}El nombre que ingreso no tiene valor o no es una palabra.{print_styles.RESET}")
@@ -54,6 +72,10 @@ def update_name_account(account):
     account[1] = name_account
 
 def update_money_account(account):            
+    """
+    account: registro de cuenta a modificar
+    Retorna: None. Solicita y actualiza el saldo de la cuenta
+    """
     total_money = input("Ingrese un nuevo monto de dinero: ")
     while not total_money.isnumeric():
         print(f"{print_styles.YELLOW}El valor que ingreso no es número o es menor a 0.{print_styles.RESET}")
@@ -61,6 +83,11 @@ def update_money_account(account):
     account[2] = int(total_money)
 
 def delete_account(matrix_accounts, id):
+    """
+    matrix_accounts: lista de cuentas disponibles
+    id: identificador de la cuenta a eliminar
+    Retorna: None. Elimina la cuenta con el id indicado
+    """
     delete=[]
     index=0
 
@@ -73,6 +100,12 @@ def delete_account(matrix_accounts, id):
     print()
     
 def update_account_balance(matrix_accounts, id_account, amount):
+    """
+    matrix_accounts: lista de cuentas a actualizar
+    id_account: identificador de la cuenta a modificar
+    amount: monto a sumar o restar del saldo
+    Retorna: None. Ajusta el saldo de la cuenta indicada
+    """
     for account in matrix_accounts:
         if account[0] == id_account:
             account[2] += amount
