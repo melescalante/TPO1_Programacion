@@ -2,6 +2,10 @@ from Styles import print_styles
 from helper import create_id, get_raw_by_id, is_word_alpha
 
 def get_categories(matrix_categories):
+    """
+    matrix_categories: lista de categorías a mostrar
+    Retorna: None. Imprime en pantalla la lista de categorías con su ID
+    """
     count_matrix= len(matrix_categories)
     print("="*print_styles.MAX_SPACES_CATEGORIES)
     print(f'{"Categorias":^50}')
@@ -16,6 +20,11 @@ def get_categories(matrix_categories):
     return
 
 def add_category(matrix_categories, category_name):
+    """
+    matrix_categories: lista de categorías a actualizar
+    category_name: nombre de la nueva categoría
+    Retorna: None. Agrega la nueva categoría si no existe
+    """
     id=create_id(matrix_categories)
     if exists_category(category_name,matrix_categories):
         print(f"{print_styles.RED}La categoria ya existe. Ingrese otra por favor{print_styles.RESET}")
@@ -24,6 +33,12 @@ def add_category(matrix_categories, category_name):
     print(f"{print_styles.GREEN}La categoría se ha creado con éxito.{print_styles.RESET}")
 
 def delete_category(matrix_categories, matrix_transactions, matrix_budgets):
+    """
+    matrix_categories: lista de categorías del sistema
+    matrix_transactions: lista de transacciones para actualizar en caso de eliminaciones
+    matrix_budgets: lista de presupuestos para limpiar categorías eliminadas
+    Retorna: None. Elimina una categoría y actualiza transacciones y presupuestos relacionados
+    """
     get_categories(matrix_categories)
     id = int(input("Que categoria deseas eliminar? Indique el numero o escriba 0 para salir: "))
     delete=[]
@@ -42,9 +57,7 @@ def delete_category(matrix_categories, matrix_transactions, matrix_budgets):
         if transaccion[2] == id:
             transaccion[2] = 1
     
-    # Lambda
-    # Filter
-    # Slicing
+ 
     matrix_budgets[:] = list(filter(lambda x : x[1] != id, matrix_budgets))
     
     for category in matrix_categories:
@@ -57,6 +70,10 @@ def delete_category(matrix_categories, matrix_transactions, matrix_budgets):
     print(f"{print_styles.RED}La categoría no existe.{print_styles.RESET}")
 
 def update_category(matrix_categories):    
+    """
+    matrix_categories: lista de categorías del sistema
+    Retorna: None. Solicita al usuario una categoría y actualiza su nombre
+    """
     get_categories(matrix_categories)
     category = None
     while True:
@@ -84,6 +101,10 @@ def update_category(matrix_categories):
     change_category(category)
 
 def change_category(category):
+    """
+    category: registro de categoría a modificar
+    Retorna: None. Solicita un nuevo nombre y actualiza la categoría
+    """
     name_category = input("Ingrese un nuevo nombre de categoría: ")
     while len(name_category) == 0 or not is_word_alpha(name_category):
         print("\033[33mEl valor que ingreso no tiene valor o no es una palabra.\033[0m")
@@ -91,6 +112,11 @@ def change_category(category):
     category[1] = name_category
 
 def exists_category(category, matrix_categories):
+    """
+    category: nombre de categoría a buscar
+    matrix_categories: lista de categorías existentes
+    Retorna: True si la categoría ya existe, False en caso contrario
+    """
     category_lower= category.lower()
     exists= list(filter(lambda x:x[1].lower()==category_lower, matrix_categories))
     return True if len(exists) else False
