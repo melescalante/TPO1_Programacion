@@ -446,10 +446,10 @@ def main():
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Resumen")
                     print("---------------------------")
-                    print("[1] Ver resumen de gastos totales")
-                    print("[2] Ver resumen de gastos por categoría")
+                    print(f"{print_styles.BOLD}[1]{print_styles.RESET} Ver resumen de gastos totales")
+                    print(f"{print_styles.BOLD}[2]{print_styles.RESET} Ver resumen de gastos por categoría")
                     print("---------------------------")
-                    print("[0] Volver al menú anterior")
+                    print(f"{print_styles.BOLD}[0]{print_styles.RESET} Volver al menú anterior")
                     print("---------------------------")
                     print()
                     
