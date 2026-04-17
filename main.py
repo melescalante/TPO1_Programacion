@@ -34,7 +34,7 @@ def main():
         can_read = has_permission(user, READ)
         can_write = has_permission(user, READ_WRITE)
         valid_options = ["0"]
-        if can_read: valid_options.extend(["1"])
+        if can_read: valid_options.extend(["1", "5", "6"])
         if can_write: valid_options.extend(["2", "3", "4"])
         while True:
             options = 5
@@ -66,7 +66,7 @@ def main():
         elif option == "1":   # Opción 1 --> Gestión de transacciones
             while True:
                 while True:
-                    options = 5
+                    options = 6
                     print()
                     print("---------------------------")
                     print("MENÚ PRINCIPAL > Gestión de Transacciones")
@@ -79,6 +79,7 @@ def main():
                             print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Transacciones")
                             print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Transacciones")
                         print(f"{print_styles.BOLD}[5]{print_styles.RESET} Ver Transacciones por Categoria")
+                        print(f"{print_styles.BOLD}[6]{print_styles.RESET} Ver mis Transacciones")
                     print("---------------------------")
                     print(f"{print_styles.BOLD}[0]{print_styles.RESET} Volver al menú anterior")
                     print("---------------------------")
@@ -86,7 +87,7 @@ def main():
                     
                     option = input("Seleccione una opción: ")
                     
-                    if can_read: valid_options.extend(["5"])
+                    if can_read: valid_options.extend(["6"])
                     if option in valid_options: 
                         break
                     else:
@@ -99,7 +100,6 @@ def main():
                     permission= has_permission(user,READ)
                     if permission:
                         get_transactions(transactions, accounts, categories, users)
-                        # get_transactions(transactions, accounts, categories, lambda x: x[5] >= 10000)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user,READ_WRITE)
                     if permission:
@@ -164,7 +164,7 @@ def main():
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
-                        get_transactions(transactions, accounts, categories)
+                        get_transactions(transactions, accounts, categories, users)
                         transaction = get_transaction_by_user_input(transactions)
 
                         while transaction is not None:
@@ -178,23 +178,23 @@ def main():
                             print(f"{print_styles.BOLD}[7]{print_styles.RESET} Mes")
                             print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
-                            option = input("Seleccione una opción: ")
+                            sub_option = input("Seleccione una opción: ")
                             
-                            if option == "1":
+                            if sub_option == "1":
                                 update_account_transaction(transaction, accounts)
-                            elif option == "2":
+                            elif sub_option == "2":
                                 update_category_transaction(transaction, categories)
-                            elif option == "3":
+                            elif sub_option == "3":
                                 update_date_transaction(transaction)
-                            elif option == "4":
+                            elif sub_option == "4":
                                 update_time_transaction(transaction)
-                            elif option == "5":
+                            elif sub_option == "5":
                                 update_amount_transaction(transaction, accounts, budgets)
-                            elif option == "6":
+                            elif sub_option == "6":
                                 update_description_transaction(transaction)
-                            elif option == "7":
+                            elif sub_option == "7":
                                 update_month_transaction(transaction)
-                            elif option == "0":
+                            elif sub_option == "0":
                                 print(f"{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
                                 break
                             else:
@@ -202,19 +202,32 @@ def main():
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
                     if permission:
-                        get_transactions(transactions, accounts, categories)
+                        get_transactions(transactions, accounts, categories, users)
                         id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
                         while id < 0 or id > len(transactions):
+                            if id == 0:
+                                break
                             id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
                             
                         if id != 0:
-                            delete_transaction(transactions, accounts, categories, budgets)
+                            delete_transaction(transactions, accounts, categories, budgets, users, id)
                         else:
                             print(f"{print_styles.GREEN}No se elimino ninguna transacción.{print_styles.RESET}")
-                elif option=='5':
-                     permission = has_permission(user,READ)
-                     if permission:
-                        get_transactions_by_category(transactions, accounts, categories)
+                elif option == "5":
+                    permission = has_permission(user,READ)
+                    if permission:
+                        get_transactions_by_category(transactions, accounts, categories, users)
+                elif option == "6":
+                    permission = has_permission(user,READ)
+                    if permission:
+                        get_users(users)
+                        id_input = int(input("Elige el número de usuario para mostrar sus transacciones: "))
+                        while (id_input <= 0 or id_input > len(users)):
+                            print(f"{print_styles.RED}El usuario seleccionado no existe.{print_styles.RESET}")
+                            id_input = int(input("Intente nuevamente: "))
+
+                        user_id = get_user_by_id(id_input, users)["id"]
+                        get_transactions(transactions, accounts, categories, users, lambda transaction: transaction[-1] == user_id)
                                                                                 
                 input("Presione ENTER para volver a seleccionar.")
         

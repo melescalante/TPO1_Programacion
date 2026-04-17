@@ -46,7 +46,7 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
     update_account_balance(matrix_accounts, id_raw_account, final_amount)
     update_budget_balance(matrix_budgets,id_raw_budget,final_amount)
 
-def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, matrix_budgets, id_delete):
+def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, matrix_budgets, dicc_users, id_delete):
     """
     matrix_transactions: lista de transacciones a actualizar
     matrix_accounts: lista de cuentas del sistema
@@ -65,7 +65,7 @@ def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, 
             retrieve_total_money = delete[5]
             update_account_balance(matrix_accounts, id_account, -retrieve_total_money)
             update_budget_balance(matrix_budgets,id_budget,-retrieve_total_money)
-            get_transactions(matrix_transactions, matrix_accounts, matrix_categories)
+            get_transactions(matrix_transactions, matrix_accounts, matrix_categories, dicc_users)
             print(f"{print_styles.GREEN}Operación realizada con éxito. Transaccion eliminada correctamente.{print_styles.RESET}")
             return
         
@@ -226,7 +226,7 @@ def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, di
         print(f"{underline}{id:<10}{user_sliced:<15}{account[1]:<15}{category_sliced:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{month:<15}{print_styles.RESET}")
     print()
 
-def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_categories):
+def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_categories, dicc_users):
     """
     matrix_transactions: lista de transacciones a filtrar
     matrix_accounts: lista de cuentas del sistema
@@ -240,7 +240,7 @@ def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_ca
     if len(transactions_by_category)==0:
         print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
         return
-    get_transactions(transactions_by_category, matrix_accounts, matrix_categories)
+    get_transactions(transactions_by_category, matrix_accounts, matrix_categories, dicc_users)
 
 def get_transaction_by_user_input(matrix_Transactions):
     """

@@ -1,4 +1,5 @@
 from data import users
+from helper import slice_words
 import re 
 from Styles import print_styles
 
@@ -55,6 +56,26 @@ def is_logged(loggedUser):
     if (loggedUser): return True
     
     return False
+
+def get_users(dicc_users):
+    """
+    dicc_users: diccionario de usuarios
+    Imprime todos los usuarios
+    """
+    print("="*30)
+    print(f"{print_styles.BOLD}{"Número":<15}{"Nombre":<15}{print_styles.RESET}")
+    
+    for user in dicc_users:
+        id = user["id"]
+        username = user["username"]
+        username_sliced = slice_words(14, username)
+        print(f"{id:<15}{username_sliced:<15}")
+    print()
     
 def get_user_by_id(user_id, dicc_users):
+    """
+    user_id: id del usuario que se busca
+    dicc_users: diccionario de usuarios
+    Retorna: devuelva una lista del usuario que se busca
+    """   
     return list(filter(lambda user: user["id"] == user_id, dicc_users))[0]

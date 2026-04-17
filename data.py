@@ -22,6 +22,6 @@ budgets = [
     [4, 5, 300000]]
 users = [
     {"id":1, "rol":"admin", "username":"Pedro Alonso", "password":"13333333", "email":"palonso@gmail.com"}, 
-    {"id":2, "rol":"admin", "username":"Pedro Alonso", "password":"13333333", "email":"palonso@gmail.com"}, 
+    {"id":2, "rol":"admin", "username":"Roberto Carlos", "password":"13333333", "email":"rcarlos@gmail.com"}, 
     {"id":3, "rol":"user", "username":"Ramiro Lopez", "password":"44444444", "email":"rlopez@gmail.com"}, 
     {"id":4, "rol":"user", "username":"Victoria Perez", "password":"122222223", "email":"vperez@gmail.com"}, ]
