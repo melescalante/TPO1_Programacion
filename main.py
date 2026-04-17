@@ -98,7 +98,7 @@ def main():
                 elif option == "1":   # Opción 1
                     permission= has_permission(user,READ)
                     if permission:
-                        get_transactions(transactions, accounts, categories)
+                        get_transactions(transactions, accounts, categories, users)
                         # get_transactions(transactions, accounts, categories, lambda x: x[5] >= 10000)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user,READ_WRITE)
@@ -158,9 +158,9 @@ def main():
                             month = "Marzo"
 
                             if sub_option == "1":
-                                add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, actual_time, amount, descripcion, month)
+                                add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, actual_time, amount, descripcion, month, user["id"])
                             elif sub_option == "2":
-                                add_transaction(transactions, accounts, categories, budgets,id_account, id_category, date, actual_time, amount, descripcion, month, "Expense")
+                                add_transaction(transactions, accounts, categories, budgets,id_account, id_category, date, actual_time, amount, descripcion, month, user["id"], "Expense")
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission: 

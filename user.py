@@ -53,3 +53,8 @@ def is_logged(loggedUser):
     Retorna: True si el usuario está logueado, False en caso contrario
     """
     if (loggedUser): return True
+    
+    return False
+    
+def get_user_by_id(user_id, dicc_users):
+    return list(filter(lambda user: user["id"] == user_id, dicc_users))[0]

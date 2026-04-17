@@ -1,10 +1,11 @@
 from Styles import print_styles
 from categories import get_categories
+from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
 from helper import create_id, get_raw_by_id, slice_words
 from budgets import update_budget_balance, get_budget_by_category
 
-def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets, id_account, id_category, date, time, amount, description, month, transaction_type="income"):
+def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets, id_account, id_category, date, time, amount, description, month, user_id, transaction_type="income"):
     """
     matrix_transactions: lista de transacciones a actualizar
     matrix_accounts: lista de cuentas del sistema
@@ -17,6 +18,7 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
     amount: monto de la transacción
     description: descripción de la transacción
     month: mes de la transacción
+    user_id: id del usuario
     transaction_type: tipo de transacción ('income' o 'expense')
     Retorna: None. Modifica matrix_transactions agregando nueva transacción y actualiza saldos
     """
@@ -39,7 +41,7 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
         multiplier = -1
     final_amount = amount * multiplier
     
-    matrix_transactions.append([id, id_raw_account, id_raw_category, date, time, final_amount, description, month])
+    matrix_transactions.append([id, id_raw_account, id_raw_category, date, time, final_amount, description, month, user_id])
     
     update_account_balance(matrix_accounts, id_raw_account, final_amount)
     update_budget_balance(matrix_budgets,id_raw_budget,final_amount)
@@ -184,11 +186,12 @@ def update_month_transaction(transaction):
     transaction[7] = new_month.capitalize()
     print(f"{print_styles.GREEN}Mes actualizado.{print_styles.RESET}")
 
-def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, predicate = None):
+def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, dicc_users, predicate = None):
     """
     matrix_transactions: lista de transacciones a mostrar
     matrix_accounts: lista de cuentas para obtener información de cuenta
     matrix_categories: lista de categorías para obtener información de categoría
+    dicc_users: diccionario de usuarios
     predicate: función opcional para filtrar transacciones
     Retorna: None. Imprime tabla formateada de transacciones
     """
@@ -199,12 +202,14 @@ def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, pr
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f"{print_styles.BOLD_BLUE}Registros Totales: {count_matrix:<40}{print_styles.RESET}")
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
-    print(f"{print_styles.BOLD}{'Numero':<10}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{'Mes':<15}{print_styles.RESET}")
+    print(f"{print_styles.BOLD}{'Numero':<10}{'Usuario':<15}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{'Mes':<15}{print_styles.RESET}")
     for i in range(len(matrix_transactions)):
         if predicate is not None and not predicate(matrix_transactions[i]):
             continue
 
         id=matrix_transactions[i][0]
+        user = get_user_by_id(matrix_transactions[i][-1], dicc_users)["username"]
+        user_sliced = slice_words(14, user)
         account = get_raw_by_id(matrix_accounts,matrix_transactions[i][1])
         category = get_raw_by_id(matrix_categories,matrix_transactions[i][2])
         category_sliced= slice_words(14, category[1])
@@ -218,7 +223,7 @@ def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, pr
         underline = print_styles.UNDERLINE_INCOME
         if amount < 0:
             underline = print_styles.UNDERLINE_EXPENSE
-        print(f"{underline}{id:<10}{account[1]:<15}{category_sliced:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{month:<15}{print_styles.RESET}")
+        print(f"{underline}{id:<10}{user_sliced:<15}{account[1]:<15}{category_sliced:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{month:<15}{print_styles.RESET}")
     print()
 
 def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_categories):
