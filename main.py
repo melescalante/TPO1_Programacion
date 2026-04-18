@@ -16,7 +16,7 @@ READ_WRITE=2
 
 
 print("¡Bienvenido/a al sistema de Gestor de Gastos!\n")
-user = users[0]
+user = users[2]
 while user==None:
     user=login()
 
@@ -34,8 +34,8 @@ def main():
         can_read = has_permission(user, READ)
         can_write = has_permission(user, READ_WRITE)
         valid_options = ["0"]
-        if can_read: valid_options.extend(["1", "5", "6"])
-        if can_write: valid_options.extend(["2", "3", "4"])
+        if can_read: valid_options.extend(["1", "2", "5", "6"])
+        if can_write: valid_options.extend(["3", "4"])
         while True:
             options = 5
             print()
@@ -73,9 +73,9 @@ def main():
                     print("---------------------------")
                     if can_read:
                         print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Transacciones")
+                        print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Transacciones")
             
                         if can_write:
-                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Transacciones")
                             print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Transacciones")
                             print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Transacciones")
                         print(f"{print_styles.BOLD}[5]{print_styles.RESET} Ver Transacciones por Categoria")
@@ -87,7 +87,6 @@ def main():
                     
                     option = input("Seleccione una opción: ")
                     
-                    if can_read: valid_options.extend(["6"])
                     if option in valid_options: 
                         break
                     else:
@@ -101,7 +100,7 @@ def main():
                     if permission:
                         get_transactions(transactions, accounts, categories, users)
                 elif option == "2":   # Opción 2
-                    permission = has_permission(user,READ_WRITE)
+                    permission = has_permission(user,READ)
                     if permission:
                         while True:
                             while True:
@@ -238,8 +237,8 @@ def main():
                     print("---------------------------")
                     if can_read:
                         print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Categorías")
+                        print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Categoría")
                         if can_write:
-                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Categoría")
                             print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Categoría")
                             print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Categoría")
                     print("---------------------------")
@@ -261,7 +260,7 @@ def main():
                     if permission:
                         get_categories(categories)
                 elif option == "2":   # Opción 2
-                    permission= has_permission(user,READ_WRITE)
+                    permission= has_permission(user,READ)
                     if permission:
                         category = input("Ingrese el nombre de la categoria: ")
                         add_category(categories, category)
@@ -289,8 +288,8 @@ def main():
                     print("---------------------------")
                     if can_read:
                         print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Presupuestos")
+                        print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Presupuesto")
                         if can_write:
-                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Presupuesto")
                             print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Presupuestos")
                             print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Presupuesto")
                     print("---------------------------")
@@ -312,7 +311,7 @@ def main():
                     if permission:
                         get_budgets(budgets, categories)
                 elif option == "2":   # Opción 2
-                    permission = has_permission(user, READ_WRITE)
+                    permission = has_permission(user, READ)
                     if permission:
                         get_categories(categories)
                         category_id = int(input("Ingrese el ID de la categoría: "))
@@ -361,8 +360,8 @@ def main():
                     print("---------------------------")
                     if can_read:
                         print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Cuentas")
+                        print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Cuentas")
                         if can_write:
-                            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Cuentas")
                             print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Cuentas")
                             print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Cuentas")
                     print("---------------------------")
@@ -384,7 +383,7 @@ def main():
                     if permission:
                         get_accounts(accounts)
                 elif option == "2":   # Opción 2
-                    permission = has_permission(user,READ_WRITE)
+                    permission = has_permission(user,READ)
                     if permission:
                         account_name = input("Ingrese el nombre de la cuenta: ")
                         total_money = input("Ingrese el monto de la cuenta: ")
