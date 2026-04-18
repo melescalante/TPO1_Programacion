@@ -475,8 +475,8 @@ def main():
                     total, month = total_last_month(transactions)
                     print(f"Total Gastado en el mes de {month}: {total}")
                     print(f"Promedio de total gastado por mes: {average_month(transactions)}")
-                    print("Categoria con mas gastos: ")
-                    print("Cuenta con mas gastos:")
+                    print(f"Categoria con mas gastos: {get_higher_expense(transactions, categories, 2)[1]}")
+                    print(f"Cuenta con mas gastos: {get_higher_expense(transactions, accounts, 1)[1]}")
                 elif option == "2":
                     filter_transactions, total = calculate_percentage_of_category(transactions)
                     get_percentage_of_category(filter_transactions, total, categories)                

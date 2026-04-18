@@ -1,4 +1,4 @@
-from helper import get_month
+from helper import get_month, get_raw_by_id
 
 def total_last_month(transactions):
     """
@@ -59,3 +59,21 @@ def average_month(transactions):
     average = round(total / len(total_month), 2)
 
     return abs(average)
+
+def get_higher_expense(matrix_transactions, matrix_to_search, search_value = 2):
+    """
+    matrix_transactions: matriz de transacciones
+    search_value: indice para buscar dentro de transacciones
+    Retorna: La categoría que tiene el gasto máximo
+    """    
+    category = {}
+    
+    for transaction in matrix_transactions:
+        actual_category = transaction[search_value]
+        amount = transaction[5]         
+        if actual_category in category:   
+            category[actual_category] += amount
+        else:
+            category[actual_category] = amount
+    
+    return get_raw_by_id(matrix_to_search, min(category, key=category.get))
