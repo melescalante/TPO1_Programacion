@@ -155,12 +155,11 @@ def main():
                             id_category = int(input("Ingrese el número de la categoria: "))
                             amount = int(input("Ingrese el importe: "))
                             descripcion = input("Ingrese la descripcion: ")
-                            month = "Marzo"
 
                             if sub_option == "1":
-                                add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, actual_time, amount, descripcion, month, user["id"])
+                                add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, actual_time, amount, descripcion, user["id"])
                             elif sub_option == "2":
-                                add_transaction(transactions, accounts, categories, budgets,id_account, id_category, date, actual_time, amount, descripcion, month, user["id"], "Expense")
+                                add_transaction(transactions, accounts, categories, budgets,id_account, id_category, date, actual_time, amount, descripcion, user["id"], "Expense")
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
@@ -175,7 +174,6 @@ def main():
                             print(f"{print_styles.BOLD}[4]{print_styles.RESET} Hora")
                             print(f"{print_styles.BOLD}[5]{print_styles.RESET} Importe")
                             print(f"{print_styles.BOLD}[6]{print_styles.RESET} Descripción")
-                            print(f"{print_styles.BOLD}[7]{print_styles.RESET} Mes")
                             print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
                             
                             sub_option = input("Seleccione una opción: ")
@@ -192,8 +190,6 @@ def main():
                                 update_amount_transaction(transaction, accounts, budgets)
                             elif sub_option == "6":
                                 update_description_transaction(transaction)
-                            elif sub_option == "7":
-                                update_month_transaction(transaction)
                             elif sub_option == "0":
                                 print(f"{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
                                 break
