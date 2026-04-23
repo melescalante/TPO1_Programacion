@@ -32,7 +32,7 @@ def get_accounts(matrix_account):
         amount=matrix_account[i][2]
         amount_str = "$"+str(matrix_account[i][2])
         underline = print_styles.UNDERLINE_INCOME
-        if amount<0:
+        if int(amount)<0:
             underline= print_styles.UNDERLINE_EXPENSE
         print(f"{underline}{id:<10}{name:<25}{amount_str:<25}{print_styles.RESET}")
     return

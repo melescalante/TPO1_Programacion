@@ -16,7 +16,7 @@ READ_WRITE=2
 
 
 print("¡Bienvenido/a al sistema de Gestor de Gastos!\n")
-user = users[2]
+user = None
 while user==None:
     user=login()
 
