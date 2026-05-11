@@ -1,8 +1,10 @@
+from datetime import datetime, time
+
 from Styles import print_styles
 from categories import get_categories
 from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
-from helper import create_id, get_raw_by_id, slice_words
+from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour
 from budgets import update_budget_balance, get_budget_by_category
 
 def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets, id_account, id_category, date, time, amount, description, user_id, transaction_type="income"):
@@ -77,21 +79,28 @@ def update_account_transaction(transaction, matrix_accounts):
     Retorna: None. Modifica la cuenta asociada en la transacción
     """
     while True:
-        get_accounts(matrix_accounts)
-        new_account_id = int(input("Ingrese el número de la nueva cuenta: "))
-        account = get_raw_by_id(matrix_accounts, new_account_id)
+        try:
+            get_accounts(matrix_accounts)
+            new_account_id = int(input("Ingrese el número de la nueva cuenta: "))
+            account = get_raw_by_id(matrix_accounts, new_account_id)
 
-        if account is None:
-            print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
-            continue
+            if account is None:
+                print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
+                continue
 
-        old_id_account = transaction[1]
-        money_transaction = transaction[5]
-        update_account_balance(matrix_accounts, old_id_account, -money_transaction)
-        update_account_balance(matrix_accounts, new_account_id, money_transaction)
-        transaction[1] = new_account_id
-        print(f"{print_styles.GREEN}ID de cuenta actualizado.{print_styles.RESET}")
-        return
+            old_id_account = transaction[1]
+            money_transaction = transaction[5]
+            update_account_balance(matrix_accounts, old_id_account, -money_transaction)
+            update_account_balance(matrix_accounts, new_account_id, money_transaction)
+            transaction[1] = new_account_id
+            print(f"{print_styles.GREEN}ID de cuenta actualizado.{print_styles.RESET}")
+            return
+        except ValueError:
+            print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+        except:
+            print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
+            break
+            
 
 def update_category_transaction(transaction, matrix_categories):
     """
@@ -100,28 +109,40 @@ def update_category_transaction(transaction, matrix_categories):
     Retorna: None. Modifica la categoría asociada en la transacción
     """
     while True:
-        get_categories(matrix_categories)
-        new_category_id = int(input("Ingrese el número de la nueva categoría: "))
-        category = get_raw_by_id(matrix_categories, new_category_id)
-        
-        if category is None:
-            print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
-            continue
-        
-        transaction[2] = new_category_id
-        print(f"{print_styles.GREEN}ID de categoría actualizado.{print_styles.RESET}")
-        return
+        try:
+            get_categories(matrix_categories)
+            new_category_id = int(input("Ingrese el número de la nueva categoría: "))
+            category = get_raw_by_id(matrix_categories, new_category_id)
+            
+            if category is None:
+                print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
+                continue
+            
+            transaction[2] = new_category_id
+            print(f"{print_styles.GREEN}ID de categoría actualizado.{print_styles.RESET}")
+            return        
+        except ValueError:
+            print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+        except:
+            print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
+            break
 
 def update_date_transaction(transaction):
     """
     transaction: transacción a actualizar
     Retorna: None. Modifica la fecha de la transacción
     """
-    new_date = input("Ingrese la nueva fecha (formato: DD-MM-YYYY): ")
-    while len(new_date.strip()) == 0:
-        print(f"{print_styles.RED}La fecha ingresada no tiene valor.{print_styles.RESET}")
-        new_date = input("Ingrese la nueva fecha (formato: DD-MM-YYYY): ")
-    transaction[3] = new_date
+    actual_date = datetime.now().date()
+    print(f"Su fecha actual es: {print_styles.YELLOW}{actual_date}{print_styles.RESET}, presione Enter si desea dejar la fecha actual")
+    date = input("Ingrese la fecha (formato: YYYY-MM-DD): ")
+    if len(date) == 0:
+        date = str(actual_date)
+    else:
+        message, is_valid = validate_date(date)
+        if not is_valid:
+            print(f"{print_styles.RED}{message}{print_styles.RESET}")
+            return
+    transaction[3] = date
     print(f"{print_styles.GREEN}Fecha actualizada.{print_styles.RESET}")
 
 def update_time_transaction(transaction):
@@ -129,11 +150,17 @@ def update_time_transaction(transaction):
     transaction: transacción a actualizar
     Retorna: None. Modifica la hora de la transacción
     """
-    new_time = input("Ingrese la nueva hora (formato: HH:MM): ")
-    while len(new_time) == 0:
-        print(f"{print_styles.RED}La hora ingresada no tiene valor.{print_styles.RESET}")
-        new_time = input("Ingrese la nueva hora (formato: HH:MM): ")
-    transaction[4] = new_time
+    parse_time = time(datetime.now().hour, datetime.now().minute)
+    print(f"Su hora actual es: {print_styles.YELLOW}{str(parse_time)[0:-3]}{print_styles.RESET}, presione Enter si desea dejar la hora actual")
+    actual_time = input("Ingrese la hora (formato: HH:MM): ")
+    if len(actual_time) == 0:
+        actual_time = str(parse_time)[0:-3]
+    else:
+        message, is_valid = validate_hour(actual_time)
+        if not is_valid:
+            print(f"{print_styles.RED}{message}{print_styles.RESET}")
+            return
+    transaction[4] = actual_time
     print(f"{print_styles.GREEN}Hora actualizada.{print_styles.RESET}")
 
 def update_amount_transaction(transaction, matrix_accounts, matrix_budgets):
@@ -219,14 +246,19 @@ def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_ca
     matrix_categories: lista de categorías del sistema
     Retorna: None. Solicita categoría al usuario e imprime transacciones filtradas
     """
-    get_categories(matrix_categories)
-    print(" ")
-    id_category = int(input(f"{print_styles.BOLD_BLUE}Buscar en sus transacciones por la categoria (Ingrese el numero):{print_styles.RESET} "))
-    transactions_by_category = list(filter(lambda x:x[2]==id_category, matrix_transactions))
-    if len(transactions_by_category)==0:
-        print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
-        return
-    get_transactions(transactions_by_category, matrix_accounts, matrix_categories, dicc_users)
+    try:
+        get_categories(matrix_categories)
+        print(" ")
+        id_category = int(input(f"{print_styles.BOLD_BLUE}Buscar en sus transacciones por la categoria (Ingrese el numero):{print_styles.RESET} "))
+        transactions_by_category = list(filter(lambda x:x[2]==id_category, matrix_transactions))
+        if len(transactions_by_category)==0:
+            print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
+            return
+        get_transactions(transactions_by_category, matrix_accounts, matrix_categories, dicc_users)
+    except ValueError:
+        print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+    except:
+        print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
 def get_transaction_by_user_input(matrix_Transactions):
     """
@@ -234,22 +266,28 @@ def get_transaction_by_user_input(matrix_Transactions):
     Retorna: transacción seleccionada por el usuario o None si cancela
     """
     while True:
-        id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
-        if id_transaction < 0 or id_transaction > len(matrix_Transactions):
-            print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
-            continue
+        try:
+            id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
+            if id_transaction < 0 or id_transaction > len(matrix_Transactions):
+                print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
+                continue
 
-        if id_transaction == 0:
-            print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
-            return None
+            if id_transaction == 0:
+                print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
+                return None
 
-        transaction = get_raw_by_id(matrix_Transactions, id_transaction)
-        
-        if transaction is None:
-            print(f"{print_styles.RED}La transacción no existe. Intente de nuevo.{print_styles.RESET}")
-            continue
+            transaction = get_raw_by_id(matrix_Transactions, id_transaction)
+            
+            if transaction is None:
+                print(f"{print_styles.RED}La transacción no existe. Intente de nuevo.{print_styles.RESET}")
+                continue
 
-        return transaction
+            return transaction        
+        except ValueError:
+            print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+        except:
+            print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
+            break
     
 def calculate_percentage_of_category(matrix_transactions):
     """
@@ -260,21 +298,27 @@ def calculate_percentage_of_category(matrix_transactions):
     filter_transactions = []
     categories_proccess = set()
     total=len(matrix_transactions)
-    for i in range(len(matrix_transactions)):
-        current_category = matrix_transactions[i][2]
+    
+    try:
+        for i in range(len(matrix_transactions)):
+            current_category = matrix_transactions[i][2]
 
-        if current_category not in categories_proccess:
-            filtered = list(filter(lambda x: x[2] == current_category, matrix_transactions))
-            total_amount = sum(map(lambda x: x[5], filtered))
-            category={
-                "category":current_category,
-                "registers":filtered,
-                "total":total_amount
-            }
-            filter_transactions.append(category)
-            categories_proccess.add(current_category)
+            if current_category not in categories_proccess:
+                filtered = list(filter(lambda x: x[2] == current_category, matrix_transactions))
+                total_amount = sum(map(lambda x: x[5], filtered))
+                category={
+                    "category":current_category,
+                    "registers":filtered,
+                    "total":total_amount
+                }
+                filter_transactions.append(category)
+                categories_proccess.add(current_category)
 
-    return filter_transactions, total
+        return filter_transactions, total
+    except TypeError:
+        print(f"{print_styles.RED}No se ingresó una matriz.{print_styles.RESET}")
+    except:
+        print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
 def get_percentage_of_category(filter_transactions, count_matrix, matrix_categories):
     """

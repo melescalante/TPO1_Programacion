@@ -147,14 +147,18 @@ def main():
                                 if not is_valid:
                                     print(f"{print_styles.RED}{message}{print_styles.RESET}")
                                     break
-
-                            get_accounts(accounts)
-                            id_account = int(input("Ingrese el número de la cuenta: "))
-                            get_categories(categories)
-                            id_category = int(input("Ingrese el número de la categoria: "))
-                            amount = int(input("Ingrese el importe: "))
-                            descripcion = input("Ingrese la descripcion: ")
-
+                            try:
+                                get_accounts(accounts)
+                                id_account = int(input("Ingrese el número de la cuenta: "))
+                                get_categories(categories)
+                                id_category = int(input("Ingrese el número de la categoria: "))
+                                amount = int(input("Ingrese el importe: "))
+                                descripcion = input("Ingrese la descripcion: ")
+                            except ValueError:                                                       
+                                print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+                            except:
+                                print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
+                                
                             if sub_option == "1":
                                 add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, actual_time, amount, descripcion, user["id"])
                             elif sub_option == "2":
@@ -198,11 +202,16 @@ def main():
                     permission = has_permission(user,READ_WRITE)
                     if permission:
                         get_transactions(transactions, accounts, categories, users)
-                        id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
-                        while id < 0 or id > len(transactions):
-                            if id == 0:
-                                break
+                        try: 
                             id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
+                            while id < 0 or id > len(transactions):
+                                if id == 0:
+                                    break
+                                id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
+                        except ValueError:
+                            print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+                        except:
+                            print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
                             
                         if id != 0:
                             delete_transaction(transactions, accounts, categories, budgets, users, id)
@@ -214,12 +223,17 @@ def main():
                         get_transactions_by_category(transactions, accounts, categories, users)
                 elif option == "6":
                     permission = has_permission(user,READ)
-                    if permission:
-                        get_users(users)
-                        id_input = int(input("Elige el número de usuario para mostrar sus transacciones: "))
-                        while (id_input <= 0 or id_input > len(users)):
-                            print(f"{print_styles.RED}El usuario seleccionado no existe.{print_styles.RESET}")
-                            id_input = int(input("Intente nuevamente: "))
+                    try:
+                        if permission:
+                            get_users(users)
+                            id_input = int(input("Elige el número de usuario para mostrar sus transacciones: "))
+                            while (id_input <= 0 or id_input > len(users)):
+                                print(f"{print_styles.RED}El usuario seleccionado no existe.{print_styles.RESET}")
+                                id_input = int(input("Intente nuevamente: "))                    
+                    except ValueError:
+                        print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+                    except:
+                        print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
                         user_id = get_user_by_id(id_input, users)["id"]
                         get_transactions(transactions, accounts, categories, users, lambda transaction: transaction[-1] == user_id)
