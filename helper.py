@@ -51,31 +51,41 @@ def validate_hour(hour_input):
     hour_input: hora en formato HH:MM
     Retorna: tupla (mensaje, bool) indicando si la hora es válida y si no es futura
     """
-    parse_hour = datetime.strptime(hour_input, "%H:%M").time()
-    
-    actual_hour = time(datetime.now().hour, datetime.now().minute)
-    
-    if parse_hour > actual_hour:
-        return "Inválida. La hora ingresada es mayor a la actual", False
-    
-    return "", True
+    try:
+        parse_hour = datetime.strptime(hour_input, "%H:%M").time()
+        
+        actual_hour = time(datetime.now().hour, datetime.now().minute)
+        
+        if parse_hour > actual_hour:
+            return "Inválida. La hora ingresada es mayor a la actual", False
+        
+        return "", True
+    except ValueError:
+        return "Formato de hora inválido. Use HH:MM", False
+    except:
+        return "Ocurrió un error inesperado", False
 
 def validate_date(date_input):
     """
     date_input: fecha en formato YYYY-MM-DD
     Retorna: tupla (mensaje, bool) indicando si la fecha es válida y está dentro del rango permitido
     """
-    parse_date = datetime.strptime(date_input, "%Y-%m-%d").date()
-    
-    min_limit = date(1980, 1, 1)
-    max_limit = datetime.today().date()
-    
-    if parse_date < min_limit:
-        return f"[{date_input}] Inválida: Es anterior a 1980.", False
-    elif parse_date > max_limit:
-        return f"[{date_input}] Inválida: Es una fecha futura.", False
-    
-    return "", True
+    try:
+        parse_date = datetime.strptime(date_input, "%Y-%m-%d").date()
+        
+        min_limit = date(1980, 1, 1)
+        max_limit = datetime.today().date()
+        
+        if parse_date < min_limit:
+            return f"[{date_input}] Inválida: Es anterior a 1980.", False
+        elif parse_date > max_limit:
+            return f"[{date_input}] Inválida: Es una fecha futura.", False
+        
+        return "", True
+    except ValueError:
+        return "Formato de fecha inválido. Use YYYY-MM-DD", False
+    except:
+        return "Ocurrió un error inesperado", False
     
 months = {
     1: "Enero",

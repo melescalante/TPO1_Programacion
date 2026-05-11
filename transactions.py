@@ -4,7 +4,7 @@ from Styles import print_styles
 from categories import get_categories
 from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
-from helper import create_id, get_raw_by_id, slice_words, validate_hour
+from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour
 from budgets import update_budget_balance, get_budget_by_category
 
 def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets, id_account, id_category, date, time, amount, description, user_id, transaction_type="income"):
@@ -130,11 +130,17 @@ def update_date_transaction(transaction):
     transaction: transacción a actualizar
     Retorna: None. Modifica la fecha de la transacción
     """
-    new_date = input("Ingrese la nueva fecha (formato: DD-MM-YYYY): ")
-    while len(new_date.strip()) == 0:
-        print(f"{print_styles.RED}La fecha ingresada no tiene valor.{print_styles.RESET}")
-        new_date = input("Ingrese la nueva fecha (formato: DD-MM-YYYY): ")
-    transaction[3] = new_date
+    actual_date = datetime.now().date()
+    print(f"Su fecha actual es: {print_styles.YELLOW}{actual_date}{print_styles.RESET}, presione Enter si desea dejar la fecha actual")
+    date = input("Ingrese la fecha (formato: YYYY-MM-DD): ")
+    if len(date) == 0:
+        date = str(actual_date)
+    else:
+        message, is_valid = validate_date(date)
+        if not is_valid:
+            print(f"{print_styles.RED}{message}{print_styles.RESET}")
+            return
+    transaction[3] = date
     print(f"{print_styles.GREEN}Fecha actualizada.{print_styles.RESET}")
 
 def update_time_transaction(transaction):
@@ -152,7 +158,7 @@ def update_time_transaction(transaction):
         if not is_valid:
             print(f"{print_styles.RED}{message}{print_styles.RESET}")
             return
-    transaction[4] = parse_time
+    transaction[4] = actual_time
     print(f"{print_styles.GREEN}Hora actualizada.{print_styles.RESET}")
 
 def update_amount_transaction(transaction, matrix_accounts, matrix_budgets):
