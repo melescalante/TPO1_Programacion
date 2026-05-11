@@ -1,8 +1,10 @@
+from datetime import datetime, time
+
 from Styles import print_styles
 from categories import get_categories
 from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
-from helper import create_id, get_raw_by_id, slice_words
+from helper import create_id, get_raw_by_id, slice_words, validate_hour
 from budgets import update_budget_balance, get_budget_by_category
 
 def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets, id_account, id_category, date, time, amount, description, user_id, transaction_type="income"):
@@ -140,11 +142,17 @@ def update_time_transaction(transaction):
     transaction: transacción a actualizar
     Retorna: None. Modifica la hora de la transacción
     """
-    new_time = input("Ingrese la nueva hora (formato: HH:MM): ")
-    while len(new_time) == 0:
-        print(f"{print_styles.RED}La hora ingresada no tiene valor.{print_styles.RESET}")
-        new_time = input("Ingrese la nueva hora (formato: HH:MM): ")
-    transaction[4] = new_time
+    parse_time = time(datetime.now().hour, datetime.now().minute)
+    print(f"Su hora actual es: {print_styles.YELLOW}{str(parse_time)[0:-3]}{print_styles.RESET}, presione Enter si desea dejar la hora actual")
+    actual_time = input("Ingrese la hora (formato: HH:MM): ")
+    if len(actual_time) == 0:
+        actual_time = str(parse_time)[0:-3]
+    else:
+        message, is_valid = validate_hour(actual_time)
+        if not is_valid:
+            print(f"{print_styles.RED}{message}{print_styles.RESET}")
+            return
+    transaction[4] = parse_time
     print(f"{print_styles.GREEN}Hora actualizada.{print_styles.RESET}")
 
 def update_amount_transaction(transaction, matrix_accounts, matrix_budgets):
