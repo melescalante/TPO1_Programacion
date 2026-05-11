@@ -99,6 +99,7 @@ def update_account_transaction(transaction, matrix_accounts):
             print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
         except:
             print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
+            break
             
 
 def update_category_transaction(transaction, matrix_categories):
@@ -124,6 +125,7 @@ def update_category_transaction(transaction, matrix_categories):
             print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
         except:
             print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
+            break
 
 def update_date_transaction(transaction):
     """
@@ -285,6 +287,7 @@ def get_transaction_by_user_input(matrix_Transactions):
             print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
         except:
             print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
+            break
     
 def calculate_percentage_of_category(matrix_transactions):
     """
