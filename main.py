@@ -16,7 +16,7 @@ READ_WRITE=2
 
 
 print("¡Bienvenido/a al sistema de Gestor de Gastos!\n")
-user = users[0]
+# user = users[0]
 while user==None:
     user=login()
 
@@ -277,6 +277,9 @@ def main():
                     permission= has_permission(user,READ)
                     if permission:
                         category = input("Ingrese el nombre de la categoria: ")
+                        while not category:
+                            print(f"{print_styles.YELLOW}El nombre de la categoría no puede estar vacío.{print_styles.RESET}")
+                            category = input("Ingrese el nombre de la categoria: ").strip()
                         add_category(categories, category)
 
                 elif option == "3":   # Opción 3
