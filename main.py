@@ -475,7 +475,7 @@ def main():
                         if id_account != 0:
                             related_accounts_transaction = list(filter(lambda x: x[1] == id_account, transactions))
                             for actual_transaction in related_accounts_transaction:
-                                delete_transaction(transactions, accounts, categories, budgets, actual_transaction[0])
+                                delete_transaction(transactions, accounts, categories, budgets, users, actual_transaction[0])
                             delete_account(accounts, id_account)
                         else:
                             print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
