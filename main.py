@@ -156,8 +156,10 @@ def main():
                                 descripcion = input("Ingrese la descripcion: ")
                             except ValueError:                                                       
                                 print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+                                break
                             except:
                                 print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
+                                break
                                 
                             if sub_option == "1":
                                 add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, actual_time, amount, descripcion, user["id"])
@@ -210,8 +212,10 @@ def main():
                                 id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
                         except ValueError:
                             print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+                            break
                         except:
                             print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
+                            break
                             
                         if id != 0:
                             delete_transaction(transactions, accounts, categories, budgets, users, id)
@@ -232,8 +236,10 @@ def main():
                                 id_input = int(input("Intente nuevamente: "))                    
                     except ValueError:
                         print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+                        break
                     except:
                         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
+                        break
 
                         user_id = get_user_by_id(id_input, users)["id"]
                         get_transactions(transactions, accounts, categories, users, lambda transaction: transaction[-1] == user_id)
