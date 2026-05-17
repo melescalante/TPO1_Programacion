@@ -16,7 +16,7 @@ READ_WRITE=2
 
 
 print("¡Bienvenido/a al sistema de Gestor de Gastos!\n")
-user = None
+user = users[0]
 while user==None:
     user=login()
 
@@ -398,10 +398,17 @@ def main():
                         get_accounts(accounts)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user,READ)
+                   
                     if permission:
                         account_name = input("Ingrese el nombre de la cuenta: ")
-                        total_money = input("Ingrese el monto de la cuenta: ")
-                        add_account(accounts, account_name, total_money)
+                        while True:
+                            try:
+                                total_money = int(input("Ingrese el monto de la cuenta: "))
+                                break
+                            except ValueError:
+                                print(f"{print_styles.RED}Error: Debes ingresar un numero.{print_styles.RESET}")
+                        
+                        add_account(accounts, account_name, total_money)    
 
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
@@ -442,12 +449,28 @@ def main():
                             break                        
                         
                         get_accounts(accounts)
-                        id_account = int(input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: "))
-                        while id_account < 0 or id_account > len(accounts):
+                        while True:
+                            id_account_text = input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: ").strip()
+
+                            if id_account_text == "":
+                                print(f"{print_styles.RED}Debe ingresar un número válido.{print_styles.RESET}")
+                                continue
+
+                            try:
+                                id_account = int(id_account_text)
+                            except ValueError:
+                                print(f"{print_styles.RED}Debe ingresar un número válido.{print_styles.RESET}")
+                                continue
+
                             if id_account == 0:
                                 print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
                                 break
-                            id_account = int(input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: "))
+
+                            if id_account < 0 or id_account > len(accounts):
+                                print(f"{print_styles.RED}Cuenta invalida. Debe ingresar una cuenta existente.{print_styles.RESET}")
+                                continue
+
+                            break
 
                         if id_account != 0:
                             related_accounts_transaction = list(filter(lambda x: x[1] == id_account, transactions))

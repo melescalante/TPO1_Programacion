@@ -36,7 +36,7 @@ def add_category(matrix_categories, category_name):
     except TypeError:
         print(f"{print_styles.RED}Error: Se esperaba una lista, pero se recibió otro tipo de dato.{print_styles.RESET}")
     except Exception:
-        print(f"{print_styles.RED}Ocurrió un error inesperado:{print_styles.RESET}")
+        print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")
 
 
 def delete_category(matrix_categories, matrix_transactions, matrix_budgets):
