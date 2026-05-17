@@ -8,11 +8,19 @@ def add_account(matrix_accounts, account_name, total_money):
     total_money: saldo inicial de la cuenta
     Retorna: None. Agrega una nueva cuenta si no existe con ese nombre
     """
-    id=create_id(matrix_accounts)
-    for account in matrix_accounts:
-        if account[1] == account_name:
-            return
-    matrix_accounts.append([id, account_name, total_money])
+    try:
+        id=create_id(matrix_accounts)
+        for account in matrix_accounts:
+            if account[1] == account_name:
+                return
+        matrix_accounts.append([id, account_name, total_money])
+    except TypeError:
+        print(f"{print_styles.RED}Error: Se recibió otro tipo de dato.{print_styles.RESET}")
+    except ValueError:
+        print(f"{print_styles.RED}Error: Debes ingresar un numero.{print_styles.RESET}")
+    except Exception:
+        print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")
+
  
 def get_accounts(matrix_account):
     """
@@ -43,44 +51,56 @@ def get_account_by_user_input(matrix_accounts):
     Retorna: cuenta seleccionada por el usuario o None si cancela
     """
     while True:
-        id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
-        
-        if id_account < 0 or id_account > len(matrix_accounts):
-            print(f"{print_styles.RED}Entrada inválida. Debe ingresar un número.{print_styles.RESET}")
-            continue
+        try:
+            id_account = int(input("¿Que cuenta desea actualizar? Indique el numero o escriba 0 para salir: "))
+            
+            if id_account < 0 or id_account > len(matrix_accounts):
+                print(f"{print_styles.RED}Entrada inválida. Debe ingresar una cuenta existente.{print_styles.RESET}")
+                continue
 
-        if id_account == 0:
-            print(f"{print_styles.GREEN}No se actualizó ninguna cuenta.{print_styles.RESET}")
-            return None
+            if id_account == 0:
+                print(f"{print_styles.GREEN}No se actualizó ninguna cuenta.{print_styles.RESET}")
+                return None
 
-        account = get_raw_by_id(matrix_accounts, id_account)
-        if account is None:
-            print(f"{print_styles.RED}La cuenta no existe.{print_styles.RESET}")
-            continue
+            account = get_raw_by_id(matrix_accounts, id_account)
+            if account is None:
+                print(f"{print_styles.RED}La cuenta no existe.{print_styles.RESET}")
+                continue
 
-        return account
+            return account
+        except Exception:
+            print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
 
 def update_name_account(account):
     """
     account: registro de cuenta a modificar
     Retorna: None. Solicita y actualiza el nombre de la cuenta
     """
-    name_account = input("Ingrese un nuevo nombre de cuenta: ")
-    while len(name_account) == 0 or not name_account.isalpha(): # bug, no admite espacios
-        print(f"{print_styles.YELLOW}El nombre que ingreso no tiene valor o no es una palabra.{print_styles.RESET}")
+    try:
         name_account = input("Ingrese un nuevo nombre de cuenta: ")
-    account[1] = name_account
+        while len(name_account) == 0 or not name_account.isalpha(): # bug, no admite espacios
+            print(f"{print_styles.YELLOW}El nombre que ingreso tiene espacios o no ingreso un valor. Por favor ingrese un nombre sin espacios.{print_styles.RESET}")
+            name_account = input("Ingrese un nuevo nombre de cuenta: ")
+        account[1] = name_account
+    except ValueError:
+        print(f"{print_styles.YELLOW}Opción no válida. Intente nuevamente.{print_styles.RESET}")
+    except Exception:
+        print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")
+
 
 def update_money_account(account):            
     """
     account: registro de cuenta a modificar
     Retorna: None. Solicita y actualiza el saldo de la cuenta
     """
-    total_money = input("Ingrese un nuevo monto de dinero: ")
-    while not total_money.isnumeric():
-        print(f"{print_styles.YELLOW}El valor que ingreso no es número o es menor a 0.{print_styles.RESET}")
+    try:
         total_money = input("Ingrese un nuevo monto de dinero: ")
-    account[2] = int(total_money)
+        while not total_money.isnumeric():
+            print(f"{print_styles.YELLOW}El valor que ingreso no es número o es menor a 0.{print_styles.RESET}")
+            total_money = input("Ingrese un nuevo monto de dinero: ")
+        account[2] = int(total_money)
+    except Exception:
+       print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")
 
 def delete_account(matrix_accounts, id):
     """
@@ -90,13 +110,17 @@ def delete_account(matrix_accounts, id):
     """
     delete=[]
     index=0
-
-    for acc in matrix_accounts:
-        if acc[0]==id:
-            index=matrix_accounts.index(acc)
-            delete=matrix_accounts.pop(index)
-            print(f"{print_styles.GREEN}Operación realizada con éxito. Cuenta eliminada correctamente.{print_styles.RESET}")
-            return
+    try:
+        for acc in matrix_accounts:
+            if acc[0]==id:
+                index=matrix_accounts.index(acc)
+                delete=matrix_accounts.pop(index)
+                print(f"{print_styles.GREEN}Operación realizada con éxito. Cuenta eliminada correctamente.{print_styles.RESET}")
+                return
+    except IndexError:
+        print(f"{print_styles.YELLOW}La cuenta no existe. Ingrese una cuenta valida{print_styles.RESET}")
+    except Exception:
+       print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
     print()
     
 def update_account_balance(matrix_accounts, id_account, amount):

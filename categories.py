@@ -36,8 +36,7 @@ def add_category(matrix_categories, category_name):
     except TypeError:
         print(f"{print_styles.RED}Error: Se esperaba una lista, pero se recibió otro tipo de dato.{print_styles.RESET}")
     except Exception:
-        print(f"{print_styles.RED}Ocurrió un error inesperado:{print_styles.RESET}")
-
+        print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")
 
 def delete_category(matrix_categories, matrix_transactions, matrix_budgets):
     """
@@ -109,6 +108,7 @@ def update_category(matrix_categories):
             
             if category is not None:                
                 change_category(category)
+                print(f"{print_styles.GREEN}La categoría deseada puedo ser actualizada.{print_styles.RESET}")
                 break
             else:
                 print(f"{print_styles.RED}La categoría no existe.{print_styles.RESET}")
@@ -130,7 +130,7 @@ def change_category(category):
             name_category = input("Ingrese un nuevo nombre de categoría: ")
         category[1] = name_category
     except TypeError:
-        print(f"{print_styles.RED}Error: El formato de la categoría es inválido.{print_styles.RESET}")
+        print(f"{print_styles.RED}Error: El formato de la categoría es inválido. Intente nuevamente con otra categoria{print_styles.RESET}")
     except Exception:
         print(f"{print_styles.RED}Error inesperado.{print_styles.RESET}")
 
