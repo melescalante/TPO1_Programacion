@@ -1,4 +1,4 @@
-from Styles import print_styles
+from styles import print_styles
 from categories import get_categories
 from helper import create_id, get_raw_by_id
 from functools import reduce

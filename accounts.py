@@ -1,4 +1,4 @@
-from Styles import print_styles
+from styles import print_styles
 from helper import create_id, get_raw_by_id
 
 def add_account(matrix_accounts, account_name, total_money):

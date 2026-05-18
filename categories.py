@@ -1,5 +1,5 @@
 from traceback import print_list
-from Styles import print_styles
+from styles import print_styles
 from helper import create_id, get_raw_by_id, is_word_alpha
 
 def get_categories(matrix_categories):

@@ -1,7 +1,7 @@
 from data import users
 from helper import slice_words
 import re 
-from Styles import print_styles
+from styles import print_styles
 
 email_pattern = re.compile(r'[\w\-=+\[{;:\'\"}\],\./?`~\$]+@[a-z0-9]+\.[a-z]{2,}')
 password_pattern = re.compile(r"^[\w=+-]{8,20}$")

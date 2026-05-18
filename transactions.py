@@ -1,6 +1,6 @@
 from datetime import datetime, time
 
-from Styles import print_styles
+from styles import print_styles
 from categories import get_categories
 from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
