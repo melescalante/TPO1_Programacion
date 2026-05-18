@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "id_account": 2,
+        "id_category": 2, 
+        "date": "2026-03-02", 
+        "time":"20:20", 
+        "amount" :1000000, 
+        "description": "Sueldo", 
+        "id_user":1
+    }, 
+    {
+        "id": 2,
+        "id_account": 3,
+        "id_category": 4, 
+        "date": "2026-03-11", 
+        "time":"13:21", 
+        "amount" :-5000, 
+        "description": "Chocolate del Kiosco", 
+        "id_user": 3
+    }, 
+    {
+        "id": 3,
+        "id_account": 1,
+        "id_category": 3, 
+        "date": "2026-03-12", 
+        "time":"14:55", 
+        "amount" :-200000, 
+        "description": "Expensas", 
+        "id_user": 4
+    }, 
+    {
+        "id": 4,
+        "id_account": 2,
+        "id_category": 5, 
+        "date": "2026-03-13", 
+        "time":"00:02", 
+        "amount" :-350000, 
+        "description": "Matricula", 
+        "id_user": 2
+    },
+    {
+        "id": 5,
+        "id_account": 1,
+        "id_category": 3, 
+        "date": "2026-03-12", 
+        "time":"14:55", 
+        "amount" :-200000, 
+        "description": "Expensas", 
+        "id_user": 1
+    },
+    {
+        "id": 6,
+        "id_account": 2,
+        "id_category": 2, 
+        "date": "2026-04-06", 
+        "time":"13:50", 
+        "amount" :300000, 
+        "description": "Facultad", 
+        "id_user": 1
+    }
+]

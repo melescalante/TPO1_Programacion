@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1, 
+        "category":"Otros"
+    }, 
+    {
+        "id": 2, 
+        "category":"Sueldo"
+    },
+    {
+        "id": 3, 
+        "category": "Alimento"
+    }, 
+    {
+        "id":4,
+        "category": "Gastos mensuales"
+    },
+    {
+        "id":5, 
+        "category":"Educación"
+    }
+]
