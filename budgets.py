@@ -94,7 +94,9 @@ def create_budget(matrix_budgets, category_id, limit_amount, matrix_categories):
     for category in matrix_categories:
         if category[0] == id_category:
             matrix_budgets.append([id_budget, id_category, limit_amount])
+            print(f"{print_styles.GREEN}Se ha creado el presupuesto correctamente.{print_styles.RESET}")
             return
+
 
 def delete_budget(matrix_budgets, matrix_categories):    
     """
