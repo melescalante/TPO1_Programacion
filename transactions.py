@@ -222,7 +222,7 @@ def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, di
             continue
 
         id=matrix_transactions[i][0]
-        user = get_user_by_id(matrix_transactions[i][-1], dicc_users)["username"]
+        user = get_user_by_id(matrix_transactions[i][-1])["username"]
         user_sliced = slice_words(14, user)
         account = get_raw_by_id(matrix_accounts,matrix_transactions[i][1])
         category = get_raw_by_id(matrix_categories,matrix_transactions[i][2])
