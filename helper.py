@@ -1,4 +1,5 @@
 from datetime import datetime, date, time
+import json
 
 def create_id(matrix):
     """
@@ -102,6 +103,17 @@ months = {
     12: "Diciembre"
 }
 
+def json_reader(file):
+    try:
+        with open(file,'r', encoding="UTF-8") as file_information:
+            data=json.load(file_information)
+            return data
+    except FileNotFoundError:
+        return "No se ha encontrado el archivo. Intente mas tarde."
+    except Exception:
+            return "Ocurrió un error inesperado"
+    
+        
 def get_month(value_month):
     """
     value_month: número de mes del 1 al 12
