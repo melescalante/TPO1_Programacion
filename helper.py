@@ -1,4 +1,5 @@
 from datetime import datetime, date, time
+from styles import print_styles
 import json
 
 def create_id(matrix):
@@ -119,17 +120,20 @@ def json_reader(file):
             data=json.load(file_information)
             return data
     except FileNotFoundError:
-        return "No se ha encontrado el archivo. Intente mas tarde."
+        print(f"{print_styles.RED}No se ha encontrado el archivo. Intente mas tarde.{print_styles.RESET}")
+        return None
     except Exception:
-            return "Ocurrió un error inesperado"
-def json_loader(file,data):
+        print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
+        return None
+
+def json_loader(file, data):
     try:
         with open(file,'w', encoding="UTF-8") as file_information:
             json.dump(data,file_information,ensure_ascii=False)
     except FileNotFoundError:
-        return "No se ha encontrado el archivo. Intente mas tarde."
+        print(f"{print_styles.RED}No se ha encontrado el archivo. Intente mas tarde.{print_styles.RESET}")
     except Exception:
-            return "Ocurrió un error inesperado"
+        print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
     
         
 def get_month(value_month):

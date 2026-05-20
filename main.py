@@ -24,7 +24,7 @@ file_budgets='json/budgets.json'
 file_transactions='json/transactions.json'
 
 print("¡Bienvenido/a al sistema de Gestor de Gastos!\n")
-user = None
+user = users[0]
 while user==None:
     user=login()
 
@@ -107,15 +107,10 @@ def main():
                 elif option == "1":   # Opción 1
                     permission= has_permission(user,READ)
                     if permission:
-                        accounts2=json_reader(file_accounts)
                         transactions2=json_reader(file_transactions)
-                        budgets2=json_reader(file_budgets)
+                        accounts2=json_reader(file_accounts)
                         categories2=json_reader(file_categories)
-                        print(accounts2)
-                        print(transactions2)
-                        print(categories2)
-                        print(budgets2)
-                        get_transactions(transactions, accounts, categories, users)
+                        get_transactions(transactions2, accounts2, categories2)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user,READ)
                     if permission:
@@ -182,18 +177,14 @@ def main():
                             except:
                                 print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
                                 break
-                            accounts2=json_reader(file_accounts)
                             transactions2=json_reader(file_transactions)
+                            accounts2=json_reader(file_accounts)
                             budgets2=json_reader(file_budgets)
                             categories2=json_reader(file_categories)
-                            print(accounts2)
-                            print(transactions2)
-                            print(categories2)
-                            print(budgets2)
                             if sub_option == "1":
-                                add_transaction(transactions, accounts, categories, budgets, id_account, id_category, date, actual_time, amount, descripcion, user["id"])
+                                add_transaction(transactions2, accounts2, categories2, budgets2, id_account, id_category, date, actual_time, amount, descripcion, user["id"])
                             elif sub_option == "2":
-                                add_transaction(transactions, accounts, categories, budgets,id_account, id_category, date, actual_time, amount, descripcion, user["id"], "Expense")
+                                add_transaction(transactions2, accounts2, categories2, budgets2, id_account, id_category, date, actual_time, amount, descripcion, user["id"], "Expense")
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission: 

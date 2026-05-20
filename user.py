@@ -59,20 +59,26 @@ def is_logged(loggedUser):
     
     return False
 
-def get_users(dicc_users):
+def get_users():
     """
-    dicc_users: diccionario de usuarios
     Imprime todos los usuarios
-    """
+    """    
     print("="*30)
     print(f"{print_styles.BOLD}{"Número":<15}{"Nombre":<15}{print_styles.RESET}")
-    
-    for user in dicc_users:
-        id = user["id"]
-        username = user["username"]
-        username_sliced = slice_words(14, username)
-        print(f"{id:<15}{username_sliced:<15}")
-    print()
+
+    try:
+        with open('txt/users.txt', mode='r', encoding='UTF-8') as file:
+            line = file.readline()
+            while line:
+                id, _, username, _, _ = line.strip().split(';')
+                if id == str(user_id):
+                    username_sliced = slice_words(14, username)
+                    print(f"{id:<15}{username_sliced:<15}")
+                line = file.readline()
+    except FileNotFoundError:
+        print(f"{print_styles.RED}No se encontró la ruta del archivo.{print_styles.RESET}")
+    except:
+        print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
     
 def get_user_by_id(user_id):
     """
@@ -84,9 +90,9 @@ def get_user_by_id(user_id):
             line = file.readline()
             user_found = None
             while line:
-                id, permission, name, password, email = line.strip().split(';')
+                id, permission, username, password, email = line.strip().split(';')
                 if id == str(user_id):
-                    user_found = { 'id': id, 'permission': permission, 'username': name, 'password': password, 'email': email }
+                    user_found = { 'id': id, 'permission': permission, 'username': username, 'password': password, 'email': email }
                     break
                 line = file.readline()
             return user_found
@@ -103,9 +109,9 @@ def get_user(email, password):
             line = file.readline()
             user_found = None
             while line:
-                id, permission, name, password, email = line.strip().split(';')
+                id, permission, username, password, email = line.strip().split(';')
                 if email.lower() == email and password == password:
-                    user_found = { 'id': id, 'permission': permission, 'username': name, 'password': password, 'email': email }
+                    user_found = { 'id': id, 'permission': permission, 'username': username, 'password': password, 'email': email }
                     break
                 line = file.readline()
             return user_found
