@@ -79,7 +79,7 @@ def get_account_by_user_input(matrix_accounts):
         except Exception:
             print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
 
-def update_name_account(account):
+def update_name_account(account,matrix_accounts):
     """
     account: registro de cuenta a modificar
     Retorna: None. Solicita y actualiza el nombre de la cuenta
@@ -89,7 +89,8 @@ def update_name_account(account):
         while len(name_account) == 0 or not name_account.isalpha(): # bug, no admite espacios
             print(f"{print_styles.YELLOW}El nombre que ingreso tiene espacios o no ingreso un valor. Por favor ingrese un nombre sin espacios.{print_styles.RESET}")
             name_account = input("Ingrese un nuevo nombre de cuenta: ")
-        account[1] = name_account
+        account["account"] = name_account
+        json_loader('json/accounts.json',matrix_accounts)
         print(f"{print_styles.GREEN}Se ha actualizado el nombre correctamente.{print_styles.RESET}")
     except ValueError:
         print(f"{print_styles.YELLOW}Opción no válida. Intente nuevamente.{print_styles.RESET}")
@@ -97,7 +98,7 @@ def update_name_account(account):
         print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")
 
 
-def update_money_account(account):            
+def update_money_account(account,matrix_accounts):            
     """
     account: registro de cuenta a modificar
     Retorna: None. Solicita y actualiza el saldo de la cuenta
@@ -107,7 +108,8 @@ def update_money_account(account):
         while not total_money.isnumeric():
             print(f"{print_styles.YELLOW}El valor que ingreso no es número o es menor a 0.{print_styles.RESET}")
             total_money = input("Ingrese un nuevo monto de dinero: ")
-        account[2] = int(total_money)
+        account["amount"] = int(total_money)
+        json_loader('json/accounts.json',matrix_accounts)
         print(f"{print_styles.GREEN}Se ha actualizado el monto correctamente.{print_styles.RESET}")
     except Exception:
        print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")

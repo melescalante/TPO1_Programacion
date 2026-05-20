@@ -523,10 +523,9 @@ def main():
                     permission = has_permission(user,READ_WRITE)
                     if permission:
                         accounts2=json_reader(file_accounts)
-                        print(accounts2)
-                        get_accounts(accounts)
+                        get_accounts(accounts2)
 
-                        account = get_account_by_user_input(accounts)
+                        account = get_account_by_user_input(accounts2)
 
                         while account is not None:
                             print(f"{print_styles.BOLD_BLUE}¿Qué campo de la cuenta deseas actualizar?{print_styles.RESET}")
@@ -537,9 +536,10 @@ def main():
                             option = input("Selecciona una opción: ")
                             
                             if option == "1":
-                                update_name_account(account)
+                                update_name_account(account,accounts2)
+                                
                             elif option == "2":
-                                update_money_account(account)
+                                update_money_account(account,accounts2)
                             elif option == "0":
                                 print(f"{print_styles.GREEN}La cuenta se actualizó con éxito.{print_styles.RESET}")
                                 break
