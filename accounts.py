@@ -36,10 +36,10 @@ def get_accounts(matrix_account):
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Nombre Cuenta':<25}{'Dinero':<25}{print_styles.RESET}")
     for i in range(len(matrix_account)):
-        id=matrix_account[i][0]
-        name = matrix_account[i][1]
-        amount=matrix_account[i][2]
-        amount_str = "$"+str(matrix_account[i][2])
+        id=matrix_account[i]["id"]
+        name = matrix_account[i]["account"]
+        amount=matrix_account[i]["amount"]
+        amount_str = "$"+str(matrix_account[i]["amount"])
         underline = print_styles.UNDERLINE_INCOME
         if int(amount)<0:
             underline= print_styles.UNDERLINE_EXPENSE

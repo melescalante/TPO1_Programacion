@@ -52,6 +52,8 @@ def get_budgets(matrix_budgets, matrix_categories):
     matrix_categories: lista de categorías para resolver nombres
     Retorna: None. Imprime una tabla de presupuestos
     """
+    print(matrix_budgets)
+    print(matrix_categories)
     count_matrix= len(matrix_budgets)
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f'{"Presupuestos":^60}')
@@ -60,14 +62,14 @@ def get_budgets(matrix_budgets, matrix_categories):
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Categoria':<25}{'Monto':<25}{print_styles.RESET}")
     for i in range(len(matrix_budgets)):
-        id=matrix_budgets[i][0]
-        category = get_raw_by_id(matrix_categories,matrix_budgets[i][1])
-        amount = matrix_budgets[i][2]
-        amount_str = "$"+str(matrix_budgets[i][2])
+        id=matrix_budgets[i]["id"]
+        category = get_raw_by_id(matrix_categories,matrix_budgets[i]["id_category"])
+        amount = matrix_budgets[i]["amount"]
+        amount_str = "$"+str(matrix_budgets[i]["amount"])
         underline = print_styles.UNDERLINE_INCOME
         if amount<0:
             underline = print_styles.UNDERLINE_EXPENSE
-        print(f"{underline}{id:<10}{category[1]:<25}{amount_str:<25}{print_styles.RESET}")
+        print(f"{underline}{id:<10}{category["category"]:<25}{amount_str:<25}{print_styles.RESET}")
     
 
 def create_budget(matrix_budgets, category_id, limit_amount, matrix_categories):
