@@ -4,7 +4,7 @@ from styles import print_styles
 from categories import get_categories
 from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
-from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour
+from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour, json_loader
 from budgets import update_budget_balance, get_budget_by_category
 
 def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets, id_account, id_category, date, time, amount, description, user_id, transaction_type="income"):
@@ -24,7 +24,7 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
     Retorna: None. Modifica matrix_transactions agregando nueva transacción y actualiza saldos
     """
     id= create_id(matrix_transactions)
-    id_raw_account = get_raw_by_id(matrix_accounts, id_account)[0]
+    id_raw_account = get_raw_by_id(matrix_accounts, id_account)["id"]
     id_raw_category = get_raw_by_id(matrix_categories, id_category)[0]
     
     id_raw_budget= get_budget_by_category(matrix_budgets,id_raw_category)[0]
