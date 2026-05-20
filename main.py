@@ -517,7 +517,7 @@ def main():
                                 print(f"{print_styles.RED}Error: Debes ingresar un numero.{print_styles.RESET}")
                         accounts2=json_reader(file_accounts)
                         print(accounts2)
-                        add_account(accounts, account_name, total_money)    
+                        add_account(accounts2, account_name, total_money)    
 
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)

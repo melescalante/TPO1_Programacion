@@ -1,5 +1,5 @@
 from styles import print_styles
-from helper import create_id, get_raw_by_id
+from helper import json_loader,create_id, get_raw_by_id
 
 def add_account(matrix_accounts, account_name, total_money):
     """
@@ -11,9 +11,16 @@ def add_account(matrix_accounts, account_name, total_money):
     try:
         id=create_id(matrix_accounts)
         for account in matrix_accounts:
-            if account[1] == account_name:
+            if account["account"] == account_name:
+                print(f"{print_styles.RED}La cuenta ya existe. Ingrese otro nombre por favor.{print_styles.RESET}")
                 return
-        matrix_accounts.append([id, account_name, total_money])
+        dicc_account={
+            "id":id,
+            "account":account_name,
+            "amount":total_money
+        }
+        matrix_accounts.append(dicc_account)
+        json_loader('json/accounts.json',matrix_accounts)
         print(f"{print_styles.GREEN}Se ha creado la cuenta correctamente{print_styles.RESET}")
     except TypeError:
         print(f"{print_styles.RED}Error: Se recibió otro tipo de dato.{print_styles.RESET}")

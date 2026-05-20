@@ -122,6 +122,14 @@ def json_reader(file):
         return "No se ha encontrado el archivo. Intente mas tarde."
     except Exception:
             return "Ocurrió un error inesperado"
+def json_loader(file,data):
+    try:
+        with open(file,'w', encoding="UTF-8") as file_information:
+            json.dump(data,file_information,ensure_ascii=False)
+    except FileNotFoundError:
+        return "No se ha encontrado el archivo. Intente mas tarde."
+    except Exception:
+            return "Ocurrió un error inesperado"
     
         
 def get_month(value_month):
