@@ -3,7 +3,7 @@ from styles import print_styles
 from categories import get_categories
 from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
-from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour
+from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour, json_loader
 from budgets import update_budget_balance, get_budget_by_category
 
 def add_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_account, id_category, date, time, amount, description, id_user, transaction_type="income"):
@@ -41,7 +41,6 @@ def add_transaction(data_transactions, data_accounts, data_categories, data_budg
         multiplier = -1
     final_amount = amount * multiplier
     
-    # Habria que llamar al json y cargarle
     data_transactions.append({'id': id, 
         'id_account': id_raw_account, 
         'id_category': id_raw_category, 
@@ -55,6 +54,7 @@ def add_transaction(data_transactions, data_accounts, data_categories, data_budg
     
     update_account_balance(data_accounts, id_raw_account, final_amount)
     update_budget_balance(data_budgets, id_raw_budget, final_amount)
+    print(f"{print_styles.GREEN}La transacción fue agregada correctamente.{print_styles.RESET}")
 
 def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, matrix_budgets, dicc_users, id_delete):
     """
