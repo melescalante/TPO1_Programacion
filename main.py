@@ -331,8 +331,7 @@ def main():
                     permission= has_permission(user,READ)
                     if permission:
                         categories2=json_reader(file_categories)
-                        print(categories2)
-                        get_categories(categories)
+                        get_categories(categories2)
                 elif option == "2":   # Opción 2
                     permission= has_permission(user,READ)
                     if permission:
@@ -400,7 +399,7 @@ def main():
                         categories2=json_reader(file_categories)
                         print(categories2)
                         print(budgets2)
-                        get_budgets(budgets, categories)
+                        get_budgets(budgets2, categories2)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user, READ)
                     if permission:
@@ -503,7 +502,7 @@ def main():
                     permission = has_permission(user,READ)
                     if permission:
                         accounts2=json_reader(file_accounts)
-                        get_accounts(accounts)
+                        get_accounts(accounts2)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user,READ)
                    
