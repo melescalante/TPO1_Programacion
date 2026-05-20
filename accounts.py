@@ -14,6 +14,7 @@ def add_account(matrix_accounts, account_name, total_money):
             if account[1] == account_name:
                 return
         matrix_accounts.append([id, account_name, total_money])
+        print(f"{print_styles.GREEN}Se ha creado la cuenta correctamente{print_styles.RESET}")
     except TypeError:
         print(f"{print_styles.RED}Error: Se recibió otro tipo de dato.{print_styles.RESET}")
     except ValueError:
@@ -35,10 +36,10 @@ def get_accounts(matrix_account):
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Nombre Cuenta':<25}{'Dinero':<25}{print_styles.RESET}")
     for i in range(len(matrix_account)):
-        id=matrix_account[i][0]
-        name = matrix_account[i][1]
-        amount=matrix_account[i][2]
-        amount_str = "$"+str(matrix_account[i][2])
+        id=matrix_account[i]["id"]
+        name = matrix_account[i]["account"]
+        amount=matrix_account[i]["amount"]
+        amount_str = "$"+str(matrix_account[i]["amount"])
         underline = print_styles.UNDERLINE_INCOME
         if int(amount)<0:
             underline= print_styles.UNDERLINE_EXPENSE
@@ -82,6 +83,7 @@ def update_name_account(account):
             print(f"{print_styles.YELLOW}El nombre que ingreso tiene espacios o no ingreso un valor. Por favor ingrese un nombre sin espacios.{print_styles.RESET}")
             name_account = input("Ingrese un nuevo nombre de cuenta: ")
         account[1] = name_account
+        print(f"{print_styles.GREEN}Se ha actualizado el nombre correctamente.{print_styles.RESET}")
     except ValueError:
         print(f"{print_styles.YELLOW}Opción no válida. Intente nuevamente.{print_styles.RESET}")
     except Exception:
@@ -99,6 +101,7 @@ def update_money_account(account):
             print(f"{print_styles.YELLOW}El valor que ingreso no es número o es menor a 0.{print_styles.RESET}")
             total_money = input("Ingrese un nuevo monto de dinero: ")
         account[2] = int(total_money)
+        print(f"{print_styles.GREEN}Se ha actualizado el monto correctamente.{print_styles.RESET}")
     except Exception:
        print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")
 

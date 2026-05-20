@@ -1,4 +1,5 @@
 from datetime import datetime, date, time
+import json
 
 def create_id(matrix):
     """
@@ -7,7 +8,17 @@ def create_id(matrix):
     """
     id=len(matrix) + 1
     return id
-
+# Funcion vieja
+# def get_raw_by_id(matrix, id):
+#     """
+#     matrix: lista de registros donde el primer elemento es el id
+#     id: identificador a buscar
+#     Retorna: el registro que coincide con el id o None si no existe
+#     """
+#     for raw in matrix:
+#         if raw[0] == id:
+#             return raw
+#     return None
 def get_raw_by_id(matrix, id):
     """
     matrix: lista de registros donde el primer elemento es el id
@@ -15,7 +26,7 @@ def get_raw_by_id(matrix, id):
     Retorna: el registro que coincide con el id o None si no existe
     """
     for raw in matrix:
-        if raw[0] == id:
+        if raw["id"] == id:
             return raw
     return None
 
@@ -102,6 +113,17 @@ months = {
     12: "Diciembre"
 }
 
+def json_reader(file):
+    try:
+        with open(file,'r', encoding="UTF-8") as file_information:
+            data=json.load(file_information)
+            return data
+    except FileNotFoundError:
+        return "No se ha encontrado el archivo. Intente mas tarde."
+    except Exception:
+            return "Ocurrió un error inesperado"
+    
+        
 def get_month(value_month):
     """
     value_month: número de mes del 1 al 12
