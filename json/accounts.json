@@ -1,17 +1,1 @@
-[
-    {
-        "id":1, 
-        "account":"Mercado Pago",
-        "amount": 1000000
-    }, 
-    {
-        "id":2, 
-        "account":"Galicia",
-        "amount": 5000000
-    },
-    {
-        "id":3, 
-        "account":"Efectivo",
-        "amount": 500000
-    }
-]
+[{"id": 1, "account": "Mercado Pago", "amount": 1000000}, {"id": 2, "account": "Galicia", "amount": 4000000}, {"id": 3, "account": "Efectivo", "amount": 1500000}]

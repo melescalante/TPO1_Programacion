@@ -197,17 +197,16 @@ def main():
                                                        
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
-                    if permission: 
-                        accounts2=json_reader(file_accounts)
-                        transactions2=json_reader(file_transactions)
-                        budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        print(accounts2)
-                        print(transactions2)
-                        print(categories2)
-                        print(budgets2)
-                        get_transactions(transactions, accounts, categories, users)
-                        transaction = get_transaction_by_user_input(transactions)
+                    if permission:                        
+                        data_transactions = json_reader(file_transactions)
+                        data_accounts = json_reader(file_accounts)
+                        data_categories = json_reader(file_categories)
+                        
+                        if (data_transactions or data_accounts or data_categories) == None:
+                            break
+
+                        get_transactions(data_transactions, data_accounts, data_categories)
+                        transaction = get_transaction_by_user_input(data_transactions)
 
                         while transaction is not None:
                             print(f"\033[1;34m¿Qué campo de la transacción deseas actualizar?{print_styles.RESET}")
@@ -222,15 +221,15 @@ def main():
                             sub_option = input("Seleccione una opción: ")
                             
                             if sub_option == "1":
-                                update_account_transaction(transaction, accounts)
+                                update_account_transaction(transaction, data_transactions, data_accounts)
                             elif sub_option == "2":
-                                update_category_transaction(transaction, categories)
+                                update_category_transaction(transaction, data_categories)
                             elif sub_option == "3":
                                 update_date_transaction(transaction)
                             elif sub_option == "4":
                                 update_time_transaction(transaction)
                             elif sub_option == "5":
-                                update_amount_transaction(transaction, accounts, budgets)
+                                update_amount_transaction(transaction, data_accounts, data_budgets)
                             elif sub_option == "6":
                                 update_description_transaction(transaction)
                             elif sub_option == "0":
@@ -241,15 +240,11 @@ def main():
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
                     if permission:
-                        accounts2=json_reader(file_accounts)
-                        transactions2=json_reader(file_transactions)
-                        budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        print(accounts2)
-                        print(transactions2)
-                        print(categories2)
-                        print(budgets2)
-                        get_transactions(transactions, accounts, categories, users)
+                        data_transactions = json_reader(file_transactions)
+                        data_accounts = json_reader(file_accounts)
+                        data_categories = json_reader(file_categories)
+                        get_transactions(data_transactions, data_accounts, data_categories)
+
                         try: 
                             id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
                             while id < 0 or id > len(transactions):
@@ -295,7 +290,11 @@ def main():
                         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
                         break
 
-                    id_user = get_user_by_id(id_input, users)["id"]
+                    data_transactions = json_reader(file_transactions)
+                    data_accounts = json_reader(file_accounts)
+                    data_categories = json_reader(file_categories)
+                    # id_user = get_user_by_id(id_input)["id"]
+                    get_transactions(data_transactions, data_accounts, data_categories)
                     get_transactions(transactions, accounts, categories, users, lambda transaction: transaction[-1] == id_user)
                                                                                 
                 input("Presione ENTER para volver a seleccionar.")

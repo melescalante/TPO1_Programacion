@@ -81,7 +81,7 @@ def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, 
         
     print(f"{print_styles.RED}Operación realizada sin éxito, el número de ID no existe.{print_styles.RESET}")
 
-def update_account_transaction(transaction, matrix_accounts):
+def update_account_transaction(transaction, data_transactions, data_accounts):
     """
     transaction: transacción a actualizar
     matrix_accounts: lista de cuentas del sistema
@@ -89,19 +89,20 @@ def update_account_transaction(transaction, matrix_accounts):
     """
     while True:
         try:
-            get_accounts(matrix_accounts)
+            get_accounts(data_accounts)
             new_account_id = int(input("Ingrese el número de la nueva cuenta: "))
-            account = get_raw_by_id(matrix_accounts, new_account_id)
+            account = get_raw_by_id(data_accounts, new_account_id)
 
             if account is None:
                 print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
                 continue
 
-            old_id_account = transaction[1]
-            money_transaction = transaction[5]
-            update_account_balance(matrix_accounts, old_id_account, -money_transaction)
-            update_account_balance(matrix_accounts, new_account_id, money_transaction)
-            transaction[1] = new_account_id
+            old_id_account = transaction['id_account']
+            money_transaction = transaction['amount']
+            update_account_balance(data_accounts, old_id_account, -money_transaction)
+            update_account_balance(data_accounts, new_account_id, money_transaction)
+            transaction['id_account'] = new_account_id
+            json_loader('json/transactions.json', data_transactions)
             print(f"{print_styles.GREEN}ID de cuenta actualizado.{print_styles.RESET}")
             return
         except ValueError:
@@ -268,7 +269,7 @@ def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_ca
     except:
         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
-def get_transaction_by_user_input(matrix_Transactions):
+def get_transaction_by_user_input(matrix_transactions):
     """
     matrix_Transactions: lista de transacciones disponibles
     Retorna: transacción seleccionada por el usuario o None si cancela
@@ -276,7 +277,7 @@ def get_transaction_by_user_input(matrix_Transactions):
     while True:
         try:
             id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
-            if id_transaction < 0 or id_transaction > len(matrix_Transactions):
+            if id_transaction < 0 or id_transaction > len(matrix_transactions):
                 print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
                 continue
 
@@ -284,7 +285,7 @@ def get_transaction_by_user_input(matrix_Transactions):
                 print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
                 return None
 
-            transaction = get_raw_by_id(matrix_Transactions, id_transaction)
+            transaction = get_raw_by_id(matrix_transactions, id_transaction)
             
             if transaction is None:
                 print(f"{print_styles.RED}La transacción no existe. Intente de nuevo.{print_styles.RESET}")
