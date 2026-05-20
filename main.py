@@ -161,28 +161,40 @@ def main():
                                     print(f"{print_styles.RED}{message}{print_styles.RESET}")
                                     break
                             try:
-                                accounts2=json_reader(file_accounts)
-                                get_accounts(accounts2)
+                                data_accounts = json_reader(file_accounts)
+                                if data_accounts == None:
+                                    break
+                                get_accounts(data_accounts)
                                 id_account = int(input("Ingrese el número de la cuenta: "))
-                                categories2=json_reader(file_categories)
-                                get_categories(categories2)
+                                
+                                data_categories = json_reader(file_categories)
+                                if data_categories == None:
+                                    break
+
+                                get_categories(data_categories)
                                 id_category = int(input("Ingrese el número de la categoria: "))
                                 amount = int(input("Ingrese el importe: "))
                                 descripcion = input("Ingrese la descripcion: ")
+                                
+                                data_transactions = json_reader(file_transactions)
+                                if data_transactions == None:
+                                    break
+
+                                data_budgets = json_reader(file_budgets)
+                                if data_budgets == None:
+                                    break
+
+                                if sub_option == "1":
+                                    add_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_account, id_category, date, actual_time, amount, descripcion, user["id"])
+                                elif sub_option == "2":
+                                    add_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_account, id_category, date, actual_time, amount, descripcion, user["id"], "Expense")
                             except ValueError:                                                  
                                 print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
                                 break
                             except:
                                 print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
                                 break
-                            transactions2=json_reader(file_transactions)
-                            accounts2=json_reader(file_accounts)
-                            budgets2=json_reader(file_budgets)
-                            categories2=json_reader(file_categories)
-                            if sub_option == "1":
-                                add_transaction(transactions2, accounts2, categories2, budgets2, id_account, id_category, date, actual_time, amount, descripcion, user["id"])
-                            elif sub_option == "2":
-                                add_transaction(transactions2, accounts2, categories2, budgets2, id_account, id_category, date, actual_time, amount, descripcion, user["id"], "Expense")
+                                                       
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission: 
