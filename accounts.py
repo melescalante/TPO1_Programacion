@@ -1,5 +1,5 @@
 from styles import print_styles
-from helper import create_id, get_raw_by_id
+from helper import json_loader,create_id, get_raw_by_id
 
 def add_account(matrix_accounts, account_name, total_money):
     """
@@ -11,9 +11,17 @@ def add_account(matrix_accounts, account_name, total_money):
     try:
         id=create_id(matrix_accounts)
         for account in matrix_accounts:
-            if account[1] == account_name:
+            if account["account"] == account_name:
+                print(f"{print_styles.RED}La cuenta ya existe. Ingrese otro nombre por favor.{print_styles.RESET}")
                 return
-        matrix_accounts.append([id, account_name, total_money])
+        dicc_account={
+            "id":id,
+            "account":account_name,
+            "amount":total_money
+        }
+        matrix_accounts.append(dicc_account)
+        json_loader('json/accounts.json',matrix_accounts)
+        print(f"{print_styles.GREEN}Se ha creado la cuenta correctamente{print_styles.RESET}")
     except TypeError:
         print(f"{print_styles.RED}Error: Se recibió otro tipo de dato.{print_styles.RESET}")
     except ValueError:
@@ -35,10 +43,10 @@ def get_accounts(matrix_account):
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Nombre Cuenta':<25}{'Dinero':<25}{print_styles.RESET}")
     for i in range(len(matrix_account)):
-        id=matrix_account[i][0]
-        name = matrix_account[i][1]
-        amount=matrix_account[i][2]
-        amount_str = "$"+str(matrix_account[i][2])
+        id=matrix_account[i]["id"]
+        name = matrix_account[i]["account"]
+        amount=matrix_account[i]["amount"]
+        amount_str = "$"+str(matrix_account[i]["amount"])
         underline = print_styles.UNDERLINE_INCOME
         if int(amount)<0:
             underline= print_styles.UNDERLINE_EXPENSE
@@ -71,7 +79,7 @@ def get_account_by_user_input(matrix_accounts):
         except Exception:
             print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
 
-def update_name_account(account):
+def update_name_account(account,matrix_accounts):
     """
     account: registro de cuenta a modificar
     Retorna: None. Solicita y actualiza el nombre de la cuenta
@@ -81,14 +89,16 @@ def update_name_account(account):
         while len(name_account) == 0 or not name_account.isalpha(): # bug, no admite espacios
             print(f"{print_styles.YELLOW}El nombre que ingreso tiene espacios o no ingreso un valor. Por favor ingrese un nombre sin espacios.{print_styles.RESET}")
             name_account = input("Ingrese un nuevo nombre de cuenta: ")
-        account[1] = name_account
+        account["account"] = name_account
+        json_loader('json/accounts.json',matrix_accounts)
+        print(f"{print_styles.GREEN}Se ha actualizado el nombre correctamente.{print_styles.RESET}")
     except ValueError:
         print(f"{print_styles.YELLOW}Opción no válida. Intente nuevamente.{print_styles.RESET}")
     except Exception:
         print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")
 
 
-def update_money_account(account):            
+def update_money_account(account,matrix_accounts):            
     """
     account: registro de cuenta a modificar
     Retorna: None. Solicita y actualiza el saldo de la cuenta
@@ -98,7 +108,9 @@ def update_money_account(account):
         while not total_money.isnumeric():
             print(f"{print_styles.YELLOW}El valor que ingreso no es número o es menor a 0.{print_styles.RESET}")
             total_money = input("Ingrese un nuevo monto de dinero: ")
-        account[2] = int(total_money)
+        account["amount"] = int(total_money)
+        json_loader('json/accounts.json',matrix_accounts)
+        print(f"{print_styles.GREEN}Se ha actualizado el monto correctamente.{print_styles.RESET}")
     except Exception:
        print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")
 
