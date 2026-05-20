@@ -2,12 +2,12 @@ from datetime import datetime, date, time
 from styles import print_styles
 import json
 
-def create_id(matrix):
+def create_id(array):
     """
     matrix: lista de elementos existente
     Retorna: un nuevo identificador basado en el tamaño de la matriz
     """
-    id=len(matrix) + 1
+    id=array[-1]["id"] + 1
     return id
 # Funcion vieja
 # def get_raw_by_id(matrix, id):

@@ -338,19 +338,17 @@ def main():
                     permission= has_permission(user,READ)
                     if permission:
                         category = input("Ingrese el nombre de la categoria: ")
-                        categories2=json_reader(file_categories)
-                        print(categories2)
                         while not category:
                             print(f"{print_styles.YELLOW}El nombre de la categoría no puede estar vacío.{print_styles.RESET}")
                             category = input("Ingrese el nombre de la categoria: ").strip()
-                        add_category(categories, category)
+                        categories2=json_reader(file_categories)
+                        add_category(categories2, category)
 
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission:
                         categories2=json_reader(file_categories)
-                        print(categories2)
-                        update_category(categories)
+                        update_category(categories2)
 
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
@@ -361,7 +359,7 @@ def main():
                         print(transactions2)
                         print(categories2)
                         print(budgets2)
-                        delete_category(categories, transactions, budgets)
+                        delete_category(categories2, transactions2, budgets2)
                                                         
                 input("Presione ENTER para volver a seleccionar.")
 
