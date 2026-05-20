@@ -15,8 +15,8 @@ def get_categories(matrix_categories):
     print("="*print_styles.MAX_SPACES_CATEGORIES)
     print(f"{print_styles.BOLD}{'Numero':<20}{'Categoria':<30}{print_styles.RESET}")
     for i in range(len(matrix_categories)):
-        id=matrix_categories[i][0]
-        amount = matrix_categories[i][1]
+        id=matrix_categories[i]["id"]
+        amount = matrix_categories[i]["category"]
         print(f"{print_styles.BOLD}{id:<20}{print_styles.RESET}{amount:<30}")
     return
 
