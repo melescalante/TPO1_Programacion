@@ -517,7 +517,6 @@ def main():
                             except ValueError:
                                 print(f"{print_styles.RED}Error: Debes ingresar un numero.{print_styles.RESET}")
                         accounts2=json_reader(file_accounts)
-                        print(accounts2)
                         add_account(accounts2, account_name, total_money)    
 
                 elif option == "3":   # Opción 3
@@ -560,8 +559,7 @@ def main():
                             print(f"\n{print_styles.GREEN}No se borrará ninguna cuenta.{print_styles.RESET}")
                             break                        
                         accounts2=json_reader(file_accounts)
-                        print(accounts2)
-                        get_accounts(accounts)
+                        get_accounts(accounts2)
                         while True:
                             id_account_text = input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: ").strip()
 
@@ -579,25 +577,26 @@ def main():
                                 print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
                                 break
 
-                            if id_account < 0 or id_account > len(accounts):
+                            if id_account < 0 or id_account > len(accounts2):
                                 print(f"{print_styles.RED}Cuenta invalida. Debe ingresar una cuenta existente.{print_styles.RESET}")
                                 continue
 
                             break
 
                         if id_account != 0:
-                            related_accounts_transaction = list(filter(lambda x: x[1] == id_account, transactions))
-                            accounts2=json_reader(file_accounts)
                             transactions2=json_reader(file_transactions)
+                            related_accounts_transaction = list(filter(lambda x: x["id_account"] == id_account, transactions2))
+                            accounts2=json_reader(file_accounts)
                             budgets2=json_reader(file_budgets)
                             categories2=json_reader(file_categories)
                             print(accounts2)
                             print(transactions2)
                             print(categories2)
                             print(budgets2)
-                            for actual_transaction in related_accounts_transaction:
-                                delete_transaction(transactions, accounts, categories, budgets, users, actual_transaction[0])
-                            delete_account(accounts, id_account)
+                            # for actual_transaction in related_accounts_transaction:
+                                # delete_transaction(transactions, accounts, categories, budgets, users, actual_transaction[0])
+                            delete_account(accounts2, id_account)
+                            
                         else:
                             print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
 
