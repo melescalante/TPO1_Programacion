@@ -1,19 +1,33 @@
 from styles import print_styles
 from categories import get_categories
-from helper import create_id, get_raw_by_id
+from helper import create_id, get_raw_by_id, json_loader
 from functools import reduce
 
-def update_budget_balance(matrix_budgets, id_budget, amount):
+
+def update_budget_balance(data_budgets, id_budget, amount):
     """
-    matrix_budgets: lista de presupuestos a actualizar
+    data_budgets: lista de presupuestos a actualizar
     id_budget: identificador del presupuesto
     amount: monto a sumar o restar al presupuesto
     Retorna: None. Modifica el saldo del presupuesto correspondiente
     """
-    for budget in matrix_budgets:
-        if budget[0] == id_budget:
-            budget[2] += amount
+    for budget in data_budgets:
+        if budget['id'] == id_budget:
+            budget['amount'] += amount
+            json_loader('json/budgets.json', data_budgets)
             return
+
+# def update_budget_balance(matrix_budgets, id_budget, amount):
+#     """
+#     matrix_budgets: lista de presupuestos a actualizar
+#     id_budget: identificador del presupuesto
+#     amount: monto a sumar o restar al presupuesto
+#     Retorna: None. Modifica el saldo del presupuesto correspondiente
+#     """
+#     for budget in matrix_budgets:
+#         if budget[0] == id_budget:
+#             budget[2] += amount
+#             return
         
 def get_budget_by_user_input(matrix_budgets):
     """
@@ -184,5 +198,16 @@ def get_budget_by_category(matrix_budgets,id_category):
     id_category: identificador de categoría a buscar
     Retorna: registro del presupuesto asociado a la categoría
     """
-    register= reduce(lambda x,y: y if y[1]==id_category else x, matrix_budgets)
-    return register
+    for budget in matrix_budgets:
+        if budget["id_category"] == id_category:
+            return budget
+    return None
+
+# def get_budget_by_category(matrix_budgets,id_category):
+#     """
+#     matrix_budgets: lista de presupuestos existentes
+#     id_category: identificador de categoría a buscar
+#     Retorna: registro del presupuesto asociado a la categoría
+#     """
+#     register= reduce(lambda x,y: y if y[1]==id_category else x, matrix_budgets)
+#     return register

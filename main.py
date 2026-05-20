@@ -16,6 +16,7 @@ from permissions import has_permission
 READ=1
 READ_WRITE=2
 
+file_users = 'txt/users.txt'
 # Rutas de json
 file_accounts='json/accounts.json'
 file_categories='json/categories.json'
@@ -106,15 +107,10 @@ def main():
                 elif option == "1":   # Opción 1
                     permission= has_permission(user,READ)
                     if permission:
-                        accounts2=json_reader(file_accounts)
-                        transactions2=json_reader(file_transactions)
-                        budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        print(accounts2)
-                        print(transactions2)
-                        print(categories2)
-                        print(budgets2)
-                        get_transactions(transactions, accounts, categories, users)
+                        data_transactions = json_reader(file_transactions)
+                        data_accounts = json_reader(file_accounts)
+                        data_categories = json_reader(file_categories)
+                        get_transactions(data_transactions, data_accounts, data_categories)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user,READ)
                     if permission:
@@ -165,47 +161,53 @@ def main():
                                     print(f"{print_styles.RED}{message}{print_styles.RESET}")
                                     break
                             try:
-                                accounts2=json_reader(file_accounts)
-                                print(accounts2)
-                                get_accounts(accounts2)
+                                data_accounts = json_reader(file_accounts)
+                                if data_accounts == None:
+                                    break
+                                get_accounts(data_accounts)
                                 id_account = int(input("Ingrese el número de la cuenta: "))
-                                categories2=json_reader(file_categories)
-                                print(categories2)
-                                get_categories(categories2)
+                                
+                                data_categories = json_reader(file_categories)
+                                if data_categories == None:
+                                    break
+
+                                get_categories(data_categories)
                                 id_category = int(input("Ingrese el número de la categoria: "))
                                 amount = int(input("Ingrese el importe: "))
                                 descripcion = input("Ingrese la descripcion: ")
+                                
+                                data_transactions = json_reader(file_transactions)
+                                if data_transactions == None:
+                                    break
+
+                                data_budgets = json_reader(file_budgets)
+                                if data_budgets == None:
+                                    break
+
+                                if sub_option == "1":
+                                    add_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_account, id_category, date, actual_time, amount, descripcion, user["id"])
+                                elif sub_option == "2":
+                                    add_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_account, id_category, date, actual_time, amount, descripcion, user["id"], "Expense")
                             except ValueError:                                                  
                                 print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
                                 break
                             except:
                                 print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
                                 break
-                            accounts2=json_reader(file_accounts)
-                            transactions2=json_reader(file_transactions)
-                            budgets2=json_reader(file_budgets)
-                            categories2=json_reader(file_categories)
-                            print(accounts2)
-                            print(transactions2)
-                            print(categories2)
-                            print(budgets2)
-                            if sub_option == "1":
-                                add_transaction(transactions, accounts2, categories, budgets, id_account, id_category, date, actual_time, amount, descripcion, user["id"])
-                            elif sub_option == "2":
-                                add_transaction(transactions, accounts2, categories, budgets,id_account, id_category, date, actual_time, amount, descripcion, user["id"], "Expense")
+                                                       
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
-                    if permission: 
-                        accounts2=json_reader(file_accounts)
-                        transactions2=json_reader(file_transactions)
-                        budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        print(accounts2)
-                        print(transactions2)
-                        print(categories2)
-                        print(budgets2)
-                        get_transactions(transactions, accounts, categories, users)
-                        transaction = get_transaction_by_user_input(transactions)
+                    if permission:                        
+                        data_transactions = json_reader(file_transactions)
+                        data_accounts = json_reader(file_accounts)
+                        data_categories = json_reader(file_categories)
+                        data_budgets = json_reader(file_budgets)
+                        
+                        if (data_transactions or data_accounts or data_categories or data_budgets) == None:
+                            break
+
+                        get_transactions(data_transactions, data_accounts, data_categories)
+                        transaction = get_transaction_by_user_input(data_transactions)
 
                         while transaction is not None:
                             print(f"\033[1;34m¿Qué campo de la transacción deseas actualizar?{print_styles.RESET}")
@@ -220,17 +222,17 @@ def main():
                             sub_option = input("Seleccione una opción: ")
                             
                             if sub_option == "1":
-                                update_account_transaction(transaction, accounts)
+                                update_account_transaction(transaction, data_transactions, data_accounts)
                             elif sub_option == "2":
-                                update_category_transaction(transaction, categories)
+                                update_category_transaction(transaction, data_transactions, data_categories)
                             elif sub_option == "3":
-                                update_date_transaction(transaction)
+                                update_date_transaction(transaction, data_transactions)
                             elif sub_option == "4":
-                                update_time_transaction(transaction)
+                                update_time_transaction(transaction, data_transactions)
                             elif sub_option == "5":
-                                update_amount_transaction(transaction, accounts, budgets)
+                                update_amount_transaction(transaction, data_transactions, data_accounts, data_budgets)
                             elif sub_option == "6":
-                                update_description_transaction(transaction)
+                                update_description_transaction(transaction, data_transactions)
                             elif sub_option == "0":
                                 print(f"{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
                                 break
@@ -239,15 +241,11 @@ def main():
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
                     if permission:
-                        accounts2=json_reader(file_accounts)
-                        transactions2=json_reader(file_transactions)
-                        budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        print(accounts2)
-                        print(transactions2)
-                        print(categories2)
-                        print(budgets2)
-                        get_transactions(transactions, accounts, categories, users)
+                        data_transactions = json_reader(file_transactions)
+                        data_accounts = json_reader(file_accounts)
+                        data_categories = json_reader(file_categories)
+                        get_transactions(data_transactions, data_accounts, data_categories)
+
                         try: 
                             id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
                             while id < 0 or id > len(transactions):
@@ -293,8 +291,12 @@ def main():
                         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
                         break
 
-                    user_id = get_user_by_id(id_input, users)["id"]
-                    get_transactions(transactions, accounts, categories, users, lambda transaction: transaction[-1] == user_id)
+                    data_transactions = json_reader(file_transactions)
+                    data_accounts = json_reader(file_accounts)
+                    data_categories = json_reader(file_categories)
+                    # id_user = get_user_by_id(id_input)["id"]
+                    get_transactions(data_transactions, data_accounts, data_categories)
+                    get_transactions(transactions, accounts, categories, users, lambda transaction: transaction[-1] == id_user)
                                                                                 
                 input("Presione ENTER para volver a seleccionar.")
         

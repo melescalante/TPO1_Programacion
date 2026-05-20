@@ -1,5 +1,5 @@
 from styles import print_styles
-from helper import json_loader,create_id, get_raw_by_id
+from helper import json_loader, create_id, get_raw_by_id
 
 def add_account(data_accounts, account_name, total_money):
     """
@@ -137,18 +137,29 @@ def delete_account(data_accounts, id):
     except Exception:
        print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
     print()
-    
+
 def update_account_balance(data_accounts, id_account, amount):
     """
+    data_accounts: lista de cuentas a actualizar
     data_accounts: lista de cuentas a actualizar
     id_account: identificador de la cuenta a modificar
     amount: monto a sumar o restar del saldo
     Retorna: None. Ajusta el saldo de la cuenta indicada
     """
     for account in data_accounts:
-        if account["id"] == id_account:
-            account["amount"] += amount
-            json_loader('json/accounts.json',data_accounts)
+        if account['id'] == id_account:
+            account['amount'] += amount
+            json_loader('json/accounts.json', data_accounts)
             return
-        
 
+# def update_account_balance(matrix_accounts, id_account, amount):
+#     """
+#     matrix_accounts: lista de cuentas a actualizar
+#     id_account: identificador de la cuenta a modificar
+#     amount: monto a sumar o restar del saldo
+#     Retorna: None. Ajusta el saldo de la cuenta indicada
+#     """
+#     for account in matrix_accounts:
+#         if account[0] == id_account:
+#             account[2] += amount
+#             return

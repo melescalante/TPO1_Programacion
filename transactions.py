@@ -1,13 +1,12 @@
 from datetime import datetime, time
-
 from styles import print_styles
 from categories import get_categories
 from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
-from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour, json_loader
+from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour
 from budgets import update_budget_balance, get_budget_by_category
 
-def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets, id_account, id_category, date, time, amount, description, user_id, transaction_type="income"):
+def add_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_account, id_category, date, time, amount, description, id_user, transaction_type="income"):
     """
     matrix_transactions: lista de transacciones a actualizar
     matrix_accounts: lista de cuentas del sistema
@@ -19,15 +18,15 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
     time: hora de la transacción (formato HH:MM)
     amount: monto de la transacción
     description: descripción de la transacción
-    user_id: id del usuario
+    id_user: id del usuario
     transaction_type: tipo de transacción ('income' o 'expense')
     Retorna: None. Modifica matrix_transactions agregando nueva transacción y actualiza saldos
     """
-    id= create_id(matrix_transactions)
-    id_raw_account = get_raw_by_id(matrix_accounts, id_account)["id"]
-    id_raw_category = get_raw_by_id(matrix_categories, id_category)[0]
+    id = create_id(data_transactions)
+    id_raw_account = get_raw_by_id(data_accounts, id_account)["id"]
+    id_raw_category = get_raw_by_id(data_categories, id_category)["id"]
     
-    id_raw_budget= get_budget_by_category(matrix_budgets,id_raw_category)[0]
+    id_raw_budget = get_budget_by_category(data_budgets,id_raw_category)["id"]
 
     if (id_raw_account is None):        
         print(f"{print_styles.RED}El ID ingresado para la cuenta no existe. Por favor, intente nuevamente.{print_styles.RESET}")
@@ -42,10 +41,20 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
         multiplier = -1
     final_amount = amount * multiplier
     
-    matrix_transactions.append([id, id_raw_account, id_raw_category, date, time, final_amount, description, user_id])
+    # Habria que llamar al json y cargarle
+    data_transactions.append({'id': id, 
+        'id_account': id_raw_account, 
+        'id_category': id_raw_category, 
+        'date': date, 
+        'time': time, 
+        'amount': final_amount, 
+        'description': description, 
+        'id_user': id_user
+    })
+    json_loader('json/transactions.json', data_transactions)
     
-    update_account_balance(matrix_accounts, id_raw_account, final_amount)
-    update_budget_balance(matrix_budgets,id_raw_budget,final_amount)
+    update_account_balance(data_accounts, id_raw_account, final_amount)
+    update_budget_balance(data_budgets, id_raw_budget, final_amount)
 
 def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, matrix_budgets, dicc_users, id_delete):
     """
@@ -72,7 +81,7 @@ def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, 
         
     print(f"{print_styles.RED}Operación realizada sin éxito, el número de ID no existe.{print_styles.RESET}")
 
-def update_account_transaction(transaction, matrix_accounts):
+def update_account_transaction(transaction, data_transactions, data_accounts):
     """
     transaction: transacción a actualizar
     matrix_accounts: lista de cuentas del sistema
@@ -80,19 +89,20 @@ def update_account_transaction(transaction, matrix_accounts):
     """
     while True:
         try:
-            get_accounts(matrix_accounts)
+            get_accounts(data_accounts)
             new_account_id = int(input("Ingrese el número de la nueva cuenta: "))
-            account = get_raw_by_id(matrix_accounts, new_account_id)
+            account = get_raw_by_id(data_accounts, new_account_id)
 
             if account is None:
                 print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
                 continue
 
-            old_id_account = transaction[1]
-            money_transaction = transaction[5]
-            update_account_balance(matrix_accounts, old_id_account, -money_transaction)
-            update_account_balance(matrix_accounts, new_account_id, money_transaction)
-            transaction[1] = new_account_id
+            old_id_account = transaction['id_account']
+            money_transaction = transaction['amount']
+            update_account_balance(data_accounts, old_id_account, -money_transaction)
+            update_account_balance(data_accounts, new_account_id, money_transaction)
+            transaction['id_account'] = new_account_id
+            json_loader('json/transactions.json', data_transactions)
             print(f"{print_styles.GREEN}ID de cuenta actualizado.{print_styles.RESET}")
             return
         except ValueError:
@@ -102,7 +112,7 @@ def update_account_transaction(transaction, matrix_accounts):
             break
             
 
-def update_category_transaction(transaction, matrix_categories):
+def update_category_transaction(transaction, data_transactions, matrix_categories):
     """
     transaction: transacción a actualizar
     matrix_categories: lista de categorías del sistema
@@ -118,7 +128,8 @@ def update_category_transaction(transaction, matrix_categories):
                 print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
                 continue
             
-            transaction[2] = new_category_id
+            transaction['id_category'] = new_category_id
+            json_loader('json/transactions.json', data_transactions)
             print(f"{print_styles.GREEN}ID de categoría actualizado.{print_styles.RESET}")
             return        
         except ValueError:
@@ -127,7 +138,7 @@ def update_category_transaction(transaction, matrix_categories):
             print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
             break
 
-def update_date_transaction(transaction):
+def update_date_transaction(transaction, data_transactions):
     """
     transaction: transacción a actualizar
     Retorna: None. Modifica la fecha de la transacción
@@ -142,10 +153,11 @@ def update_date_transaction(transaction):
         if not is_valid:
             print(f"{print_styles.RED}{message}{print_styles.RESET}")
             return
-    transaction[3] = date
+    transaction['date'] = date
+    json_loader('json/transactions.json', data_transactions)    
     print(f"{print_styles.GREEN}Fecha actualizada.{print_styles.RESET}")
 
-def update_time_transaction(transaction):
+def update_time_transaction(transaction, data_transactions):
     """
     transaction: transacción a actualizar
     Retorna: None. Modifica la hora de la transacción
@@ -160,35 +172,41 @@ def update_time_transaction(transaction):
         if not is_valid:
             print(f"{print_styles.RED}{message}{print_styles.RESET}")
             return
-    transaction[4] = actual_time
+    transaction['time'] = actual_time
+    json_loader('json/transactions.json', data_transactions)  
     print(f"{print_styles.GREEN}Hora actualizada.{print_styles.RESET}")
 
-def update_amount_transaction(transaction, matrix_accounts, matrix_budgets):
+def update_amount_transaction(transaction, data_transactions, data_accounts, data_budgets):
     """
     transaction: transacción a actualizar
-    matrix_accounts: lista de cuentas del sistema
-    matrix_budgets: lista de presupuestos del sistema
+    data_accounts: lista de cuentas del sistema
+    data_budgets: lista de presupuestos del sistema
     Retorna: None. Modifica el monto de la transacción y actualiza saldos en cuentas y presupuestos
     """
     while True:
-        new_amount_str = input("Ingrese el nuevo importe: ")
-        not_sign = new_amount_str.replace("-", "", 1)
-        if (not not_sign.isdigit()):
-            print(f"{print_styles.RED}El importe ingresado no es un digito.{print_styles.RESET}")
-            continue
-        
-        new_amount = int(new_amount_str)
-        old_amount = transaction[5]
-        id_budget=get_budget_by_category(matrix_budgets,transaction[2])[0]
-        difference = new_amount - old_amount
-        update_account_balance(matrix_accounts, transaction[1], difference)
-        update_budget_balance(matrix_budgets,id_budget,difference)
-        
-        transaction[5] = new_amount
-        print(f"{print_styles.GREEN}Importe actualizado.{print_styles.RESET}")
-        return
+        try:
+            new_amount = int(input("Ingrese el nuevo importe: "))
+            old_amount = transaction['amount']
+            id_budget = get_budget_by_category(data_budgets, transaction['id_category'])['id']
 
-def update_description_transaction(transaction):
+            if id_budget == None:
+                print(f"{print_styles.RED}El ID del presupuesto ingresado no existe.{print_styles.RESET}")
+                return
+
+            difference = new_amount - old_amount
+            update_account_balance(data_accounts, transaction['id_account'], difference)
+            update_budget_balance(data_budgets, id_budget, difference)
+            
+            transaction['amount'] = new_amount
+            json_loader('json/transactions.json', data_transactions)  
+            print(f"{print_styles.GREEN}Importe actualizado.{print_styles.RESET}")
+            return
+        except ValueError:
+            print(f"{print_styles.RED}El valor ingresado no es un digito.{print_styles.RESET}")
+        except:
+            print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
+
+def update_description_transaction(transaction, data_transactions):
     """
     transaction: transacción a actualizar
     Retorna: None. Modifica la descripción de la transacción
@@ -197,15 +215,15 @@ def update_description_transaction(transaction):
     while len(new_desc) == 0:
         print(f"{print_styles.YELLOW}La descripción ingresada no tiene valor.{print_styles.RESET}")
         new_desc = input("Ingrese una nueva descripción: ")
-    transaction[6] = new_desc
+    transaction['description'] = new_desc
+    json_loader('json/transactions.json', data_transactions)  
     print(f"{print_styles.GREEN}Descripción actualizada.{print_styles.RESET}")
 
-def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, dicc_users, predicate = None):
+def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, predicate = None):
     """
     matrix_transactions: lista de transacciones a mostrar
     matrix_accounts: lista de cuentas para obtener información de cuenta
     matrix_categories: lista de categorías para obtener información de categoría
-    dicc_users: diccionario de usuarios
     predicate: función opcional para filtrar transacciones
     Retorna: None. Imprime tabla formateada de transacciones
     """
@@ -221,22 +239,22 @@ def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, di
         if predicate is not None and not predicate(matrix_transactions[i]):
             continue
 
-        id=matrix_transactions[i][0]
-        user = get_user_by_id(matrix_transactions[i][-1], dicc_users)["username"]
+        id = matrix_transactions[i]["id"]
+        user = get_user_by_id(matrix_transactions[i]["id_user"])["username"]
         user_sliced = slice_words(14, user)
-        account = get_raw_by_id(matrix_accounts,matrix_transactions[i][1])
-        category = get_raw_by_id(matrix_categories,matrix_transactions[i][2])
-        category_sliced= slice_words(14, category[1])
-        date =  matrix_transactions[i][3]
-        hour =  matrix_transactions[i][4]
-        amount = matrix_transactions[i][5]
-        amount_str = "$"+ str(abs(matrix_transactions[i][5]))
-        description =  matrix_transactions[i][6]
-        description_slicing = slice_words(29,description)
+        account = get_raw_by_id(matrix_accounts,matrix_transactions[i]["id_account"])
+        category = get_raw_by_id(matrix_categories,matrix_transactions[i]["id_category"])
+        category_sliced= slice_words(14, category["category"])
+        date =  matrix_transactions[i]["date"]
+        hour =  matrix_transactions[i]["time"]
+        amount = matrix_transactions[i]["amount"]
+        amount_str = "$"+ str(abs(amount))
+        description =  matrix_transactions[i]["description"]
+        description_slicing = slice_words(29, description)
         underline = print_styles.UNDERLINE_INCOME
         if amount < 0:
             underline = print_styles.UNDERLINE_EXPENSE
-        print(f"{underline}{id:<10}{user_sliced:<15}{account[1]:<15}{category_sliced:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{print_styles.RESET}")
+        print(f"{underline}{id:<10}{user_sliced:<15}{account["account"]:<15}{category_sliced:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{print_styles.RESET}")
     print()
 
 def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_categories, dicc_users):
@@ -260,7 +278,7 @@ def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_ca
     except:
         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
-def get_transaction_by_user_input(matrix_Transactions):
+def get_transaction_by_user_input(matrix_transactions):
     """
     matrix_Transactions: lista de transacciones disponibles
     Retorna: transacción seleccionada por el usuario o None si cancela
@@ -268,7 +286,7 @@ def get_transaction_by_user_input(matrix_Transactions):
     while True:
         try:
             id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
-            if id_transaction < 0 or id_transaction > len(matrix_Transactions):
+            if id_transaction < 0 or id_transaction > len(matrix_transactions):
                 print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
                 continue
 
@@ -276,7 +294,7 @@ def get_transaction_by_user_input(matrix_Transactions):
                 print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
                 return None
 
-            transaction = get_raw_by_id(matrix_Transactions, id_transaction)
+            transaction = get_raw_by_id(matrix_transactions, id_transaction)
             
             if transaction is None:
                 print(f"{print_styles.RED}La transacción no existe. Intente de nuevo.{print_styles.RESET}")

@@ -10,24 +10,26 @@ def login():
     """
     Retorna: diccionario con datos del usuario autenticado o None si la autenticación falla
     """
-    email= input("Ingrese su email: ")
-    email_lower=email.lower()
-    password= input("Ingrese su contraseña: ")
-    password_lower= password.lower()
-    result=validate_email(email)
-    valid_password = validate_password(password_lower)
-    if not result:
+    email = input("Ingrese su email: ")
+    email_lower =email.lower()
+    password = input("Ingrese su contraseña: ")
+    valid_email = validate_email(email)
+    valid_password = validate_password(password)
+    if not valid_email:
         print(f"{print_styles.RED}Debe ingresar un email valido.{print_styles.RESET}")
         return
     
     if not valid_password:
         print(f"{print_styles.RED}Debe ingresar una contraseña valida.{print_styles.RESET}")
         return
+
+    user_found = get_user(email, password)
     
-    user_found=list(filter(lambda x:x["email"].lower()==email_lower and x["password"].lower()==password_lower, users))
+    # user_found = list(filter(lambda x:x["email"].lower()==email_lower and x["password"] == password, users))
     if user_found:
-        print(f"\nBienvenido {print_styles.BOLD}{user_found[0]["username"].title()}!{print_styles.RESET}")
-        return user_found[0]
+        print(f"\nBienvenido {print_styles.BOLD}{user_found["username"].title()}!{print_styles.RESET}")
+        # return user_found[0]
+        return user_found
     if not user_found:
         print(f"{print_styles.RED}No existe el usuario ingresado.{print_styles.RESET}")
     return
@@ -57,25 +59,65 @@ def is_logged(loggedUser):
     
     return False
 
-def get_users(dicc_users):
+def get_users():
     """
-    dicc_users: diccionario de usuarios
     Imprime todos los usuarios
-    """
+    """    
     print("="*30)
     print(f"{print_styles.BOLD}{"Número":<15}{"Nombre":<15}{print_styles.RESET}")
+
+    try:
+        with open('txt/users.txt', mode='r', encoding='UTF-8') as file:
+            line = file.readline()
+            while line:
+                id, _, username, _, _ = line.strip().split(';')
+                if id == str(id_user):
+                    username_sliced = slice_words(14, username)
+                    print(f"{id:<15}{username_sliced:<15}")
+                line = file.readline()
+    except FileNotFoundError:
+        print(f"{print_styles.RED}No se encontró la ruta del archivo.{print_styles.RESET}")
+    except:
+        print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
     
-    for user in dicc_users:
-        id = user["id"]
-        username = user["username"]
-        username_sliced = slice_words(14, username)
-        print(f"{id:<15}{username_sliced:<15}")
-    print()
-    
-def get_user_by_id(user_id, dicc_users):
+def get_user_by_id(id_user):
     """
-    user_id: id del usuario que se busca
-    dicc_users: diccionario de usuarios
+    id_user: id del usuario que se busca
     Retorna: devuelva una lista del usuario que se busca
     """   
-    return list(filter(lambda user: user["id"] == user_id, dicc_users))[0]
+    try:
+        with open('txt/users.txt', mode='r', encoding='UTF-8') as file:
+            line = file.readline()
+            user_found = None
+            while line:
+                id, permission, username, password, email = line.strip().split(';')
+                if id == str(id_user):
+                    user_found = { 'id': id, 'permission': permission, 'username': username, 'password': password, 'email': email }
+                    break
+                line = file.readline()
+            return user_found
+    except FileNotFoundError:
+        print(f"{print_styles.RED}No se encontró la ruta del archivo.{print_styles.RESET}")
+        return None
+    except:
+        print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
+        return None
+
+def get_user(email, password):
+    try:
+        with open('txt/users.txt', mode='r', encoding='UTF-8') as file:
+            line = file.readline()
+            user_found = None
+            while line:
+                id, permission, username, password, email = line.strip().split(';')
+                if email.lower() == email and password == password:
+                    user_found = { 'id': id, 'permission': permission, 'username': username, 'password': password, 'email': email }
+                    break
+                line = file.readline()
+            return user_found
+    except FileNotFoundError:
+        print(f"{print_styles.RED}No se encontró la ruta del archivo.{print_styles.RESET}")
+        return None
+    except:
+        print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
+        return None
