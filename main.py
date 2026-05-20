@@ -201,8 +201,9 @@ def main():
                         data_transactions = json_reader(file_transactions)
                         data_accounts = json_reader(file_accounts)
                         data_categories = json_reader(file_categories)
+                        data_budgets = json_reader(file_budgets)
                         
-                        if (data_transactions or data_accounts or data_categories) == None:
+                        if (data_transactions or data_accounts or data_categories or data_budgets) == None:
                             break
 
                         get_transactions(data_transactions, data_accounts, data_categories)
@@ -223,15 +224,15 @@ def main():
                             if sub_option == "1":
                                 update_account_transaction(transaction, data_transactions, data_accounts)
                             elif sub_option == "2":
-                                update_category_transaction(transaction, data_categories)
+                                update_category_transaction(transaction, data_transactions, data_categories)
                             elif sub_option == "3":
-                                update_date_transaction(transaction)
+                                update_date_transaction(transaction, data_transactions)
                             elif sub_option == "4":
-                                update_time_transaction(transaction)
+                                update_time_transaction(transaction, data_transactions)
                             elif sub_option == "5":
-                                update_amount_transaction(transaction, data_accounts, data_budgets)
+                                update_amount_transaction(transaction, data_transactions, data_accounts, data_budgets)
                             elif sub_option == "6":
-                                update_description_transaction(transaction)
+                                update_description_transaction(transaction, data_transactions)
                             elif sub_option == "0":
                                 print(f"{print_styles.GREEN}La transacción se actualizó con éxito.{print_styles.RESET}")
                                 break

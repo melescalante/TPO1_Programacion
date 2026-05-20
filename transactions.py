@@ -112,7 +112,7 @@ def update_account_transaction(transaction, data_transactions, data_accounts):
             break
             
 
-def update_category_transaction(transaction, matrix_categories):
+def update_category_transaction(transaction, data_transactions, matrix_categories):
     """
     transaction: transacción a actualizar
     matrix_categories: lista de categorías del sistema
@@ -128,7 +128,8 @@ def update_category_transaction(transaction, matrix_categories):
                 print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
                 continue
             
-            transaction[2] = new_category_id
+            transaction['id_category'] = new_category_id
+            json_loader('json/transactions.json', data_transactions)
             print(f"{print_styles.GREEN}ID de categoría actualizado.{print_styles.RESET}")
             return        
         except ValueError:
@@ -137,7 +138,7 @@ def update_category_transaction(transaction, matrix_categories):
             print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
             break
 
-def update_date_transaction(transaction):
+def update_date_transaction(transaction, data_transactions):
     """
     transaction: transacción a actualizar
     Retorna: None. Modifica la fecha de la transacción
@@ -152,10 +153,11 @@ def update_date_transaction(transaction):
         if not is_valid:
             print(f"{print_styles.RED}{message}{print_styles.RESET}")
             return
-    transaction[3] = date
+    transaction['date'] = date
+    json_loader('json/transactions.json', data_transactions)    
     print(f"{print_styles.GREEN}Fecha actualizada.{print_styles.RESET}")
 
-def update_time_transaction(transaction):
+def update_time_transaction(transaction, data_transactions):
     """
     transaction: transacción a actualizar
     Retorna: None. Modifica la hora de la transacción
@@ -170,35 +172,41 @@ def update_time_transaction(transaction):
         if not is_valid:
             print(f"{print_styles.RED}{message}{print_styles.RESET}")
             return
-    transaction[4] = actual_time
+    transaction['time'] = actual_time
+    json_loader('json/transactions.json', data_transactions)  
     print(f"{print_styles.GREEN}Hora actualizada.{print_styles.RESET}")
 
-def update_amount_transaction(transaction, matrix_accounts, matrix_budgets):
+def update_amount_transaction(transaction, data_transactions, data_accounts, data_budgets):
     """
     transaction: transacción a actualizar
-    matrix_accounts: lista de cuentas del sistema
-    matrix_budgets: lista de presupuestos del sistema
+    data_accounts: lista de cuentas del sistema
+    data_budgets: lista de presupuestos del sistema
     Retorna: None. Modifica el monto de la transacción y actualiza saldos en cuentas y presupuestos
     """
     while True:
-        new_amount_str = input("Ingrese el nuevo importe: ")
-        not_sign = new_amount_str.replace("-", "", 1)
-        if (not not_sign.isdigit()):
-            print(f"{print_styles.RED}El importe ingresado no es un digito.{print_styles.RESET}")
-            continue
-        
-        new_amount = int(new_amount_str)
-        old_amount = transaction[5]
-        id_budget=get_budget_by_category(matrix_budgets,transaction[2])[0]
-        difference = new_amount - old_amount
-        update_account_balance(matrix_accounts, transaction[1], difference)
-        update_budget_balance(matrix_budgets,id_budget,difference)
-        
-        transaction[5] = new_amount
-        print(f"{print_styles.GREEN}Importe actualizado.{print_styles.RESET}")
-        return
+        try:
+            new_amount = int(input("Ingrese el nuevo importe: "))
+            old_amount = transaction['amount']
+            id_budget = get_budget_by_category(data_budgets, transaction['id_category'])['id']
 
-def update_description_transaction(transaction):
+            if id_budget == None:
+                print(f"{print_styles.RED}El ID del presupuesto ingresado no existe.{print_styles.RESET}")
+                return
+
+            difference = new_amount - old_amount
+            update_account_balance(data_accounts, transaction['id_account'], difference)
+            update_budget_balance(data_budgets, id_budget, difference)
+            
+            transaction['amount'] = new_amount
+            json_loader('json/transactions.json', data_transactions)  
+            print(f"{print_styles.GREEN}Importe actualizado.{print_styles.RESET}")
+            return
+        except ValueError:
+            print(f"{print_styles.RED}El valor ingresado no es un digito.{print_styles.RESET}")
+        except:
+            print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
+
+def update_description_transaction(transaction, data_transactions):
     """
     transaction: transacción a actualizar
     Retorna: None. Modifica la descripción de la transacción
@@ -207,7 +215,8 @@ def update_description_transaction(transaction):
     while len(new_desc) == 0:
         print(f"{print_styles.YELLOW}La descripción ingresada no tiene valor.{print_styles.RESET}")
         new_desc = input("Ingrese una nueva descripción: ")
-    transaction[6] = new_desc
+    transaction['description'] = new_desc
+    json_loader('json/transactions.json', data_transactions)  
     print(f"{print_styles.GREEN}Descripción actualizada.{print_styles.RESET}")
 
 def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, predicate = None):
