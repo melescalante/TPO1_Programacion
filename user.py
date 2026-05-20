@@ -59,7 +59,7 @@ def is_logged(loggedUser):
     
     return False
 
-def get_users():
+def show_users():
     """
     Imprime todos los usuarios
     """    
@@ -70,8 +70,8 @@ def get_users():
         with open('txt/users.txt', mode='r', encoding='UTF-8') as file:
             line = file.readline()
             while line:
-                id, _, username, _, _ = line.strip().split(';')
-                if id == str(id_user):
+                id, permission, username, password, email = line.strip().split(';')
+                if id == str(id):
                     username_sliced = slice_words(14, username)
                     print(f"{id:<15}{username_sliced:<15}")
                 line = file.readline()

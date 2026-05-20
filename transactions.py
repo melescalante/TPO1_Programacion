@@ -56,26 +56,27 @@ def add_transaction(data_transactions, data_accounts, data_categories, data_budg
     update_budget_balance(data_budgets, id_raw_budget, final_amount)
     print(f"{print_styles.GREEN}La transacción fue agregada correctamente.{print_styles.RESET}")
 
-def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, matrix_budgets, dicc_users, id_delete):
+def delete_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_delete):
     """
-    matrix_transactions: lista de transacciones a actualizar
-    matrix_accounts: lista de cuentas del sistema
-    matrix_categories: lista de categorías del sistema
-    matrix_budgets: lista de presupuestos del sistema
+    data_transactions: lista de transacciones a actualizar
+    data_accounts: lista de cuentas del sistema
+    data_categories: lista de categorías del sistema
+    data_budgets: lista de presupuestos del sistema
     id_delete: identificador de la transacción a eliminar
     Retorna: None. Elimina la transacción y revierte cambios en cuentas y presupuestos
     """
-    for transaction in matrix_transactions:
-        if transaction[0]==id_delete:
-            index=matrix_transactions.index(transaction)
-            delete=matrix_transactions.pop(index)
-            id_account = delete[1]
-            id_category = delete[2]
-            id_budget=get_budget_by_category(matrix_budgets,id_category)[0]
-            retrieve_total_money = delete[5]
-            update_account_balance(matrix_accounts, id_account, -retrieve_total_money)
-            update_budget_balance(matrix_budgets,id_budget,-retrieve_total_money)
-            get_transactions(matrix_transactions, matrix_accounts, matrix_categories, dicc_users)
+    for transaction in data_transactions:
+        if transaction['id']==id_delete:
+            index = data_transactions.index(transaction)
+            delete = data_transactions.pop(index)
+            id_account = delete['id_account']
+            id_category = delete['id_category']
+            id_budget = get_budget_by_category(data_budgets,id_category)['id']
+            retrieve_total_money = delete['amount']
+            update_account_balance(data_accounts, id_account, -retrieve_total_money)
+            update_budget_balance(data_budgets,id_budget,-retrieve_total_money)
+            get_transactions(data_transactions, data_accounts, data_categories)
+            json_loader('json/transactions.json', data_transactions)
             print(f"{print_styles.GREEN}Operación realizada con éxito. Transaccion eliminada correctamente.{print_styles.RESET}")
             return
         
@@ -257,22 +258,22 @@ def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, pr
         print(f"{underline}{id:<10}{user_sliced:<15}{account["account"]:<15}{category_sliced:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{print_styles.RESET}")
     print()
 
-def get_transactions_by_category(matrix_transactions, matrix_accounts, matrix_categories, dicc_users):
+def get_transactions_by_category(data_transactions, data_accounts, data_categories):
     """
-    matrix_transactions: lista de transacciones a filtrar
+    data_transactions: lista de transacciones a filtrar
     matrix_accounts: lista de cuentas del sistema
-    matrix_categories: lista de categorías del sistema
+    data_categories: lista de categorías del sistema
     Retorna: None. Solicita categoría al usuario e imprime transacciones filtradas
     """
     try:
-        get_categories(matrix_categories)
+        get_categories(data_categories)
         print(" ")
         id_category = int(input(f"{print_styles.BOLD_BLUE}Buscar en sus transacciones por la categoria (Ingrese el numero):{print_styles.RESET} "))
-        transactions_by_category = list(filter(lambda x:x[2]==id_category, matrix_transactions))
-        if len(transactions_by_category)==0:
+        transactions_by_category = list(filter(lambda x: x['id_category'] == id_category, data_transactions))
+        if len(transactions_by_category) == 0:
             print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
             return
-        get_transactions(transactions_by_category, matrix_accounts, matrix_categories, dicc_users)
+        get_transactions(transactions_by_category, data_accounts, data_categories)
     except ValueError:
         print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
     except:
