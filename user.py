@@ -71,7 +71,7 @@ def get_users():
             line = file.readline()
             while line:
                 id, _, username, _, _ = line.strip().split(';')
-                if id == str(user_id):
+                if id == str(id_user):
                     username_sliced = slice_words(14, username)
                     print(f"{id:<15}{username_sliced:<15}")
                 line = file.readline()
@@ -80,9 +80,9 @@ def get_users():
     except:
         print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
     
-def get_user_by_id(user_id):
+def get_user_by_id(id_user):
     """
-    user_id: id del usuario que se busca
+    id_user: id del usuario que se busca
     Retorna: devuelva una lista del usuario que se busca
     """   
     try:
@@ -91,7 +91,7 @@ def get_user_by_id(user_id):
             user_found = None
             while line:
                 id, permission, username, password, email = line.strip().split(';')
-                if id == str(user_id):
+                if id == str(id_user):
                     user_found = { 'id': id, 'permission': permission, 'username': username, 'password': password, 'email': email }
                     break
                 line = file.readline()

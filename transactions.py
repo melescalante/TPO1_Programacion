@@ -1,13 +1,12 @@
 from datetime import datetime, time
-
 from styles import print_styles
 from categories import get_categories
 from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
-from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour
+from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour, json_loader
 from budgets import update_budget_balance, get_budget_by_category
 
-def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matrix_budgets, id_account, id_category, date, time, amount, description, user_id, transaction_type="income"):
+def add_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_account, id_category, date, time, amount, description, id_user, transaction_type="income"):
     """
     matrix_transactions: lista de transacciones a actualizar
     matrix_accounts: lista de cuentas del sistema
@@ -19,15 +18,15 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
     time: hora de la transacción (formato HH:MM)
     amount: monto de la transacción
     description: descripción de la transacción
-    user_id: id del usuario
+    id_user: id del usuario
     transaction_type: tipo de transacción ('income' o 'expense')
     Retorna: None. Modifica matrix_transactions agregando nueva transacción y actualiza saldos
     """
-    id = create_id(matrix_transactions)
-    id_raw_account = get_raw_by_id(matrix_accounts, id_account)[0]
-    id_raw_category = get_raw_by_id(matrix_categories, id_category)[0]
+    id = create_id(data_transactions)
+    id_raw_account = get_raw_by_id(data_accounts, id_account)["id"]
+    id_raw_category = get_raw_by_id(data_categories, id_category)["id"]
     
-    id_raw_budget= get_budget_by_category(matrix_budgets,id_raw_category)[0]
+    id_raw_budget = get_budget_by_category(data_budgets,id_raw_category)["id"]
 
     if (id_raw_account is None):        
         print(f"{print_styles.RED}El ID ingresado para la cuenta no existe. Por favor, intente nuevamente.{print_styles.RESET}")
@@ -42,10 +41,20 @@ def add_transaction(matrix_transactions, matrix_accounts, matrix_categories,matr
         multiplier = -1
     final_amount = amount * multiplier
     
-    matrix_transactions.append([id, id_raw_account, id_raw_category, date, time, final_amount, description, user_id])
+    # Habria que llamar al json y cargarle
+    data_transactions.append({'id': id, 
+        'id_account': id_raw_account, 
+        'id_category': id_raw_category, 
+        'date': date, 
+        'time': time, 
+        'amount': final_amount, 
+        'description': description, 
+        'id_user': id_user
+    })
+    json_loader('json/transactions.json', data_transactions)
     
-    update_account_balance(matrix_accounts, id_raw_account, final_amount)
-    update_budget_balance(matrix_budgets,id_raw_budget,final_amount)
+    update_account_balance(data_accounts, id_raw_account, final_amount)
+    update_budget_balance(data_budgets, id_raw_budget, final_amount)
 
 def delete_transaction(matrix_transactions, matrix_accounts, matrix_categories, matrix_budgets, dicc_users, id_delete):
     """

@@ -107,10 +107,10 @@ def main():
                 elif option == "1":   # Opción 1
                     permission= has_permission(user,READ)
                     if permission:
-                        transactions2=json_reader(file_transactions)
-                        accounts2=json_reader(file_accounts)
-                        categories2=json_reader(file_categories)
-                        get_transactions(transactions2, accounts2, categories2)
+                        data_transactions = json_reader(file_transactions)
+                        data_accounts = json_reader(file_accounts)
+                        data_categories = json_reader(file_categories)
+                        get_transactions(data_transactions, data_accounts, data_categories)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user,READ)
                     if permission:
@@ -162,12 +162,10 @@ def main():
                                     break
                             try:
                                 accounts2=json_reader(file_accounts)
-                                print(accounts2)
-                                get_accounts(accounts)
+                                get_accounts(accounts2)
                                 id_account = int(input("Ingrese el número de la cuenta: "))
                                 categories2=json_reader(file_categories)
-                                print(categories2)
-                                get_categories(categories)
+                                get_categories(categories2)
                                 id_category = int(input("Ingrese el número de la categoria: "))
                                 amount = int(input("Ingrese el importe: "))
                                 descripcion = input("Ingrese la descripcion: ")
@@ -285,8 +283,8 @@ def main():
                         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
                         break
 
-                    user_id = get_user_by_id(id_input, users)["id"]
-                    get_transactions(transactions, accounts, categories, users, lambda transaction: transaction[-1] == user_id)
+                    id_user = get_user_by_id(id_input, users)["id"]
+                    get_transactions(transactions, accounts, categories, users, lambda transaction: transaction[-1] == id_user)
                                                                                 
                 input("Presione ENTER para volver a seleccionar.")
         
