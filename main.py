@@ -1,7 +1,6 @@
 from datetime import datetime, time
 from pickle import TRUE
 
-from data import accounts, transactions, categories, budgets
 from transactions import *
 from budgets import *
 from categories import *
@@ -244,13 +243,15 @@ def main():
                         data_transactions = json_reader(file_transactions)
                         data_accounts = json_reader(file_accounts)
                         data_categories = json_reader(file_categories)
+                        data_budgets = json_reader(file_budgets)
                         get_transactions(data_transactions, data_accounts, data_categories)
 
                         try: 
                             id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
-                            while id < 0 or id > len(transactions):
+                            while id < 0 or id > data_transactions[-1]['id']:
                                 if id == 0:
                                     break
+                                print(f"{print_styles.RED}El número ingresado no es válido.{print_styles.RESET}")
                                 id = int(input("Que transaccion deseas eliminar? Indique el número o escriba 0 para salir: "))
                         except ValueError:
                             print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
@@ -260,28 +261,25 @@ def main():
                             break
                             
                         if id != 0:
-                            delete_transaction(transactions, accounts, categories, budgets, users, id)
+                            delete_transaction(data_transactions, data_accounts, data_categories, data_budgets, id)
                         else:
                             print(f"{print_styles.GREEN}No se elimino ninguna transacción.{print_styles.RESET}")
                 elif option == "5":
                     permission = has_permission(user,READ)
                     if permission:
-                        accounts2=json_reader(file_accounts)
-                        transactions2=json_reader(file_transactions)
-                        budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        print(accounts2)
-                        print(transactions2)
-                        print(categories2)
-                        print(budgets2)
-                        get_transactions_by_category(transactions, accounts, categories, users)
+                        data_transactions = json_reader(file_transactions)
+                        data_accounts = json_reader(file_accounts)
+                        data_categories = json_reader(file_categories)
+                        get_transactions_by_category(data_transactions, data_accounts, data_categories)
                 elif option == "6":
                     permission = has_permission(user,READ)
                     try:
                         if permission:
-                            get_users(users)
+                            show_users()
                             id_input = int(input("Elige el número de usuario para mostrar sus transacciones: "))
-                            while (id_input <= 0 or id_input > len(users)):
+                            while (id_input < 0 or id_input > users[-1]['id']):
+                                if id_input == 0:
+                                    break
                                 print(f"{print_styles.RED}El usuario seleccionado no existe.{print_styles.RESET}")
                                 id_input = int(input("Intente nuevamente: "))                    
                     except ValueError:
@@ -294,9 +292,7 @@ def main():
                     data_transactions = json_reader(file_transactions)
                     data_accounts = json_reader(file_accounts)
                     data_categories = json_reader(file_categories)
-                    # id_user = get_user_by_id(id_input)["id"]
-                    get_transactions(data_transactions, data_accounts, data_categories)
-                    get_transactions(transactions, accounts, categories, users, lambda transaction: transaction[-1] == id_user)
+                    get_transactions(data_transactions, data_accounts, data_categories, lambda transaction: transaction['id_user'] == id_input)
                                                                                 
                 input("Presione ENTER para volver a seleccionar.")
         

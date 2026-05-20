@@ -198,16 +198,5 @@ def get_budget_by_category(matrix_budgets,id_category):
     id_category: identificador de categoría a buscar
     Retorna: registro del presupuesto asociado a la categoría
     """
-    for budget in matrix_budgets:
-        if budget["id_category"] == id_category:
-            return budget
-    return None
-
-# def get_budget_by_category(matrix_budgets,id_category):
-#     """
-#     matrix_budgets: lista de presupuestos existentes
-#     id_category: identificador de categoría a buscar
-#     Retorna: registro del presupuesto asociado a la categoría
-#     """
-#     register= reduce(lambda x,y: y if y[1]==id_category else x, matrix_budgets)
-#     return register
+    register= reduce(lambda x,y: y if y['id_category']==id_category else x, matrix_budgets)
+    return register
