@@ -38,7 +38,7 @@ def get_budget_by_user_input(matrix_budgets):
         try: 
             id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))    
             
-            if id_budget < 0 or id_budget > matrix_budgets[-1][0]:
+            if id_budget < 0 or id_budget > matrix_budgets[-1]["id"]:
                 print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
                 continue
 
@@ -101,17 +101,15 @@ def create_budget(matrix_budgets, category_id, limit_amount, matrix_categories):
         print("\033[31mLa categoría no existe. Por favor, cree una.\033[0m")
         return
     
-    id_category = category[0]
-    
+    id_category = category["id"]
+
     if limit_amount < 0:
         print("\033[31mEl presupuesto a asignar debe ser positivo.\033[0m")
-        return 
-    
-    for category in matrix_categories:
-        if category[0] == id_category:
-            matrix_budgets.append([id_budget, id_category, limit_amount])
-            print(f"{print_styles.GREEN}Se ha creado el presupuesto correctamente.{print_styles.RESET}")
-            return
+        return
+
+    matrix_budgets.append({"id": id_budget, "id_category": id_category, "amount": limit_amount})
+    json_loader('json/budgets.json', matrix_budgets)
+    print(f"{print_styles.GREEN}Se ha creado el presupuesto correctamente.{print_styles.RESET}")
 
 
 def delete_budget(matrix_budgets, matrix_categories):    
@@ -131,9 +129,10 @@ def delete_budget(matrix_budgets, matrix_categories):
         index = -1
         
         for budget in matrix_budgets:
-            if (budget[0] == id):
+            if (budget["id"] == id):
                 index = matrix_budgets.index(budget)
-                budget_deleted = matrix_budgets.pop(index)
+                matrix_budgets.pop(index)
+                json_loader('json/budgets.json', matrix_budgets)
                 print("\033[32mOperación realizada con éxito. Presupuesto eliminado correctamente.\033[0m")
                 return
         
@@ -143,7 +142,7 @@ def delete_budget(matrix_budgets, matrix_categories):
     except:
         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
-def update_category_for_budget(budget, matrix_categories):
+def update_category_for_budget(budget, data_budgets, matrix_categories):
     """
     budget: registro de presupuesto a actualizar
     matrix_categories: lista de categorías válidas
@@ -167,14 +166,15 @@ def update_category_for_budget(budget, matrix_categories):
                     
             category = get_raw_by_id(matrix_categories, id_category)
 
-        budget[1] = id_category
-        print("\033[32mCategoría actualizada.\033[0m")    
+        budget["id_category"] = id_category
+        json_loader('json/budgets.json', data_budgets)
+        print("\033[32mCategoría actualizada.\033[0m")
     except ValueError:
         print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
     except:
         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
-def update_budget_amount(budget):
+def update_budget_amount(budget, data_budgets):
     """
     budget: registro de presupuesto a modificar
     Retorna: None. Solicita y actualiza el monto del presupuesto
@@ -185,7 +185,8 @@ def update_budget_amount(budget):
             print("\033[33mEl valor que ingresó no es un número válido.\033[0m")
             budget_amount = input("Ingrese el nuevo monto del presupuesto: ")
         
-        budget[2] = int(budget_amount)
+        budget["amount"] = int(budget_amount)
+        json_loader('json/budgets.json', data_budgets)
         print("\033[32mMonto actualizado.\033[0m")
     except ValueError:
         print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")

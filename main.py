@@ -403,7 +403,7 @@ def main():
                         categories2=json_reader(file_categories)
                         print(categories2)
                         print(budgets2)
-                        get_categories(categories)
+                        get_categories(categories2)
                         while True:
                             try:
 
@@ -414,7 +414,7 @@ def main():
                             except Exception:
                                 print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
                                 break
-                        while True:    
+                        while True:
                             try:
                                 limit_amount = int(input("Ingrese el monto limite para la categoría: "))
                                 break
@@ -423,7 +423,7 @@ def main():
                             except Exception:
                                 print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
                                 break
-                        create_budget(budgets, category_id, limit_amount, categories)
+                        create_budget(budgets2, category_id, limit_amount, categories2)
 
                 elif option == "3":   # Opción 3
                     permission = has_permission(user, READ_WRITE)
@@ -432,22 +432,22 @@ def main():
                         categories2=json_reader(file_categories)
 
                         print(categories2)
-                        print(budgets2)            
-                        get_budgets(budgets, categories)
-                        budget = get_budget_by_user_input(budgets)
+                        print(budgets2)
+                        get_budgets(budgets2, categories2)
+                        budget = get_budget_by_user_input(budgets2)
 
                         while budget is not None:
                             print("\033[1;34m¿Qué campo del presupuesto deseas actualizar?\033[0m")
                             print(f"{print_styles.BOLD}[1]{print_styles.RESET} Categoría")
                             print(f"{print_styles.BOLD}[2]{print_styles.RESET} Monto")
                             print(f"{print_styles.BOLD}[0]{print_styles.RESET} Guardar y salir")
-                            
+
                             option = input("Seleccione una opción: ")
-                            
+
                             if option == "1":
-                                update_category_for_budget(budget, categories)
+                                update_category_for_budget(budget, budgets2, categories2)
                             elif option == "2":
-                                update_budget_amount(budget)
+                                update_budget_amount(budget, budgets2)
                             elif option == "0":
                                 print("\033[32mEl presupuesto se actualizó con éxito.\033[0m")
                                 break
@@ -461,7 +461,7 @@ def main():
                         categories2=json_reader(file_categories)
                         print(categories2)
                         print(budgets2)
-                        delete_budget(budgets, categories)
+                        delete_budget(budgets2, categories2)
                                                         
                 input("Presione ENTER para volver a seleccionar.")
 
