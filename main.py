@@ -352,9 +352,6 @@ def main():
                         transactions2=json_reader(file_transactions)
                         budgets2=json_reader(file_budgets)
                         categories2=json_reader(file_categories)
-                        print(transactions2)
-                        print(categories2)
-                        print(budgets2)
                         delete_category(categories2, transactions2, budgets2)
                                                         
                 input("Presione ENTER para volver a seleccionar.")
@@ -393,16 +390,12 @@ def main():
                     if permission:
                         budgets2=json_reader(file_budgets)
                         categories2=json_reader(file_categories)
-                        print(categories2)
-                        print(budgets2)
                         get_budgets(budgets2, categories2)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user, READ)
                     if permission:
                         budgets2=json_reader(file_budgets)
                         categories2=json_reader(file_categories)
-                        print(categories2)
-                        print(budgets2)
                         get_categories(categories2)
                         while True:
                             try:
@@ -430,9 +423,6 @@ def main():
                     if permission:                 
                         budgets2=json_reader(file_budgets)
                         categories2=json_reader(file_categories)
-
-                        print(categories2)
-                        print(budgets2)
                         get_budgets(budgets2, categories2)
                         budget = get_budget_by_user_input(budgets2)
 
@@ -459,8 +449,6 @@ def main():
                     if permission:
                         budgets2=json_reader(file_budgets)
                         categories2=json_reader(file_categories)
-                        print(categories2)
-                        print(budgets2)
                         delete_budget(budgets2, categories2)
                                                         
                 input("Presione ENTER para volver a seleccionar.")
@@ -583,10 +571,7 @@ def main():
                             accounts2=json_reader(file_accounts)
                             budgets2=json_reader(file_budgets)
                             categories2=json_reader(file_categories)
-                            print(accounts2)
-                            print(transactions2)
-                            print(categories2)
-                            print(budgets2)
+                            
                             # for actual_transaction in related_accounts_transaction:
                                 # delete_transaction(transactions, accounts, categories, budgets, users, actual_transaction[0])
                             delete_account(accounts2, id_account)
