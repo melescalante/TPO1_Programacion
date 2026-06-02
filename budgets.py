@@ -17,28 +17,16 @@ def update_budget_balance(data_budgets, id_budget, amount):
             json_loader('json/budgets.json', data_budgets)
             return
 
-# def update_budget_balance(matrix_budgets, id_budget, amount):
-#     """
-#     matrix_budgets: lista de presupuestos a actualizar
-#     id_budget: identificador del presupuesto
-#     amount: monto a sumar o restar al presupuesto
-#     Retorna: None. Modifica el saldo del presupuesto correspondiente
-#     """
-#     for budget in matrix_budgets:
-#         if budget[0] == id_budget:
-#             budget[2] += amount
-#             return
-        
-def get_budget_by_user_input(matrix_budgets):
+def get_budget_by_user_input(data_budgets):
     """
-    matrix_budgets: lista de presupuestos disponibles
+    data_budgets: lista de presupuestos disponibles
     Retorna: presupuesto seleccionado por el usuario o None si cancela
     """
     while True:
         try: 
             id_budget = int(input("¿Qué presupuesto desea actualizar? Indique el número o escriba 0 para salir: "))    
             
-            if id_budget < 0 or id_budget > matrix_budgets[-1]["id"]:
+            if id_budget < 0 or id_budget > data_budgets[-1]["id"]:
                 print("\033[31mEntrada inválida. Debe ingresar un número.\033[0m")
                 continue
 
@@ -46,7 +34,7 @@ def get_budget_by_user_input(matrix_budgets):
                 print("\033[32mNo se actualizó ningún presupuesto.\033[0m")
                 return
 
-            budget = get_raw_by_id(matrix_budgets, id_budget)
+            budget = get_raw_by_id(data_budgets, id_budget)
             
             if budget is None:
                 print(f"{print_styles.RED}El presupuesto no existe. Intente de nuevo.{print_styles.RESET}")
@@ -60,66 +48,66 @@ def get_budget_by_user_input(matrix_budgets):
             break
 
         
-def get_budgets(matrix_budgets, matrix_categories):
+def get_budgets(data_budgets, data_categories):
     """
-    matrix_budgets: lista de presupuestos a mostrar
-    matrix_categories: lista de categorías para resolver nombres
+    data_budgets: lista de presupuestos a mostrar
+    data_categories: lista de categorías para resolver nombres
     Retorna: None. Imprime una tabla de presupuestos
     """
-    print(matrix_budgets)
-    print(matrix_categories)
-    count_matrix= len(matrix_budgets)
+    count_matrix= len(data_budgets)
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f'{"Presupuestos":^60}')
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f"{print_styles.BOLD_BLUE}Registros Totales: {count_matrix:<40}{print_styles.RESET}")
     print("="*print_styles.MAX_SPACES_BUDGETS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Categoria':<25}{'Monto':<25}{print_styles.RESET}")
-    for i in range(len(matrix_budgets)):
-        id=matrix_budgets[i]["id"]
-        category = get_raw_by_id(matrix_categories,matrix_budgets[i]["id_category"])
-        amount = matrix_budgets[i]["amount"]
-        amount_str = "$"+str(matrix_budgets[i]["amount"])
+    for i in range(len(data_budgets)):
+        id=data_budgets[i]["id"]
+        category = get_raw_by_id(data_categories,data_budgets[i]["id_category"])
+        amount = data_budgets[i]["amount"]
+        amount_str = "$"+str(data_budgets[i]["amount"])
         underline = print_styles.UNDERLINE_INCOME
         if amount<0:
             underline = print_styles.UNDERLINE_EXPENSE
         print(f"{underline}{id:<10}{category["category"]:<25}{amount_str:<25}{print_styles.RESET}")
     
 
-def create_budget(matrix_budgets, category_id, limit_amount, matrix_categories):
+def create_budget(data_budgets, category_id, limit_amount, data_categories):
     """
-    matrix_budgets: lista de presupuestos a actualizar
+    data_budgets: lista de presupuestos a actualizar
     category_id: identificador de la categoría para el presupuesto
     limit_amount: monto límite asignado al presupuesto
-    matrix_categories: lista de categorías existentes
+    data_categories: lista de categorías existentes
     Retorna: None. Agrega un nuevo presupuesto si la categoría existe y el monto es válido
     """
-    id_budget = create_id(matrix_budgets)
-    category = get_raw_by_id(matrix_categories, category_id)
+    id_budget = create_id(data_budgets)
+    category = get_raw_by_id(data_categories, category_id)
 
     if category is None:
         print("\033[31mLa categoría no existe. Por favor, cree una.\033[0m")
         return
     
     id_category = category["id"]
-
+    if exists_budget(id_category,data_budgets):
+        print(f"{print_styles.RED}La categoria ya tiene un presupuesto existente. Ingrese otra por favor{print_styles.RESET}")
+        return
     if limit_amount < 0:
         print("\033[31mEl presupuesto a asignar debe ser positivo.\033[0m")
         return
-
-    matrix_budgets.append({"id": id_budget, "id_category": id_category, "amount": limit_amount})
-    json_loader('json/budgets.json', matrix_budgets)
+    
+    data_budgets.append({"id": id_budget, "id_category": id_category, "amount": limit_amount})
+    json_loader('json/budgets.json', data_budgets)
     print(f"{print_styles.GREEN}Se ha creado el presupuesto correctamente.{print_styles.RESET}")
 
 
-def delete_budget(matrix_budgets, matrix_categories):    
+def delete_budget(data_budgets, data_categories):    
     """
-    matrix_budgets: lista de presupuestos disponibles
-    matrix_categories: lista de categorías para mostrar antes de eliminar
+    data_budgets: lista de presupuestos disponibles
+    data_categories: lista de categorías para mostrar antes de eliminar
     Retorna: None. Elimina el presupuesto seleccionado por el usuario
     """
     try:
-        get_budgets(matrix_budgets, matrix_categories)    
+        get_budgets(data_budgets, data_categories)    
         id = int(input("Ingrese el id o 0 para no eliminar ningún presupuesto: "))
 
         if id <= 0:
@@ -128,11 +116,11 @@ def delete_budget(matrix_budgets, matrix_categories):
         budget_deleted = None
         index = -1
         
-        for budget in matrix_budgets:
+        for budget in data_budgets:
             if (budget["id"] == id):
-                index = matrix_budgets.index(budget)
-                matrix_budgets.pop(index)
-                json_loader('json/budgets.json', matrix_budgets)
+                index = data_budgets.index(budget)
+                data_budgets.pop(index)
+                json_loader('json/budgets.json', data_budgets)
                 print("\033[32mOperación realizada con éxito. Presupuesto eliminado correctamente.\033[0m")
                 return
         
@@ -142,20 +130,20 @@ def delete_budget(matrix_budgets, matrix_categories):
     except:
         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
-def update_category_for_budget(budget, data_budgets, matrix_categories):
+def update_category_for_budget(budget, data_budgets, data_categories):
     """
     budget: registro de presupuesto a actualizar
-    matrix_categories: lista de categorías válidas
+    data_categories: lista de categorías válidas
     Retorna: None. Actualiza la categoría asignada al presupuesto
     """
     try: 
-        get_categories(matrix_categories)
+        get_categories(data_categories)
         id_category = int(input("¿Qué categoría desea asignar? Indique el número o escriba 0 para cancelar: "))
         if id_category == 0:
             print("\033[32mNo se actualizó la categoría.\033[0m")
             return
         
-        category = get_raw_by_id(matrix_categories, id_category)
+        category = get_raw_by_id(data_categories, id_category)
         while category is None:
             print("\033[31mLa categoría no existe.\033[0m")
 
@@ -163,8 +151,11 @@ def update_category_for_budget(budget, data_budgets, matrix_categories):
             if id_category == 0:
                 print("\033[32mNo se actualizo la categoría.\033[0m")
                 return
-                    
-            category = get_raw_by_id(matrix_categories, id_category)
+            category = get_raw_by_id(data_categories, id_category)
+        
+        if exists_budget(id_category, data_budgets):
+            print(f"{print_styles.RED}La categoria ya tiene un presupuesto existente. Ingrese otra por favor{print_styles.RESET}")
+            return
 
         budget["id_category"] = id_category
         json_loader('json/budgets.json', data_budgets)
@@ -193,11 +184,20 @@ def update_budget_amount(budget, data_budgets):
     except:
         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
-def get_budget_by_category(matrix_budgets,id_category):
+def get_budget_by_category(data_budgets,id_category):
     """
-    matrix_budgets: lista de presupuestos existentes
+    data_budgets: lista de presupuestos existentes
     id_category: identificador de categoría a buscar
     Retorna: registro del presupuesto asociado a la categoría
     """
-    register= reduce(lambda x,y: y if y['id_category']==id_category else x, matrix_budgets)
+    register= reduce(lambda x,y: y if y['id_category']==id_category else x, data_budgets)
     return register
+
+def exists_budget(id_category, data_budgets):
+    """
+    id_category: id de categoría a buscar
+    data_budgets: lista de budgets existentes
+    Retorna: True si la categoría ya existe en un presupuesto, False en caso contrario
+    """
+    exists= list(filter(lambda x:x["id_category"]==id_category, data_budgets))
+    return True if len(exists) else False
