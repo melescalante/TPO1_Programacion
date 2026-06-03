@@ -10,10 +10,9 @@ def add_account(data_accounts, account_name, total_money):
     """
     try:
         id=create_id(data_accounts)
-        for account in data_accounts:
-            if account["account"] == account_name:
-                print(f"{print_styles.RED}La cuenta ya existe. Ingrese otro nombre por favor.{print_styles.RESET}")
-                return
+        if account_exists(data_accounts, account_name):
+            print(f"{print_styles.RED}La cuenta ya existe. Ingrese otro nombre por favor.{print_styles.RESET}")
+            return
         dicc_account={
             "id":id,
             "account":account_name,
@@ -87,7 +86,7 @@ def update_name_account(account,data_accounts):
     """
     try:
         name_account = input("Ingrese un nuevo nombre de cuenta: ")
-        while len(name_account) == 0 or not name_account.isalpha(): # bug, no admite espacios
+        while len(name_account) == 0:
             print(f"{print_styles.YELLOW}El nombre que ingreso tiene espacios o no ingreso un valor. Por favor ingrese un nombre sin espacios.{print_styles.RESET}")
             name_account = input("Ingrese un nuevo nombre de cuenta: ")
         account["account"] = name_account
@@ -97,7 +96,6 @@ def update_name_account(account,data_accounts):
         print(f"{print_styles.YELLOW}Opción no válida. Intente nuevamente.{print_styles.RESET}")
     except Exception:
         print(f"{print_styles.RED}Ocurrió un error inesperado{print_styles.RESET}")
-
 
 def update_money_account(account,data_accounts):            
     """
@@ -151,6 +149,22 @@ def update_account_balance(data_accounts, id_account, amount):
             account['amount'] += amount
             json_loader('json/accounts.json', data_accounts)
             return
+        
+def account_exists(data_accounts, account_name, index=0):
+    """
+    Comprueba recursivamente si ya existe una cuenta con ese nombre.
+    data_accounts: lista de cuentas (cada elemento es un dict con clave "account").
+    account_name: nombre de cuenta a buscar.
+    index: índice actual para la búsqueda recursiva (uso interno).
+    Retorna: True si encuentra una cuenta con el mismo nombre, False si no.
+    """
+    if index >= len(data_accounts):
+        return False
+
+    if data_accounts[index]["account"] == account_name:
+        return True
+
+    return account_exists(data_accounts, account_name, index + 1)
 
 # def update_account_balance(matrix_accounts, id_account, amount):
 #     """
