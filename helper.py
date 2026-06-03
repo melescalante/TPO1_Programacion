@@ -20,16 +20,32 @@ def create_id(array):
 #         if raw[0] == id:
 #             return raw
 #     return None
-def get_raw_by_id(matrix, id):
+
+# Función sin recursividad
+# def get_raw_by_id(matrix, id):
+#     """
+#     matrix: lista de registros donde el primer elemento es el id
+#     id: identificador a buscar
+#     Retorna: el registro que coincide con el id o None si no existe
+#     """
+#     for raw in matrix:
+#         if raw["id"] == id:
+#             return raw
+#     return None
+
+def get_raw_by_id(matrix, id, index=0):
     """
     matrix: lista de registros donde el primer elemento es el id
     id: identificador a buscar
     Retorna: el registro que coincide con el id o None si no existe
     """
-    for raw in matrix:
-        if raw["id"] == id:
-            return raw
-    return None
+    if index >= len(matrix) or index < 0:
+        return None
+
+    if matrix[index]["id"] == id:
+        return matrix[index]
+        
+    return get_raw_by_id(matrix, id, index + 1)
 
 def slice_words(length, word):
     """
