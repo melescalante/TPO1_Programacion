@@ -562,19 +562,18 @@ def main():
                             if id_account < 0 or id_account > len(accounts2):
                                 print(f"{print_styles.RED}Cuenta invalida. Debe ingresar una cuenta existente.{print_styles.RESET}")
                                 continue
-
                             break
 
                         if id_account != 0:
-                            transactions2=json_reader(file_transactions)
-                            related_accounts_transaction = list(filter(lambda x: x["id_account"] == id_account, transactions2))
-                            accounts2=json_reader(file_accounts)
-                            budgets2=json_reader(file_budgets)
-                            categories2=json_reader(file_categories)
+                            transactions=json_reader(file_transactions)
+                            related_accounts_transaction = list(filter(lambda x: x["id_account"] == id_account, transactions))
+                            accounts=json_reader(file_accounts)
+                            budgets=json_reader(file_budgets)
+                            categories=json_reader(file_categories)
                             
-                            # for actual_transaction in related_accounts_transaction:
-                                # delete_transaction(transactions, accounts, categories, budgets, users, actual_transaction[0])
-                            delete_account(accounts2, id_account)
+                            for actual_transaction in related_accounts_transaction:
+                                delete_transaction(transactions, accounts, categories, budgets, actual_transaction['id'])
+                            delete_account(accounts, id_account)
                             
                         else:
                             print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
