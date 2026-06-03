@@ -328,8 +328,8 @@ def main():
                 elif option == "1":   # Opción 1
                     permission= has_permission(user,READ)
                     if permission:
-                        categories2=json_reader(file_categories)
-                        get_categories(categories2)
+                        categories=json_reader(file_categories)
+                        get_categories(categories)
                 elif option == "2":   # Opción 2
                     permission= has_permission(user,READ)
                     if permission:
@@ -337,22 +337,22 @@ def main():
                         while not category:
                             print(f"{print_styles.YELLOW}El nombre de la categoría no puede estar vacío.{print_styles.RESET}")
                             category = input("Ingrese el nombre de la categoria: ").strip()
-                        categories2=json_reader(file_categories)
-                        add_category(categories2, category)
+                        categories=json_reader(file_categories)
+                        add_category(categories, category)
 
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission:
-                        categories2=json_reader(file_categories)
-                        update_category(categories2)
+                        categories=json_reader(file_categories)
+                        update_category(categories)
 
                 elif option == "4":   # Opción 4
                     permission = has_permission(user,READ_WRITE)
                     if permission:
-                        transactions2=json_reader(file_transactions)
+                        transactions=json_reader(file_transactions)
                         budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        delete_category(categories2, transactions2, budgets2)
+                        categories=json_reader(file_categories)
+                        delete_category(categories, transactions, budgets2)
                                                         
                 input("Presione ENTER para volver a seleccionar.")
 
@@ -389,14 +389,14 @@ def main():
                     permission = has_permission(user, READ)
                     if permission:
                         budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        get_budgets(budgets2, categories2)
+                        categories=json_reader(file_categories)
+                        get_budgets(budgets2, categories)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user, READ)
                     if permission:
                         budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        get_categories(categories2)
+                        categories=json_reader(file_categories)
+                        get_categories(categories)
                         while True:
                             try:
 
@@ -416,14 +416,14 @@ def main():
                             except Exception:
                                 print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
                                 break
-                        create_budget(budgets2, category_id, limit_amount, categories2)
+                        create_budget(budgets2, category_id, limit_amount, categories)
 
                 elif option == "3":   # Opción 3
                     permission = has_permission(user, READ_WRITE)
                     if permission:                 
                         budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        get_budgets(budgets2, categories2)
+                        categories=json_reader(file_categories)
+                        get_budgets(budgets2, categories)
                         budget = get_budget_by_user_input(budgets2)
 
                         while budget is not None:
@@ -435,7 +435,7 @@ def main():
                             option = input("Seleccione una opción: ")
 
                             if option == "1":
-                                update_category_for_budget(budget, budgets2, categories2)
+                                update_category_for_budget(budget, budgets2, categories)
                             elif option == "2":
                                 update_budget_amount(budget, budgets2)
                             elif option == "0":
@@ -448,8 +448,8 @@ def main():
                     permission = has_permission(user,READ_WRITE)
                     if permission:
                         budgets2=json_reader(file_budgets)
-                        categories2=json_reader(file_categories)
-                        delete_budget(budgets2, categories2)
+                        categories=json_reader(file_categories)
+                        delete_budget(budgets2, categories)
                                                         
                 input("Presione ENTER para volver a seleccionar.")
 
@@ -485,8 +485,8 @@ def main():
                 elif option == "1":   # Opción 1
                     permission = has_permission(user,READ)
                     if permission:
-                        accounts2=json_reader(file_accounts)
-                        get_accounts(accounts2)
+                        accounts=json_reader(file_accounts)
+                        get_accounts(accounts)
                 elif option == "2":   # Opción 2
                     permission = has_permission(user,READ)
                    
@@ -498,16 +498,16 @@ def main():
                                 break
                             except ValueError:
                                 print(f"{print_styles.RED}Error: Debes ingresar un numero.{print_styles.RESET}")
-                        accounts2=json_reader(file_accounts)
-                        add_account(accounts2, account_name, total_money)    
+                        accounts=json_reader(file_accounts)
+                        add_account(accounts, account_name, total_money)    
 
                 elif option == "3":   # Opción 3
                     permission = has_permission(user,READ_WRITE)
                     if permission:
-                        accounts2=json_reader(file_accounts)
-                        get_accounts(accounts2)
+                        accounts=json_reader(file_accounts)
+                        get_accounts(accounts)
 
-                        account = get_account_by_user_input(accounts2)
+                        account = get_account_by_user_input(accounts)
 
                         while account is not None:
                             print(f"{print_styles.BOLD_BLUE}¿Qué campo de la cuenta deseas actualizar?{print_styles.RESET}")
@@ -518,10 +518,10 @@ def main():
                             option = input("Selecciona una opción: ")
                             
                             if option == "1":
-                                update_name_account(account,accounts2)
+                                update_name_account(account,accounts)
                                 
                             elif option == "2":
-                                update_money_account(account,accounts2)
+                                update_money_account(account,accounts)
                             elif option == "0":
                                 print(f"{print_styles.GREEN}La cuenta se actualizó con éxito.{print_styles.RESET}")
                                 break
@@ -540,8 +540,8 @@ def main():
                         if (allow_delete == 'n'):
                             print(f"\n{print_styles.GREEN}No se borrará ninguna cuenta.{print_styles.RESET}")
                             break                        
-                        accounts2=json_reader(file_accounts)
-                        get_accounts(accounts2)
+                        accounts=json_reader(file_accounts)
+                        get_accounts(accounts)
                         while True:
                             id_account_text = input("Que cuenta deseas eliminar? Indique el numero o escriba 0 para salir: ").strip()
 
@@ -559,7 +559,7 @@ def main():
                                 print(f"{print_styles.GREEN}No se elimino ninguna cuenta.{print_styles.RESET}")
                                 break
 
-                            if id_account < 0 or id_account > len(accounts2):
+                            if id_account < 0 or id_account > len(accounts):
                                 print(f"{print_styles.RED}Cuenta invalida. Debe ingresar una cuenta existente.{print_styles.RESET}")
                                 continue
                             break
@@ -606,17 +606,17 @@ def main():
                 if option == "0": # Opción salir del submenú
                     break # No salimos del programa, volvemos al menú anterior
                 elif option == "1":
-                    accounts2=json_reader(file_accounts)
-                    transactions2=json_reader(file_transactions)
-                    categories2=json_reader(file_categories)
+                    accounts=json_reader(file_accounts)
+                    transactions=json_reader(file_transactions)
+                    categories=json_reader(file_categories)
                     total, month = total_last_month(transactions)
                     print(f"Total Gastado en el mes de {month}: {total}")
                     print(f"Promedio de total gastado por mes: {average_month(transactions)}")
                     print(f"Categoria con mas gastos: {get_higher_expense(transactions, categories, 2)[1]}")
                     print(f"Cuenta con mas gastos: {get_higher_expense(transactions, accounts, 1)[1]}")
                 elif option == "2":
-                    transactions2=json_reader(file_transactions)
-                    categories2=json_reader(file_categories)
+                    transactions=json_reader(file_transactions)
+                    categories=json_reader(file_categories)
                     
                     filter_transactions, total = calculate_percentage_of_category(transactions)
                     get_percentage_of_category(filter_transactions, total, categories)                
