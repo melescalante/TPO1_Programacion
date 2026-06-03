@@ -23,11 +23,10 @@ file_budgets='json/budgets.json'
 file_transactions='json/transactions.json'
 
 print("¡Bienvenido/a al sistema de Gestor de Gastos!\n")
-user = users[0]
+
+user = read_users()[0]
 while user==None:
     user=login()
-
-is_logged(user)
 
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
@@ -38,23 +37,24 @@ def main():
     # Bloque de menú
     #----------------------------------------------------------------------------------------------
     while True:
-
         can_read = has_permission(user, READ)
         can_write = has_permission(user, READ_WRITE)
         valid_options = ["0"]
-        if can_read: valid_options.extend(["1", "2", "5", "6"])
-        if can_write: valid_options.extend(["3", "4"])
+        if can_write: valid_options.append(["1", "4", "5"])
+        if can_read: valid_options.extend(["2", "3", "6", "7"])
+
         while True:
-            options = 5
+            options = 6
             print()
             print("---------------------------")
             print("MENÚ PRINCIPAL")
             print("---------------------------")
-            print(f"{print_styles.BOLD}[1]{print_styles.RESET} Gestión de Transacciones")
-            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Gestión de Categorías")
-            print(f"{print_styles.BOLD}[3]{print_styles.RESET} Gestión de Presupuestos")
-            print(f"{print_styles.BOLD}[4]{print_styles.RESET} Gestión de Cuentas")
-            print(f"{print_styles.BOLD}[5]{print_styles.RESET} Resumen")
+            print(f"{print_styles.BOLD}[1]{print_styles.RESET} Gestión de Usuarios")
+            print(f"{print_styles.BOLD}[2]{print_styles.RESET} Gestión de Transacciones")
+            print(f"{print_styles.BOLD}[3]{print_styles.RESET} Gestión de Categorías")
+            print(f"{print_styles.BOLD}[4]{print_styles.RESET} Gestión de Presupuestos")
+            print(f"{print_styles.BOLD}[5]{print_styles.RESET} Gestión de Cuentas")
+            print(f"{print_styles.BOLD}[6]{print_styles.RESET} Resumen")
 
             print("---------------------------")
             print(f"{print_styles.BOLD}[0]{print_styles.RESET} Salir del programa")
@@ -62,7 +62,7 @@ def main():
             print()
             
             option = input("Seleccione una opción: ")
-            if option in [str(i) for i in range(0, options + 1)]: # Sólo continua si se elije una opcion de menú válida
+            if option in [str(i) for i in range(0, options + 1)]:
                 break
             else:
                 input("Opción inválida. Presione ENTER para volver a seleccionar.")
@@ -71,7 +71,124 @@ def main():
         if option == "0": # Opción salir del programa
             exit() # También puede ser sys.exit() para lo cual hay que importar el módulo sys
 
-        elif option == "1":   # Opción 1 --> Gestión de transacciones
+        elif option == "1":   # Opción 1 --> Gestión de Usuarios
+            while True:
+                while True:
+                    options = 5
+                    print()
+                    print("---------------------------")
+                    print("MENÚ PRINCIPAL > Gestión de Usuarios")
+                    print("---------------------------")
+                    print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Usuarios")
+                    print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Usuario")
+                    permission = has_permission(user, READ_WRITE)
+                    if permission:
+                        print(f"{print_styles.BOLD}[3]{print_styles.RESET} Eliminar Usuario")
+                        print(f"{print_styles.BOLD}[4]{print_styles.RESET} Actualizar Contraseña")
+                        print(f"{print_styles.BOLD}[5]{print_styles.RESET} Actualizar Username")
+                    print("---------------------------")
+                    print(f"{print_styles.BOLD}[0]{print_styles.RESET} Volver al menú anterior")
+                    print("---------------------------")
+                    print()
+                    
+                    option = input("Seleccione una opción: ")
+                    if option in [str(i) for i in range(0, options + 1)]:
+                        break
+                    else:
+                        input("Opción inválida. Presione ENTER para volver a seleccionar.")
+                print()
+
+                if option == "0":
+                    break
+
+                if option == "1":
+                    permission = has_permission(user, READ)
+                    if not permission:
+                        break
+                    show_users()
+
+                elif option == "2":
+                    permission = has_permission(user, READ)
+                    if not permission:
+                        break
+                    username = ""
+                    email = ""
+                    while True:
+                        if username == "":
+                            username = input(f"{print_styles.BOLD}Ingrese el username: {print_styles.RESET}").strip()
+
+                        if not validate_email(email):
+                            email = input(f"{print_styles.BOLD}Ingrese el email: {print_styles.RESET}").strip()
+                            if not validate_email(email):
+                                print(f"{print_styles.RED}El email no cumple los parametros requeridos.{print_styles.RESET}")
+                                continue
+
+                        password = input(f"{print_styles.BOLD}Ingrese la contraseña: {print_styles.RESET}").strip()
+                        if not validate_password(password):
+                            print(f"{print_styles.RED}La contraseña no cumple los parametros requeridos.{print_styles.RESET}")
+                            print(f"{print_styles.YELLOW}Tiene que tener mínimo entre 8-20 carácteres.{print_styles.RESET}")
+                            continue
+
+                        if not username or not email or not password:
+                            print(f"{print_styles.YELLOW}Todos los campos son obligatorios.{print_styles.RESET}")
+                        else:
+                            add_user(username, email, password)
+                            print(f"{print_styles.GREEN}Se añadió correctamente al usuario.{print_styles.RESET}")
+                            break
+
+                elif option == "3":
+                    permission = has_permission(user, READ_WRITE)
+                    if not permission:
+                        break
+                    try:
+                        show_users()
+                        user_id = int(input("Ingrese el id del usuario a eliminar: "))
+                        if user_id == user['id']:
+                            print(f"{print_styles.RED}No se puede eliminar al usuario actual, debe salir de la sesión e ingresar con otro usuario admin.{print_styles.RESET}")
+                            break
+                        delete_user(user_id)
+                    except ValueError:
+                        print(f"{print_styles.RED}Debes ingresar un número válido.{print_styles.RESET}")
+
+                elif option == "4":
+                    permission = has_permission(user, READ_WRITE)
+                    if not permission:
+                        break
+                    try:
+                        show_users()
+                        user_id = int(input(f"{print_styles.BOLD}Ingrese el id del usuario: {print_styles.RESET}"))
+                        new_password = input(f"{print_styles.BOLD}Ingrese la nueva contraseña: {print_styles.RESET}").strip()
+                        if not new_password:
+                            print(f"{print_styles.YELLOW}La contraseña no puede estar vacía.{print_styles.RESET}")
+                        else:
+                            update_user_password(user_id, new_password)
+                            print(f"{print_styles.GREEN}Contraseña actualizada correctamente.{print_styles.RESET}")
+                    except ValueError:
+                        print(f"{print_styles.RED}Debes ingresar un número válido.{print_styles.RESET}")
+                    except:
+                        print(f"{print_styles.RED}Ocurrió un error al intentar actualizar la contraseña.{print_styles.RESET}")
+
+                elif option == "5":
+                    permission = has_permission(user, READ_WRITE)
+                    if not permission:
+                        break
+                    try:
+                        show_users()
+                        user_id = int(input(f"{print_styles.BOLD}Ingrese el id del usuario: {print_styles.RESET}"))
+                        new_username = input(f"{print_styles.BOLD}Ingrese el nuevo username: {print_styles.RESET}").strip()
+                        if not new_username:
+                            print(f"{print_styles.YELLOW}El username no puede estar vacío.{print_styles.RESET}")
+                        else:
+                            update_user_username(user_id, new_username)
+                            print(f"{print_styles.GREEN}Nombre de usuario actualizado correctamente.{print_styles.RESET}")
+                    except ValueError:
+                        print(f"{print_styles.RED}Debes ingresar un número válido.{print_styles.RESET}")
+                    except:
+                        print(f"{print_styles.RED}Ocurrió un error al intentar actualizar en usuario.{print_styles.RESET}")
+
+                input("Presione ENTER para volver a seleccionar.")
+
+        elif option == "2":   # Opción 2 --> Gestión de transacciones
             while True:
                 while True:
                     options = 6
@@ -276,6 +393,7 @@ def main():
                     try:
                         if permission:
                             show_users()
+                            users = read_users()
                             id_input = int(input("Elige el número de usuario para mostrar sus transacciones: "))
                             while (id_input < 0 or id_input > users[-1]['id']):
                                 if id_input == 0:
@@ -296,7 +414,7 @@ def main():
                                                                                 
                 input("Presione ENTER para volver a seleccionar.")
         
-        elif option == "2":   # Opción 2 --> Gestión de categorías
+        elif option == "3":   # Opción 3 --> Gestión de categorías
 
             while True:
                 while True:
@@ -356,7 +474,7 @@ def main():
                                                         
                 input("Presione ENTER para volver a seleccionar.")
 
-        elif option == "3":   # Opción 3 --> Gestión de Presupuestos
+        elif option == "4":   # Opción 4 --> Gestión de Presupuestos
 
             while True:
                 while True:
@@ -453,7 +571,7 @@ def main():
                                                         
                 input("Presione ENTER para volver a seleccionar.")
 
-        elif option == "4":   # Opción 4 --> Gestión de cuentas
+        elif option == "5":   # Opción 5 --> Gestión de cuentas
 
             while True:
                 while True:
@@ -580,7 +698,7 @@ def main():
 
                 input("Presione ENTER para volver a seleccionar.")
 
-        elif option == "5":   # Opción 5 --> Resumen
+        elif option == "6":   # Opción 6 --> Resumen
 
             while True:
                 while True:

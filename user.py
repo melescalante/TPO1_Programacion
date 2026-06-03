@@ -1,5 +1,4 @@
-from data import users
-from helper import slice_words
+from helper import slice_words, create_id
 import re 
 from styles import print_styles
 
@@ -121,3 +120,104 @@ def get_user(email, password):
     except:
         print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
         return None
+    
+FILE_USERS = 'txt/users.txt'
+
+def read_users(file=FILE_USERS):
+    """
+    Devuelve una lista de usuarios
+    """
+    users = []
+    try:
+        with open(file, mode='r', encoding='UTF-8') as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                id_str, permission, username, password, email = line.split(';')
+                users.append({
+                    "id": int(id_str),
+                    "permission": permission,
+                    "username": username,
+                    "password": password,
+                    "email": email
+                })
+        return users
+    except FileNotFoundError:
+        print(f"{print_styles.RED}No se encontró el archivo de usuarios.{print_styles.RESET}")
+        return []
+    except Exception:
+        print(f"{print_styles.RED}Ocurrió un error al leer los usuarios.{print_styles.RESET}")
+        return []
+
+def write_users(users, file=FILE_USERS):
+    """
+    users: lista de todos los usuarios
+    Escribe en el txt toda la informacion
+    """
+    try:
+        with open(file, mode='w', encoding='UTF-8') as f:
+            for user in users:
+                f.write(f"{user['id']};{user['permission']};{user['username']};{user['password']};{user['email']}\n")
+    except Exception:
+        print(f"{print_styles.RED}Ocurrió un error al guardar los usuarios.{print_styles.RESET}")
+
+def add_user(username, email, password, file=FILE_USERS):
+    try:
+        users = read_users(file)
+        next_id = create_id(users) if users else 1
+        users.append({
+            "id": next_id,
+            "permission": "user",
+            "username": username,
+            "password": password,
+            "email": email
+        })
+        write_users(users, file)
+        print(f"{print_styles.GREEN}Usuario agregado correctamente.{print_styles.RESET}")
+    except Exception:
+        print(f"{print_styles.RED}Ocurrió un error al agregar el usuario.{print_styles.RESET}")
+
+def delete_user(user_id, file=FILE_USERS):
+    try:
+        users = read_users(file)      
+        updated_users = [user for user in users if user["id"] != user_id]
+        if len(updated_users) == len(users):
+            print(f"{print_styles.YELLOW}No se encontró el usuario con id {user_id}.{print_styles.RESET}")
+            return
+        write_users(updated_users, file)
+        print(f"{print_styles.GREEN}Usuario eliminado correctamente.{print_styles.RESET}")
+    except Exception:
+        print(f"{print_styles.RED}Ocurrió un error al eliminar el usuario.{print_styles.RESET}")
+
+def update_user_password(user_id, new_password, file=FILE_USERS):
+    try:
+        users = read_users(file)
+        found = False
+        for user in users:
+            if user["id"] == user_id:
+                user["password"] = new_password
+                found = True
+                break
+        if not found:
+            print(f"{print_styles.YELLOW}No se encontró el usuario con id {user_id}.{print_styles.RESET}")
+            return
+        write_users(users, file)
+    except Exception:
+        print(f"{print_styles.RED}Ocurrió un error al actualizar la contraseña.{print_styles.RESET}")
+
+def update_user_username(user_id, new_username, file=FILE_USERS):
+    try:
+        users = read_users(file)
+        found = False
+        for user in users:
+            if user["id"] == user_id:
+                user["username"] = new_username
+                found = True
+                break
+        if not found:
+            print(f"{print_styles.YELLOW}No se encontró el usuario con id {user_id}.{print_styles.RESET}")
+            return
+        write_users(users, file)
+    except Exception:
+        print(f"{print_styles.RED}Ocurrió un error al actualizar el username.{print_styles.RESET}")
