@@ -609,6 +609,10 @@ def main():
                     accounts=json_reader(file_accounts)
                     transactions=json_reader(file_transactions)
                     categories=json_reader(file_categories)
+
+                    total_balance = sum_accounts_amount(accounts)
+                    print(f"Saldo total de todas las cuentas: ${total_balance}")
+
                     total, month = total_last_month(transactions)
                     print(f"Total Gastado en el mes de {month}: {total}")
                     print(f"Promedio de total gastado por mes: {average_month(transactions)}")
