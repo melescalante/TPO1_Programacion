@@ -166,11 +166,6 @@ def account_exists(data_accounts, account_name, index=0):
 
     return account_exists(data_accounts, account_name, index + 1)
 
-def sum_accounts_amount(data_accounts, index=0):
-    if index >= len(data_accounts):
-        return 0
-    return data_accounts[index]["amount"] + sum_accounts_amount(data_accounts, index + 1)
-
 # def update_account_balance(matrix_accounts, id_account, amount):
 #     """
 #     matrix_accounts: lista de cuentas a actualizar

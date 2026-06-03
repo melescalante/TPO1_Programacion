@@ -616,8 +616,8 @@ def main():
                     total, month = total_last_month(transactions)
                     print(f"Total Gastado en el mes de {month}: {total}")
                     print(f"Promedio de total gastado por mes: {average_month(transactions)}")
-                    print(f"Categoria con mas gastos: {get_higher_expense(transactions, categories, 2)[1]}")
-                    print(f"Cuenta con mas gastos: {get_higher_expense(transactions, accounts, 1)[1]}")
+                    print(f"Categoria con mas gastos: {get_higher_expense(transactions, categories, 'id_category')['category']}")
+                    print(f"Cuenta con mas gastos: {get_higher_expense(transactions, accounts, 'id_account')['account']}")
                 elif option == "2":
                     transactions=json_reader(file_transactions)
                     categories=json_reader(file_categories)

@@ -320,11 +320,11 @@ def calculate_percentage_of_category(matrix_transactions):
     
     try:
         for i in range(len(matrix_transactions)):
-            current_category = matrix_transactions[i][2]
+            current_category = matrix_transactions[i]['id_category']
 
             if current_category not in categories_proccess:
-                filtered = list(filter(lambda x: x[2] == current_category, matrix_transactions))
-                total_amount = sum(map(lambda x: x[5], filtered))
+                filtered = list(filter(lambda x: x['id_category'] == current_category, matrix_transactions))
+                total_amount = sum(map(lambda x: x['amount'], filtered))
                 category={
                     "category":current_category,
                     "registers":filtered,
@@ -353,12 +353,12 @@ def get_percentage_of_category(filter_transactions, count_matrix, matrix_categor
     print("-" * 110)
 
     for item in filter_transactions:
-        name_category= get_raw_by_id(matrix_categories,item["category"])[1]
+        name_category= get_raw_by_id(matrix_categories,item["category"])['category']
         name_sliced=slice_words(25,name_category)
         cant_registros_cat = len(item["registers"])
         percentage = (cant_registros_cat / count_matrix) * 100
-        val_max = max(map(lambda x: x[5], item["registers"]))
-        val_min = min(map(lambda x: x[5], item["registers"]))
+        val_max = max(map(lambda x: x['amount'], item["registers"]))
+        val_min = min(map(lambda x: x['amount'], item["registers"]))
         if percentage > 50:
             color_p = print_styles.RED    
         elif percentage > 20:

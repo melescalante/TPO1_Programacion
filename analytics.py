@@ -10,7 +10,7 @@ def total_last_month(transactions):
     month = ""
 
     for i in transactions:
-        date = i[3]
+        date = i['date']
         day, month, year = date.split("-")
         
         month = int(month)
@@ -23,16 +23,21 @@ def total_last_month(transactions):
     total_expenses = 0
 
     for i in transactions:
-        date = i[3]
+        date = i['date']
         day, month, year = date.split("-")
 
         month = int(month)
         year = int(year)
 
-        if month == last_month and year == last_year and i[5] < 0:
-            total_expenses += i[5]
+        if month == last_month and year == last_year and i['amount'] < 0:
+            total_expenses += i['amount']
 
     return abs(total_expenses), get_month(last_month)
+
+def sum_accounts_amount(data_accounts, index=0):
+    if index >= len(data_accounts):
+        return 0
+    return data_accounts[index]["amount"] + sum_accounts_amount(data_accounts, index + 1)
 
 def average_month(transactions):
     """
@@ -42,15 +47,15 @@ def average_month(transactions):
     total_month = {}
 
     for i in transactions:
-        date = i[3]
+        date = i['date']
         day, month, year = date.split("-")
 
         key = year + "-" + month  
 
-        if i[5] < 0:
+        if i['amount'] < 0:
             if key not in total_month:
                 total_month[key] = 0
-            total_month[key] += i[5]
+            total_month[key] += i['amount']
 
     if len(total_month) == 0:
         return 0
@@ -60,7 +65,7 @@ def average_month(transactions):
 
     return abs(average)
 
-def get_higher_expense(matrix_transactions, matrix_to_search, search_value = 2):
+def get_higher_expense(matrix_transactions, matrix_to_search, search_value):
     """
     matrix_transactions: matriz de transacciones
     search_value: indice para buscar dentro de transacciones
@@ -70,7 +75,7 @@ def get_higher_expense(matrix_transactions, matrix_to_search, search_value = 2):
     
     for transaction in matrix_transactions:
         actual_category = transaction[search_value]
-        amount = transaction[5]         
+        amount = transaction['amount']         
         if actual_category in category:   
             category[actual_category] += amount
         else:
