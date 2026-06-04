@@ -207,7 +207,7 @@ def main():
                             print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Transacciones")
                             print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Transacciones")
                         print(f"{print_styles.BOLD}[5]{print_styles.RESET} Ver Transacciones por Categoria")
-                        print(f"{print_styles.BOLD}[6]{print_styles.RESET} Ver mis Transacciones")
+                        print(f"{print_styles.BOLD}[6]{print_styles.RESET} Ver Transacciones por usuario")
                     print("---------------------------")
                     print(f"{print_styles.BOLD}[0]{print_styles.RESET} Volver al menú anterior")
                     print("---------------------------")
