@@ -134,6 +134,7 @@ def update_category_for_budget(budget, data_budgets, data_categories):
     """
     budget: registro de presupuesto a actualizar
     data_categories: lista de categorías válidas
+    data_budgets: lista de presupuestos existentes
     Retorna: None. Actualiza la categoría asignada al presupuesto
     """
     try: 
@@ -168,6 +169,7 @@ def update_category_for_budget(budget, data_budgets, data_categories):
 def update_budget_amount(budget, data_budgets):
     """
     budget: registro de presupuesto a modificar
+    data_budgets: lista de presupuestos existentes
     Retorna: None. Solicita y actualiza el monto del presupuesto
     """
     try: 

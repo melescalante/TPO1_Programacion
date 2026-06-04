@@ -4,7 +4,8 @@ from styles import print_styles
 
 email_pattern = re.compile(r'[\w\-=+\[{;:\'\"}\],\./?`~\$]+@[a-z0-9]+\.[a-z]{2,}')
 password_pattern = re.compile(r"^[\w=+-]{8,20}$")
-
+    
+FILE_USERS = 'txt/users.txt'
 def login():
     """
     Retorna: diccionario con datos del usuario autenticado o None si la autenticación falla
@@ -110,6 +111,13 @@ def get_user_by_id(id_user):
         return None
 
 def get_user(email, password):
+    """
+    Busca y autentica a un usuario en el archivo de registros del sistema.
+
+    email: dirección de correo electrónico del usuario a buscar
+    password: contraseña de la cuenta del usuario
+    Retorna: Un diccionario con los datos del usuario si coincide, None en caso contrario o si ocurre un error
+    """
     try:
         with open('txt/users.txt', mode='r', encoding='UTF-8') as file:
             line = file.readline()
@@ -127,12 +135,11 @@ def get_user(email, password):
     except:
         print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
         return None
-    
-FILE_USERS = 'txt/users.txt'
 
 def read_users(file=FILE_USERS):
     """
     Devuelve una lista de usuarios
+    file: ruta del archivo donde se almacenan los usuarios 
     """
     users = []
     try:
@@ -160,6 +167,7 @@ def read_users(file=FILE_USERS):
 def write_users(users, file=FILE_USERS):
     """
     users: lista de todos los usuarios
+    file: ruta del archivo donde se almacenan los usuarios 
     Escribe en el txt toda la informacion
     """
     try:
@@ -170,6 +178,15 @@ def write_users(users, file=FILE_USERS):
         print(f"{print_styles.RED}Ocurrió un error al guardar los usuarios.{print_styles.RESET}")
 
 def add_user(username, email, password, file=FILE_USERS):
+    """
+    Registra un nuevo usuario en el sistema y guarda los cambios en el archivo.
+
+    username: nombre de usuario de la nueva cuenta
+    email: dirección de correo electrónico del usuario
+    password: contraseña para la cuenta del usuario
+    file: ruta del archivo donde se almacenan los usuarios 
+    Retorna None
+    """
     try:
         users = read_users(file)
         next_id = create_id(users) if users else 1
@@ -186,6 +203,13 @@ def add_user(username, email, password, file=FILE_USERS):
         print(f"{print_styles.RED}Ocurrió un error al agregar el usuario.{print_styles.RESET}")
 
 def delete_user(user_id, file=FILE_USERS):
+    """
+    Elimina un usuario del sistema buscando por su identificador único.
+
+    user_id: identificador único del usuario que se desea eliminar
+    file: ruta del archivo donde se almacenan los usuarios 
+    Retorna None
+    """
     try:
         users = read_users(file)      
         updated_users = [user for user in users if user["id"] != user_id]
@@ -198,6 +222,14 @@ def delete_user(user_id, file=FILE_USERS):
         print(f"{print_styles.RED}Ocurrió un error al eliminar el usuario.{print_styles.RESET}")
 
 def update_user_password(user_id, new_password, file=FILE_USERS):
+    """
+    Modifica la contraseña de un usuario específico en el sistema.
+
+    user_id: identificador único del usuario al que se le cambiará la contraseña
+    new_password: nueva contraseña que se asignará a la cuenta
+    file: ruta del archivo donde se almacenan los usuarios
+    Retorna None
+    """
     try:
         users = read_users(file)
         found = False
@@ -214,6 +246,14 @@ def update_user_password(user_id, new_password, file=FILE_USERS):
         print(f"{print_styles.RED}Ocurrió un error al actualizar la contraseña.{print_styles.RESET}")
 
 def update_user_username(user_id, new_username, file=FILE_USERS):
+    """
+    Modifica el nombre de usuario de un usuario específico en el sistema.
+
+    user_id: identificador único del usuario al que se le cambiará el nombre de usuario
+    new_username: nuevo nombre de usuario que se asignará a la cuenta
+    file: ruta del archivo donde se almacenan los usuarios
+    Retorna None
+    """
     try:
         users = read_users(file)
         found = False

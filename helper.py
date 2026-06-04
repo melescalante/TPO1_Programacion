@@ -2,6 +2,21 @@ from datetime import datetime, date, time
 from styles import print_styles
 import json
 
+months = {
+    1: "Enero",
+    2: "Febrero",
+    3: "Marzo",
+    4: "Abril",
+    5: "Mayo",
+    6: "Junio",
+    7: "Julio",
+    8: "Agosto",
+    9: "Septiembre",
+    10: "Octubre",
+    11: "Noviembre",
+    12: "Diciembre"
+}
+
 def create_id(array):
     """
     matrix: lista de elementos existente
@@ -9,29 +24,6 @@ def create_id(array):
     """
     id=array[-1]["id"] + 1
     return id
-# Funcion vieja
-# def get_raw_by_id(matrix, id):
-#     """
-#     matrix: lista de registros donde el primer elemento es el id
-#     id: identificador a buscar
-#     Retorna: el registro que coincide con el id o None si no existe
-#     """
-#     for raw in matrix:
-#         if raw[0] == id:
-#             return raw
-#     return None
-
-# Función sin recursividad
-# def get_raw_by_id(matrix, id):
-#     """
-#     matrix: lista de registros donde el primer elemento es el id
-#     id: identificador a buscar
-#     Retorna: el registro que coincide con el id o None si no existe
-#     """
-#     for raw in matrix:
-#         if raw["id"] == id:
-#             return raw
-#     return None
 
 def get_raw_by_id(matrix, id):
     """
@@ -123,23 +115,14 @@ def validate_date(date_input):
         return "Formato de fecha inválido. Use YYYY-MM-DD", False
     except:
         return "Ocurrió un error inesperado", False
-    
-months = {
-    1: "Enero",
-    2: "Febrero",
-    3: "Marzo",
-    4: "Abril",
-    5: "Mayo",
-    6: "Junio",
-    7: "Julio",
-    8: "Agosto",
-    9: "Septiembre",
-    10: "Octubre",
-    11: "Noviembre",
-    12: "Diciembre"
-}
 
 def json_reader(file):
+    '''
+    Lee el contenido de un archivo en formato JSON.
+
+    file: ruta del archivo JSON que se desea leer
+    Retorna: Los datos cargados desde el archivo, o None si ocurre un error
+    '''
     try:
         with open(file,'r', encoding="UTF-8") as file_information:
             data=json.load(file_information)
@@ -152,6 +135,13 @@ def json_reader(file):
         return None
 
 def json_loader(file, data):
+    """
+    Guarda datos estructurados en un archivo en formato JSON.
+
+    file: ruta del archivo donde se guardarán los datos
+    data: estructura de datos que se va a almacenar
+    Retorna: None
+    """
     try:
         with open(file,'w', encoding="UTF-8") as file_information:
             json.dump(data,file_information,ensure_ascii=False)

@@ -1,5 +1,5 @@
 from styles import print_styles
-from helper import create_id, get_raw_by_id, is_word_alpha, json_loader
+from helper import create_id, get_raw_by_id, json_loader
 file_categories='json/categories.json'
 def get_categories(data_categories):
     """
@@ -88,7 +88,7 @@ def delete_category(data_categories, data_transactions, data_budgets):
 
 def update_category(data_categories):    
     """
-    matrix_categories: lista de categorías del sistema
+    data_categories: lista de categorías del sistema
     Retorna: None. Solicita al usuario una categoría y actualiza su nombre
     """
     get_categories(data_categories)
@@ -126,6 +126,7 @@ def update_category(data_categories):
 def change_category(category,data_categories):
     """
     category: registro de categoría a modificar
+    data_categories: array de categorias en el sistema
     Retorna: None. Solicita un nuevo nombre y actualiza la categoría
     """
     try:

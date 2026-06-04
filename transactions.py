@@ -8,10 +8,10 @@ from budgets import update_budget_balance, get_budget_by_category
 
 def add_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_account, id_category, date, time, amount, description, id_user, transaction_type="income"):
     """
-    matrix_transactions: lista de transacciones a actualizar
-    matrix_accounts: lista de cuentas del sistema
-    matrix_categories: lista de categorías del sistema
-    matrix_budgets: lista de presupuestos del sistema
+    data_transactions: lista de transacciones a actualizar
+    data_accounts: lista de cuentas del sistema
+    data_categories: lista de categorías del sistema
+    data_budgets: lista de presupuestos del sistema
     id_account: identificador de la cuenta asociada
     id_category: identificador de la categoría asociada
     date: fecha de la transacción (formato DD-MM-YYYY)
@@ -20,7 +20,7 @@ def add_transaction(data_transactions, data_accounts, data_categories, data_budg
     description: descripción de la transacción
     id_user: id del usuario
     transaction_type: tipo de transacción ('income' o 'expense')
-    Retorna: None. Modifica matrix_transactions agregando nueva transacción y actualiza saldos
+    Retorna: None. Modifica data_transactions agregando nueva transacción y actualiza saldos
     """
     id = create_id(data_transactions)
     id_raw_account = get_raw_by_id(data_accounts, id_account)["id"]
@@ -85,7 +85,8 @@ def delete_transaction(data_transactions, data_accounts, data_categories, data_b
 def update_account_transaction(transaction, data_transactions, data_accounts):
     """
     transaction: transacción a actualizar
-    matrix_accounts: lista de cuentas del sistema
+    data_accounts: lista de cuentas del sistema
+    data_transactions: lista de transacciones del sistema
     Retorna: None. Modifica la cuenta asociada en la transacción
     """
     while True:
@@ -113,17 +114,17 @@ def update_account_transaction(transaction, data_transactions, data_accounts):
             break
             
 
-def update_category_transaction(transaction, data_transactions, matrix_categories):
+def update_category_transaction(transaction, data_transactions, data_categories):
     """
     transaction: transacción a actualizar
-    matrix_categories: lista de categorías del sistema
+    data_categories: lista de categorías del sistema
     Retorna: None. Modifica la categoría asociada en la transacción
     """
     while True:
         try:
-            get_categories(matrix_categories)
+            get_categories(data_categories)
             new_category_id = int(input("Ingrese el número de la nueva categoría: "))
-            category = get_raw_by_id(matrix_categories, new_category_id)
+            category = get_raw_by_id(data_categories, new_category_id)
             
             if category is None:
                 print(f"{print_styles.YELLOW}El valor que ingresó no es un número válido.{print_styles.RESET}")
@@ -220,15 +221,15 @@ def update_description_transaction(transaction, data_transactions):
     json_loader('json/transactions.json', data_transactions)  
     print(f"{print_styles.GREEN}Descripción actualizada.{print_styles.RESET}")
 
-def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, predicate = None):
+def get_transactions(data_transactions, matrix_accounts, matrix_categories, predicate = None):
     """
-    matrix_transactions: lista de transacciones a mostrar
+    data_transactions: lista de transacciones a mostrar
     matrix_accounts: lista de cuentas para obtener información de cuenta
     matrix_categories: lista de categorías para obtener información de categoría
     predicate: función opcional para filtrar transacciones
     Retorna: None. Imprime tabla formateada de transacciones
     """
-    count_matrix= len(matrix_transactions)
+    count_matrix= len(data_transactions)
     
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f'{"Transacciones":^125}')
@@ -236,21 +237,21 @@ def get_transactions(matrix_transactions, matrix_accounts, matrix_categories, pr
     print(f"{print_styles.BOLD_BLUE}Registros Totales: {count_matrix:<40}{print_styles.RESET}")
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f"{print_styles.BOLD}{'Numero':<10}{'Usuario':<15}{'Cuenta':<15}{'Categoria':<15}{'Fecha':<15}{'Hora':<10}{'Monto':<15}{'Descripcion':<30}{print_styles.RESET}")
-    for i in range(len(matrix_transactions)):
-        if predicate is not None and not predicate(matrix_transactions[i]):
+    for i in range(len(data_transactions)):
+        if predicate is not None and not predicate(data_transactions[i]):
             continue
 
-        id = matrix_transactions[i]["id"]
-        user = get_user_by_id(matrix_transactions[i]["id_user"])["username"]
+        id = data_transactions[i]["id"]
+        user = get_user_by_id(data_transactions[i]["id_user"])["username"]
         user_sliced = slice_words(14, user)
-        account = get_raw_by_id(matrix_accounts,matrix_transactions[i]["id_account"])
-        category = get_raw_by_id(matrix_categories,matrix_transactions[i]["id_category"])
+        account = get_raw_by_id(matrix_accounts,data_transactions[i]["id_account"])
+        category = get_raw_by_id(matrix_categories,data_transactions[i]["id_category"])
         category_sliced= slice_words(14, category["category"])
-        date =  matrix_transactions[i]["date"]
-        hour =  matrix_transactions[i]["time"]
-        amount = matrix_transactions[i]["amount"]
+        date =  data_transactions[i]["date"]
+        hour =  data_transactions[i]["time"]
+        amount = data_transactions[i]["amount"]
         amount_str = "$"+ str(abs(amount))
-        description =  matrix_transactions[i]["description"]
+        description =  data_transactions[i]["description"]
         description_slicing = slice_words(29, description)
         underline = print_styles.UNDERLINE_INCOME
         if amount < 0:
@@ -279,15 +280,15 @@ def get_transactions_by_category(data_transactions, data_accounts, data_categori
     except:
         print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
-def get_transaction_by_user_input(matrix_transactions):
+def get_transaction_by_user_input(data_transactions):
     """
-    matrix_Transactions: lista de transacciones disponibles
+    data_transactions: lista de transacciones disponibles
     Retorna: transacción seleccionada por el usuario o None si cancela
     """
     while True:
         try:
             id_transaction = int(input("¿Qué transacción desea actualizar? Indique el numero o escriba 0 para salir: "))
-            if id_transaction < 0 or id_transaction > len(matrix_transactions):
+            if id_transaction < 0 or id_transaction > len(data_transactions):
                 print(f"{print_styles.RED}La transacción no existe.{print_styles.RESET}")
                 continue
 
@@ -295,7 +296,7 @@ def get_transaction_by_user_input(matrix_transactions):
                 print(f"{print_styles.GREEN}No se actualizó ninguna transacción.{print_styles.RESET}")
                 return None
 
-            transaction = get_raw_by_id(matrix_transactions, id_transaction)
+            transaction = get_raw_by_id(data_transactions, id_transaction)
             
             if transaction is None:
                 print(f"{print_styles.RED}La transacción no existe. Intente de nuevo.{print_styles.RESET}")
@@ -308,22 +309,22 @@ def get_transaction_by_user_input(matrix_transactions):
             print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
             break
     
-def calculate_percentage_of_category(matrix_transactions):
+def calculate_percentage_of_category(data_transactions):
     """
-    matrix_transactions: lista de transacciones a analizar
+    data_transactions: lista de transacciones a analizar
     Retorna: tupla (filter_transactions, total) donde filter_transactions es lista de diccionarios
     con estructura {'category': id, 'registers': [...], 'total': suma_monto} y total es cantidad total de transacciones
     """
     filter_transactions = []
     categories_proccess = set()
-    total=len(matrix_transactions)
+    total=len(data_transactions)
     
     try:
-        for i in range(len(matrix_transactions)):
-            current_category = matrix_transactions[i]['id_category']
+        for i in range(len(data_transactions)):
+            current_category = data_transactions[i]['id_category']
 
             if current_category not in categories_proccess:
-                filtered = list(filter(lambda x: x['id_category'] == current_category, matrix_transactions))
+                filtered = list(filter(lambda x: x['id_category'] == current_category, data_transactions))
                 total_amount = sum(map(lambda x: x['amount'], filtered))
                 category={
                     "category":current_category,

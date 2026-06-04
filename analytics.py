@@ -35,6 +35,13 @@ def total_last_month(transactions):
     return abs(total_expenses), get_month(last_month)
 
 def sum_accounts_amount(data_accounts, index=0):
+    """
+    Calcula de forma recursiva la suma total de los montos de todas las cuentas.
+
+    data_accounts: lista de diccionarios donde cada uno representa una cuenta y contiene la clave "amount"
+    index: índice de la lista utilizado para controlar la recursión
+    Retorna: La suma acumulada de todos los montos ("amount") de las cuentas
+    """
     if index >= len(data_accounts):
         return 0
     return data_accounts[index]["amount"] + sum_accounts_amount(data_accounts, index + 1)
@@ -65,15 +72,15 @@ def average_month(transactions):
 
     return abs(average)
 
-def get_higher_expense(matrix_transactions, matrix_to_search, search_value):
+def get_higher_expense(data_transactions, data_to_search, search_value):
     """
-    matrix_transactions: matriz de transacciones
+    data_transactions: matriz de transacciones
     search_value: indice para buscar dentro de transacciones
     Retorna: La categoría que tiene el gasto máximo
     """    
     category = {}
     
-    for transaction in matrix_transactions:
+    for transaction in data_transactions:
         actual_category = transaction[search_value]
         amount = transaction['amount']         
         if actual_category in category:   
@@ -81,4 +88,4 @@ def get_higher_expense(matrix_transactions, matrix_to_search, search_value):
         else:
             category[actual_category] = amount
     
-    return get_raw_by_id(matrix_to_search, min(category, key=category.get))
+    return get_raw_by_id(data_to_search, min(category, key=category.get))
