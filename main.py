@@ -157,6 +157,10 @@ def main():
                         show_users()
                         user_id = int(input(f"{print_styles.BOLD}Ingrese el id del usuario: {print_styles.RESET}"))
                         new_password = input(f"{print_styles.BOLD}Ingrese la nueva contraseña: {print_styles.RESET}").strip()
+                        if not validate_password(new_password):
+                            print(f"{print_styles.RED}La contraseña no cumple los parametros requeridos.{print_styles.RESET}")
+                            print(f"{print_styles.YELLOW}Tiene que tener mínimo entre 8-20 carácteres.{print_styles.RESET}")
+                            continue
                         if not new_password:
                             print(f"{print_styles.YELLOW}La contraseña no puede estar vacía.{print_styles.RESET}")
                         else:
@@ -281,6 +285,9 @@ def main():
                                     break
                                 get_accounts(data_accounts)
                                 id_account = int(input("Ingrese el número de la cuenta: "))
+                                if id_account>len(data_accounts) or id_account<=0:
+                                    print(f"{print_styles.RED}Numero de cuenta invalida.Por favor ingrese una cuenta existente.{print_styles.RESET}")
+                                    break
                                 
                                 data_categories = json_reader(file_categories)
                                 if data_categories == None:
@@ -288,6 +295,9 @@ def main():
 
                                 get_categories(data_categories)
                                 id_category = int(input("Ingrese el número de la categoria: "))
+                                if id_category>len(data_categories) or id_category<=0:
+                                    print(f"{print_styles.RED}Numero de categoria invalida.Por favor ingrese una categoria existente.{print_styles.RESET}")
+                                    break
                                 amount = int(input("Ingrese el importe: "))
                                 descripcion = input("Ingrese la descripcion: ")
                                 
@@ -608,7 +618,11 @@ def main():
                     permission = has_permission(user,READ)
                    
                     if permission:
-                        account_name = input("Ingrese el nombre de la cuenta: ")
+                        while True:
+                            account_name = input("Ingrese el nombre de la cuenta: ").strip()
+                            if account_name:  
+                                break
+                            print(f"{print_styles.RED}Error: El nombre de la cuenta no puede estar vacío.{print_styles.RESET}")
                         while True:
                             try:
                                 total_money = int(input("Ingrese el monto de la cuenta: "))

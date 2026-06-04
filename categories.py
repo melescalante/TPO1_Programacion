@@ -118,7 +118,7 @@ def update_category(data_categories):
             else:
                 print(f"{print_styles.RED}La categoría no existe.{print_styles.RESET}")
         except ValueError:
-            print(f"{print_styles.RED}Error: Por favor, ingrese un número entero válido.{print_styles.RESET}")
+            print(f"{print_styles.RED}Error. Por favor, ingrese un número entero válido.{print_styles.RESET}")
         except Exception:
             print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
             break
