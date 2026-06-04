@@ -41,7 +41,7 @@ def main():
         can_read = has_permission(user, READ)
         can_write = has_permission(user, READ_WRITE)
         valid_options = ["0","1"]
-        if can_write: valid_options.append(["4", "5"])
+        if can_write: valid_options.extend(["4", "5"])
         if can_read: valid_options.extend(["2", "3", "6", "7"])
 
         while True:
@@ -82,8 +82,7 @@ def main():
                     print("---------------------------")
                     print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Usuarios")
                     print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Usuario")
-                    permission = has_permission(user, READ_WRITE)
-                    if permission:
+                    if can_write:
                         print(f"{print_styles.BOLD}[3]{print_styles.RESET} Eliminar Usuario")
                         print(f"{print_styles.BOLD}[4]{print_styles.RESET} Actualizar Contraseña")
                         print(f"{print_styles.BOLD}[5]{print_styles.RESET} Actualizar Username")
