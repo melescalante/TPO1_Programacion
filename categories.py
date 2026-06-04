@@ -60,7 +60,7 @@ def delete_category(data_categories, data_transactions, data_budgets):
             return
         
         if id <= 0:
-            print(f"{print_styles.GREEN}No se elimino ninguna categoria.{print_styles.RED}")
+            print(f"{print_styles.GREEN}No se elimino ninguna categoria.{print_styles.RESET}")
             return
         
         # Eliminar la categoría de la transacción
