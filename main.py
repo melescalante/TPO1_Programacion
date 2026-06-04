@@ -27,6 +27,8 @@ user = read_users()[0]
 while user==None:
     user=login()
 
+print(user)
+
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
 #----------------------------------------------------------------------------------------------
@@ -201,8 +203,7 @@ def main():
                     print("---------------------------")
                     if can_read:
                         print(f"{print_styles.BOLD}[1]{print_styles.RESET} Mostrar Transacciones")
-                        print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Transacciones")
-            
+                        print(f"{print_styles.BOLD}[2]{print_styles.RESET} Añadir Transacciones")            
                         if can_write:
                             print(f"{print_styles.BOLD}[3]{print_styles.RESET} Actualizar Transacciones")
                             print(f"{print_styles.BOLD}[4]{print_styles.RESET} Eliminar Transacciones")
