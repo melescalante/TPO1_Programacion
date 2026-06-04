@@ -57,23 +57,30 @@ def is_logged(loggedUser):
     if (loggedUser): return True
     
     return False
-
 def show_users():
     """
     Imprime todos los usuarios
     """    
-    print("="*30)
-    print(f"{print_styles.BOLD}{"Número":<15}{"Nombre":<15}{print_styles.RESET}")
-
+    print("="*print_styles.MAX_SPACES_CATEGORIES)
+    print(f'{"Usuarios":^50}')
+    print("="*print_styles.MAX_SPACES_CATEGORIES)
+    
     try:
         with open('txt/users.txt', mode='r', encoding='UTF-8') as file:
-            line = file.readline()
-            while line:
-                id, permission, username, password, email = line.strip().split(';')
-                if id == str(id):
-                    username_sliced = slice_words(14, username)
-                    print(f"{id:<15}{username_sliced:<15}")
-                line = file.readline()
+            lines = [line.strip() for line in file.readlines() if line.strip()]
+            
+            count_matrix = len(lines)
+            
+            print(f"{print_styles.BOLD_BLUE}Registros Totales: {count_matrix:<40}{print_styles.RESET}")
+            print("="*print_styles.MAX_SPACES_CATEGORIES)
+            print(f"{print_styles.BOLD}{'Número':<15}{'Nombre':<15}{print_styles.RESET}")
+            
+            for line in lines:
+                id, permission, username, password, email = line.split(';')
+                
+                username_sliced = slice_words(14, username)
+                print(f"{id:<15}{username_sliced:<15}")
+                
     except FileNotFoundError:
         print(f"{print_styles.RED}No se encontró la ruta del archivo.{print_styles.RESET}")
     except:

@@ -7,7 +7,6 @@ from categories import *
 from accounts import *
 from user import *
 from analytics import *
-import json
 from helper import *
 from permissions import has_permission
 
@@ -39,8 +38,8 @@ def main():
     while True:
         can_read = has_permission(user, READ)
         can_write = has_permission(user, READ_WRITE)
-        valid_options = ["0"]
-        if can_write: valid_options.append(["1", "4", "5"])
+        valid_options = ["0","1"]
+        if can_write: valid_options.append(["4", "5"])
         if can_read: valid_options.extend(["2", "3", "6", "7"])
 
         while True:
