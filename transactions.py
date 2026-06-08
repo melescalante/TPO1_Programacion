@@ -3,7 +3,7 @@ from styles import print_styles
 from categories import get_categories
 from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
-from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour, json_loader
+from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour, json_loader, json_reader
 from budgets import update_budget_balance, get_budget_by_category
 
 def add_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_account, id_category, date, time, amount, description, id_user, transaction_type="income"):
@@ -81,6 +81,29 @@ def delete_transaction(data_transactions, data_accounts, data_categories, data_b
             return
         
     print(f"{print_styles.RED}Operación realizada sin éxito, el número de ID no existe.{print_styles.RESET}")
+
+def update_user_transaction(id_user, file_transactions):
+    try:
+        transactions = json_reader(file_transactions)
+        updated_transactions = [{
+            "id": transaction['id'], 
+            "id_account": transaction['id_account'], 
+            "id_category": transaction['id_category'], 
+            "date": transaction['date'], 
+            "time": transaction['time'], 
+            "amount": transaction['amount'], 
+            "description": transaction['description'], 
+            "id_user": -1
+            } if transaction['id_user'] == id_user else transaction for transaction in transactions]
+        
+        json_loader(file_transactions, updated_transactions)
+    except FileNotFoundError:
+        print(f"{print_styles.RED}No se logró abrir el archivo.{print_styles.RESET}")
+    except ValueError:
+        print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+    except Exception as e:
+        print(e)
+        print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
 def update_account_transaction(transaction, data_transactions, data_accounts):
     """
