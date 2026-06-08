@@ -265,8 +265,6 @@ def get_transactions(data_transactions, matrix_accounts, matrix_categories, pred
             continue
 
         id = data_transactions[i]["id"]
-        user = get_user_by_id(data_transactions[i]["id_user"])["username"]
-        user_sliced = slice_words(14, user)
         account = get_raw_by_id(matrix_accounts,data_transactions[i]["id_account"])
         category = get_raw_by_id(matrix_categories,data_transactions[i]["id_category"])
         category_sliced= slice_words(14, category["category"])
@@ -277,6 +275,12 @@ def get_transactions(data_transactions, matrix_accounts, matrix_categories, pred
         description =  data_transactions[i]["description"]
         description_slicing = slice_words(29, description)
         underline = print_styles.UNDERLINE_INCOME
+        if data_transactions[i]["id_user"]==-1:
+            user_sliced=slice_words(14, "Eliminado")
+            underline=print_styles.UNDERLINE_DELETE
+        else:
+            user = get_user_by_id(data_transactions[i]["id_user"])["username"]
+            user_sliced = slice_words(14, user)
         if amount < 0:
             underline = print_styles.UNDERLINE_EXPENSE
         print(f"{underline}{id:<10}{user_sliced:<15}{account["account"]:<15}{category_sliced:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{print_styles.RESET}")
