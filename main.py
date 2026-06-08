@@ -419,7 +419,8 @@ def main():
                     data_transactions = json_reader(file_transactions)
                     data_accounts = json_reader(file_accounts)
                     data_categories = json_reader(file_categories)
-                    get_transactions(data_transactions, data_accounts, data_categories, lambda transaction: transaction['id_user'] == id_input)
+                    filter_transactions_by_user = lambda transaction: transaction['id_user'] == id_input
+                    get_transactions(data_transactions, data_accounts, data_categories, filter_transactions_by_user, registers=len(list(filter(filter_transactions_by_user, data_transactions))))
                                                                                 
                 input("Presione ENTER para volver a seleccionar.")
         

@@ -221,7 +221,7 @@ def update_description_transaction(transaction, data_transactions):
     json_loader('json/transactions.json', data_transactions)  
     print(f"{print_styles.GREEN}Descripción actualizada.{print_styles.RESET}")
 
-def get_transactions(data_transactions, matrix_accounts, matrix_categories, predicate = None):
+def get_transactions(data_transactions, matrix_accounts, matrix_categories, predicate = None, registers=None):
     """
     data_transactions: lista de transacciones a mostrar
     matrix_accounts: lista de cuentas para obtener información de cuenta
@@ -229,7 +229,7 @@ def get_transactions(data_transactions, matrix_accounts, matrix_categories, pred
     predicate: función opcional para filtrar transacciones
     Retorna: None. Imprime tabla formateada de transacciones
     """
-    count_matrix= len(data_transactions)
+    count_matrix = registers if registers != None else len(data_transactions)
     
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f'{"Transacciones":^125}')
@@ -278,7 +278,7 @@ def get_transactions_by_category(data_transactions, data_accounts, data_categori
         if len(transactions_by_category) == 0:
             print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
             return
-        get_transactions(transactions_by_category, data_accounts, data_categories)
+        get_transactions(transactions_by_category, data_accounts, data_categories, registers=len(transactions_by_category))
     except ValueError:
         print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
     except:
