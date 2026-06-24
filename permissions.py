@@ -29,8 +29,7 @@ def has_permission(user, required_level, file='txt/users.txt'):
                     return True
                 
                 line = f.readline()
-                        
-                # print('No tienes permiso')
+
             return False
     except FileNotFoundError:
         print(f"{print_styles.BOLD}Ocurrió un error al intentar abrir el archivo.{print_styles.RESET}")
@@ -38,7 +37,6 @@ def has_permission(user, required_level, file='txt/users.txt'):
     except ValueError:
         print(f"{print_styles.BOLD}Ocurrió un error al intentar obtener el ID del usuario.{print_styles.RESET}")
         return False
-    except:
-        print("pepe")
+    except Exception:
         print(f"{print_styles.BOLD}Ocurrió un error inesperado.{print_styles.RESET}")
         return False

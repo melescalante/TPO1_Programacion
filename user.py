@@ -84,6 +84,8 @@ def show_users():
                 
     except FileNotFoundError:
         print(f"{print_styles.RED}No se encontró la ruta del archivo.{print_styles.RESET}")
+    except OSError:
+        print(f"{print_styles.RED}Error del sistema al acceder al archivo.{print_styles.RESET}")
     except:
         print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
     
@@ -105,6 +107,9 @@ def get_user_by_id(id_user):
             return user_found
     except FileNotFoundError:
         print(f"{print_styles.RED}No se encontró la ruta del archivo.{print_styles.RESET}")
+        return None
+    except OSError:
+        print(f"{print_styles.RED}Error del sistema al acceder al archivo.{print_styles.RESET}")
         return None
     except:
         print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
@@ -131,6 +136,9 @@ def get_user(email, password):
             return user_found
     except FileNotFoundError:
         print(f"{print_styles.RED}No se encontró la ruta del archivo.{print_styles.RESET}")
+        return None
+    except OSError:
+        print(f"{print_styles.RED}Error del sistema al acceder al archivo.{print_styles.RESET}")
         return None
     except:
         print(f"{print_styles.RED}Ocurrió un error inesperado.{print_styles.RESET}")
@@ -160,6 +168,9 @@ def read_users(file=FILE_USERS):
     except FileNotFoundError:
         print(f"{print_styles.RED}No se encontró el archivo de usuarios.{print_styles.RESET}")
         return []
+    except OSError:
+        print(f"{print_styles.RED}Error del sistema al acceder al archivo.{print_styles.RESET}")
+        return []
     except Exception:
         print(f"{print_styles.RED}Ocurrió un error al leer los usuarios.{print_styles.RESET}")
         return []
@@ -174,6 +185,8 @@ def write_users(users, file=FILE_USERS):
         with open(file, mode='w', encoding='UTF-8') as f:
             for user in users:
                 f.write(f"{user['id']};{user['permission']};{user['username']};{user['password']};{user['email']}\n")
+    except OSError:
+        print(f"{print_styles.RED}Error del sistema al acceder al archivo.{print_styles.RESET}")
     except Exception:
         print(f"{print_styles.RED}Ocurrió un error al guardar los usuarios.{print_styles.RESET}")
 
