@@ -27,8 +27,6 @@ user = read_users()[0]
 while user==None:
     user=login()
 
-print(user)
-
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
 #----------------------------------------------------------------------------------------------
@@ -147,8 +145,11 @@ def main():
                             print(f"{print_styles.RED}No se puede eliminar al usuario actual, debe salir de la sesión e ingresar con otro usuario admin.{print_styles.RESET}")
                             break
                         delete_user(user_id)
+                        update_user_transaction(user_id, file_transactions)
                     except ValueError:
                         print(f"{print_styles.RED}Debes ingresar un número válido.{print_styles.RESET}")
+                    except Exception as e:
+                        print(f"{print_styles.RED}{e}.{print_styles.RESET}")
 
                 elif option == "4":
                     permission = has_permission(user, READ_WRITE)
@@ -419,7 +420,8 @@ def main():
                     data_transactions = json_reader(file_transactions)
                     data_accounts = json_reader(file_accounts)
                     data_categories = json_reader(file_categories)
-                    get_transactions(data_transactions, data_accounts, data_categories, lambda transaction: transaction['id_user'] == id_input)
+                    filter_transactions_by_user = lambda transaction: transaction['id_user'] == id_input
+                    get_transactions(data_transactions, data_accounts, data_categories, filter_transactions_by_user, registers=len(list(filter(filter_transactions_by_user, data_transactions))))
                                                                                 
                 input("Presione ENTER para volver a seleccionar.")
         

@@ -86,8 +86,13 @@ def update_name_account(account,data_accounts):
     """
     try:
         name_account = input("Ingrese un nuevo nombre de cuenta: ")
-        while len(name_account) == 0:
-            print(f"{print_styles.YELLOW}El nombre que ingreso tiene espacios o no ingreso un valor. Por favor ingrese un nombre sin espacios.{print_styles.RESET}")
+
+        while account_exists(data_accounts, name_account):
+            if len(name_account) == 0:
+                print(f"{print_styles.YELLOW}El nombre que ingreso tiene espacios o no ingreso un valor. Por favor ingrese un nombre sin espacios.{print_styles.RESET}")
+                name_account = input("Ingrese un nuevo nombre de cuenta: ")
+                continue
+            print(f"{print_styles.RED}El nombre que ingreso ya existe en una cuenta. Por favor ingrese otra.{print_styles.RESET}")
             name_account = input("Ingrese un nuevo nombre de cuenta: ")
         account["account"] = name_account
         json_loader('json/accounts.json',data_accounts)
@@ -161,7 +166,7 @@ def account_exists(data_accounts, account_name, index=0):
     if index >= len(data_accounts):
         return False
 
-    if data_accounts[index]["account"] == account_name:
+    if data_accounts[index]["account"].lower() == account_name.lower():
         return True
 
     return account_exists(data_accounts, account_name, index + 1)

@@ -3,7 +3,7 @@ from styles import print_styles
 from categories import get_categories
 from user import get_user_by_id
 from accounts import update_account_balance, get_accounts
-from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour, json_loader
+from helper import create_id, get_raw_by_id, slice_words, validate_date, validate_hour, json_loader, json_reader
 from budgets import update_budget_balance, get_budget_by_category
 
 def add_transaction(data_transactions, data_accounts, data_categories, data_budgets, id_account, id_category, date, time, amount, description, id_user, transaction_type="income"):
@@ -81,6 +81,29 @@ def delete_transaction(data_transactions, data_accounts, data_categories, data_b
             return
         
     print(f"{print_styles.RED}Operación realizada sin éxito, el número de ID no existe.{print_styles.RESET}")
+
+def update_user_transaction(id_user, file_transactions):
+    try:
+        transactions = json_reader(file_transactions)
+        updated_transactions = [{
+            "id": transaction['id'], 
+            "id_account": transaction['id_account'], 
+            "id_category": transaction['id_category'], 
+            "date": transaction['date'], 
+            "time": transaction['time'], 
+            "amount": transaction['amount'], 
+            "description": transaction['description'], 
+            "id_user": -1
+            } if transaction['id_user'] == id_user else transaction for transaction in transactions]
+        
+        json_loader(file_transactions, updated_transactions)
+    except FileNotFoundError:
+        print(f"{print_styles.RED}No se logró abrir el archivo.{print_styles.RESET}")
+    except ValueError:
+        print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
+    except Exception as e:
+        print(e)
+        print(f"{print_styles.RED}Ha ocurrido un error.{print_styles.RESET}")
 
 def update_account_transaction(transaction, data_transactions, data_accounts):
     """
@@ -221,7 +244,7 @@ def update_description_transaction(transaction, data_transactions):
     json_loader('json/transactions.json', data_transactions)  
     print(f"{print_styles.GREEN}Descripción actualizada.{print_styles.RESET}")
 
-def get_transactions(data_transactions, matrix_accounts, matrix_categories, predicate = None):
+def get_transactions(data_transactions, matrix_accounts, matrix_categories, predicate = None, registers=None):
     """
     data_transactions: lista de transacciones a mostrar
     matrix_accounts: lista de cuentas para obtener información de cuenta
@@ -229,7 +252,7 @@ def get_transactions(data_transactions, matrix_accounts, matrix_categories, pred
     predicate: función opcional para filtrar transacciones
     Retorna: None. Imprime tabla formateada de transacciones
     """
-    count_matrix= len(data_transactions)
+    count_matrix = registers if registers != None else len(data_transactions)
     
     print("="*print_styles.MAX_SPACES_TRANSACTIONS)
     print(f'{"Transacciones":^125}')
@@ -242,8 +265,6 @@ def get_transactions(data_transactions, matrix_accounts, matrix_categories, pred
             continue
 
         id = data_transactions[i]["id"]
-        user = get_user_by_id(data_transactions[i]["id_user"])["username"]
-        user_sliced = slice_words(14, user)
         account = get_raw_by_id(matrix_accounts,data_transactions[i]["id_account"])
         category = get_raw_by_id(matrix_categories,data_transactions[i]["id_category"])
         category_sliced= slice_words(14, category["category"])
@@ -254,6 +275,12 @@ def get_transactions(data_transactions, matrix_accounts, matrix_categories, pred
         description =  data_transactions[i]["description"]
         description_slicing = slice_words(29, description)
         underline = print_styles.UNDERLINE_INCOME
+        if data_transactions[i]["id_user"]==-1:
+            user_sliced=slice_words(14, "Eliminado")
+            underline=print_styles.UNDERLINE_DELETE
+        else:
+            user = get_user_by_id(data_transactions[i]["id_user"])["username"]
+            user_sliced = slice_words(14, user)
         if amount < 0:
             underline = print_styles.UNDERLINE_EXPENSE
         print(f"{underline}{id:<10}{user_sliced:<15}{account["account"]:<15}{category_sliced:<15}{date:<15}{hour:<10}{amount_str:<15}{description_slicing:<30}{print_styles.RESET}")
@@ -274,7 +301,7 @@ def get_transactions_by_category(data_transactions, data_accounts, data_categori
         if len(transactions_by_category) == 0:
             print(f"{print_styles.RED}No hay transacciones con dicha categoria.{print_styles.RESET}")
             return
-        get_transactions(transactions_by_category, data_accounts, data_categories)
+        get_transactions(transactions_by_category, data_accounts, data_categories, registers=len(transactions_by_category))
     except ValueError:
         print(f"{print_styles.RED}Debes ingresar un número.{print_styles.RESET}")
     except:
