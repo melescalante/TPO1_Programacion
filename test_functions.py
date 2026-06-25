@@ -1,7 +1,6 @@
 from helper import create_id, validate_date, slice_words, get_raw_by_id
 from permissions import has_permission
 
-
 def test_create_id_retorna_siguiente_id():
     lista = [{"id": 1}, {"id": 2}, {"id": 3}]
     resultado = create_id(lista)
@@ -25,6 +24,7 @@ def test_get_raw_by_id_retorna_elemento_correcto():
 
 
 def test_has_permission_usuario_no_tiene_permiso_admin():
-    usuario = {"id": 1, "rol": "user", "username": "Test", "password": "1234", "email": "test@test.com"}
+    usuario = {"id": 3, "rol": "user", "username": "Test", "password": "1234", "email": "test@test.com"}
     resultado = has_permission(usuario, 2)  # 2 = nivel admin (READ_WRITE)
     assert resultado == False, "Un usuario con rol 'user' no debe tener permiso de admin"
+
