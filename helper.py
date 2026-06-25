@@ -128,7 +128,7 @@ def json_reader(file):
             data=json.load(file_information)
             return data
     except FileNotFoundError:
-        print(f"{print_styles.RED}No se ha encontrado el archivo. Intente mas tarde.{print_styles.RESET}")
+        print(f"{print_styles.RED}No se ha encontrado el archivo.{print_styles.RESET}")
         return None
     except OSError:
         print(f"{print_styles.RED}Ocurrió un error inesperado en el sistema al abrir el archivo.{print_styles.RESET}")
@@ -148,6 +148,8 @@ def json_loader(file, data):
     try:
         with open(file,'w', encoding="UTF-8") as file_information:
             json.dump(data,file_information,ensure_ascii=False,indent=4)
+    except FileNotFoundError:
+        print(f"{print_styles.RED}No se ha encontrado el archivo.{print_styles.RESET}")
     except OSError:
         print(f"{print_styles.RED}Error del sistema al acceder al archivo.{print_styles.RESET}")
     except Exception:
