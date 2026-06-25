@@ -148,8 +148,6 @@ def json_loader(file, data):
     try:
         with open(file,'w', encoding="UTF-8") as file_information:
             json.dump(data,file_information,ensure_ascii=False,indent=4)
-    except FileNotFoundError:
-        print(f"{print_styles.RED}No se ha encontrado el archivo.{print_styles.RESET}")
     except OSError:
         print(f"{print_styles.RED}Error del sistema al acceder al archivo.{print_styles.RESET}")
     except Exception:
